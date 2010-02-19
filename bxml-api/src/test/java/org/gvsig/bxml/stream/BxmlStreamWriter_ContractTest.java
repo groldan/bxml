@@ -58,6 +58,7 @@ import java.lang.reflect.Array;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -209,6 +210,7 @@ public class BxmlStreamWriter_ContractTest {
      * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#getPrefix(java.lang.String)}.
      */
     @Test
+    @Ignore
     public void testGetPrefix() {
         fail("Not yet implemented");
     }
@@ -218,6 +220,7 @@ public class BxmlStreamWriter_ContractTest {
      *      .
      */
     @Test
+    @Ignore
     public void testSetPrefix() {
         fail("Not yet implemented");
     }
@@ -227,6 +230,7 @@ public class BxmlStreamWriter_ContractTest {
      *      .
      */
     @Test
+    @Ignore
     public void testSetSchemaLocation() {
         fail("Not yet implemented");
     }
@@ -601,6 +605,7 @@ public class BxmlStreamWriter_ContractTest {
      * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#writeComment(java.lang.String)}.
      */
     @Test
+    @Ignore
     public void testWriteComment() {
         fail("Not yet implemented");
     }
@@ -609,6 +614,7 @@ public class BxmlStreamWriter_ContractTest {
      * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#writeEndAttributes()}.
      */
     @Test
+    @Ignore
     public void testWriteEndAttributes() {
         fail("Not yet implemented");
     }
@@ -617,6 +623,7 @@ public class BxmlStreamWriter_ContractTest {
      * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#writeEndDocument()}.
      */
     @Test
+    @Ignore
     public void testWriteEndDocument() {
         fail("Not yet implemented");
     }
@@ -625,6 +632,7 @@ public class BxmlStreamWriter_ContractTest {
      * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#writeEndElement()}.
      */
     @Test
+    @Ignore
     public void testWriteEndElement() {
         fail("Not yet implemented");
     }
@@ -634,6 +642,7 @@ public class BxmlStreamWriter_ContractTest {
      *      .
      */
     @Test
+    @Ignore
     public void testWriteStartAttributeStringString() {
         fail("Not yet implemented");
     }
@@ -643,6 +652,7 @@ public class BxmlStreamWriter_ContractTest {
      *      .
      */
     @Test
+    @Ignore
     public void testWriteStartAttributeQName() {
         fail("Not yet implemented");
     }
@@ -651,6 +661,7 @@ public class BxmlStreamWriter_ContractTest {
      * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#writeStartDocument()}.
      */
     @Test
+    @Ignore
     public void testWriteStartDocument() {
         fail("Not yet implemented");
     }
@@ -660,6 +671,7 @@ public class BxmlStreamWriter_ContractTest {
      *      .
      */
     @Test
+    @Ignore
     public void testWriteStartElementStringString() {
         fail("Not yet implemented");
     }
@@ -669,6 +681,7 @@ public class BxmlStreamWriter_ContractTest {
      *      .
      */
     @Test
+    @Ignore
     public void testWriteStartElementQName() {
         fail("Not yet implemented");
     }
@@ -677,6 +690,7 @@ public class BxmlStreamWriter_ContractTest {
      * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#writeValue(java.lang.String)}.
      */
     @Test
+    @Ignore
     public void testWriteValueString() {
         createMockWriter();
     }
@@ -685,6 +699,7 @@ public class BxmlStreamWriter_ContractTest {
      * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#writeValue(char[], int, int)}.
      */
     @Test
+    @Ignore
     public void testWriteValueCharArray() {
         fail("Not yet implemented");
     }
@@ -1133,6 +1148,7 @@ public class BxmlStreamWriter_ContractTest {
      *      .
      */
     @Test
+    @Ignore
     public void testGetStringTableReference() {
         fail("Not yet implemented");
     }
@@ -1141,6 +1157,7 @@ public class BxmlStreamWriter_ContractTest {
      * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#writeStringTableValue(long)}.
      */
     @Test
+    @Ignore
     public void testWriteStringTableValue() {
         fail("Not yet implemented");
     }

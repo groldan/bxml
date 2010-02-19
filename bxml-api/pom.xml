@@ -86,6 +86,7 @@
       <resource>
         <directory>${basedir}/src/test/resources</directory>
         <includes>
+          <include>META-INF/**</include>
           <include>**/*.xml</include>
           <include>**/*.gml</include>
           <include>**/*.bxml</include>

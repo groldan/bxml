@@ -44,6 +44,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -83,6 +84,7 @@ public class SAXParserImplTest {
     }
 
     @Test
+    @Ignore
     public void testParse2() throws Exception {
         InputStream inputStream = new FileInputStream("/Users/groldan/cwxml-test.xml.bxml");
 

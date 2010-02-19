@@ -136,7 +136,7 @@ final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter implements
         // @pre {getLastEvent() IN (START_DOCUMENT , START_ELEMENT, NAMESPACE_DECL)}
         lastEvent = impl.getLastEvent();
         assertPre(
-                lastEvent == START_DOCUMENT || lastEvent == START_ELEMENT
+                lastEvent == NONE || lastEvent == START_DOCUMENT || lastEvent == START_ELEMENT
                         || lastEvent == NAMESPACE_DECL,
                 "setDefaultNamespace: last event shall be either NONE, START_ELEMENT or NAMESPACE_DECL: ",
                 lastEvent);

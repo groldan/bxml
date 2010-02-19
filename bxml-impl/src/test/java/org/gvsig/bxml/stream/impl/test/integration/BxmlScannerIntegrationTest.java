@@ -208,6 +208,7 @@ public class BxmlScannerIntegrationTest {
     }
 
     @Test
+    @Ignore
     public void testDefaultBxmlScannerParseLarge_Polygons() throws Exception {
         final String fileName = "large_polygons.gml.bxml";
         double ellapsed = testTraverseBxml(TestData.openChannel(this, fileName));

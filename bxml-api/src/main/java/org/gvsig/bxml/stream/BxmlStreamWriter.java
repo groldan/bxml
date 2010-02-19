@@ -690,7 +690,7 @@ public interface BxmlStreamWriter {
      * </p>
      * 
      * @pre {defaultNamespaceUri != null}
-     * @pre {getLastEvent() IN (START_DOCUMENT , START_ELEMENT, NAMESPACE_DECL)}
+     * @pre {getLastEvent() IN (NONE, START_DOCUMENT , START_ELEMENT, NAMESPACE_DECL)}
      * @post {getLastEvent() == NAMESPACE_DECL}
      * @param defaultNamespaceUri
      *            the uri to bind to the default namespace, may be {@code null}

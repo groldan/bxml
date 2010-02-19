@@ -43,6 +43,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -51,6 +52,7 @@ import org.w3c.dom.Node;
 public class DocumentBuilderImplTest {
 
     @Test
+    @Ignore
     public void testParse() throws Exception {
         final String bxmlFile = "test-data/cwxml-test.bxml";
         InputStream inputStream = getClass().getResourceAsStream(bxmlFile);
