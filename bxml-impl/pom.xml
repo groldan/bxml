@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+  Maven Project Configuration File                                        
+  
+  The gvSig BXML project
+  http://www.gvsig.gva.es/
+  https://gvsig.org/plone/docdev/desarrollo/subdriver/gpe/plugins/org-gvsig.bxml/
+  
+  Version: $Id$              
+  ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- =========================================================== -->
+  <!--     Project Description                                     -->
+  <!-- =========================================================== -->
+  <parent>
+    <groupId>org.gvsig</groupId>
+    <artifactId>bxml</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.gvsig</groupId>
+  <artifactId>bxml-impl</artifactId>
+  <packaging>jar</packaging>
+  <version>${parent.version}</version>
+  <name>Binary XML Implementation</name>
+
+  <description>
+    API for streaming (pull/push) reading and writing of XML documents encoded in the BinaryXML
+    v0.0.8 OGC Spec.
+  </description>
+
+  <organization>
+    <name>Conselleria de Infraestructuras y Transporte - Generalitat Valenciana</name>
+    <url>http://www.gvsig.gva.es/</url>
+  </organization>
+  <inceptionYear>2007</inceptionYear>
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Gabriel Roldan</name>
+      <id>groldan</id>
+      <email>groldan@opengeo.org</email>
+      <organization>OpenGeo</organization>
+      <organizationUrl>http://opengeo.org</organizationUrl>
+      <roles>
+        <role>Project Maintainer</role>
+        <role>Main Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!-- =========================================================== -->
+  <!--     Dependencies to be inherited by all modules.            -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.gvsig</groupId>
+      <artifactId>bxml-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <!-- The version number is specified the parent pom. -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <!-- The version number is specified the parent pom. -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <!-- The version number is specified the parent pom. -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junitperf</groupId>
+      <artifactId>junitperf</artifactId>
+      <!-- The version number is specified the parent pom. -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- if we're using the dummy api, we should disable all tests -->
+          <excludes>
+            <exclude>**/*IntegrationTest.java</exclude>
+            <exclude>**/*PerformanceTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+    
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+   	  <resource>
+        <directory>${basedir}/src/test/resources</directory>
+        <includes>
+          <include>**/*.xml</include>
+          <include>**/*.gml</include>
+          <include>**/*.bxml</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+
+</project>

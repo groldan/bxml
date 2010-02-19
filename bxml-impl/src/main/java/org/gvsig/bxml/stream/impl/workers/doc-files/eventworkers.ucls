@@ -1,0 +1,324 @@
+<class-diagram generalizations="true" realizations="true" associations="true" dependencies="false" 
+  nesting-relationships="false">  
+  <classifier-display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+    signature="false" visibility="true"/>  
+  <association-display labels="true" multiplicity="true"/>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="596" y="63" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.AbstractAttrElementEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractAttrElementEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="230" y="270" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.StartElementTypeWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/StartElementTypeWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="482" y="206" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.AbstractContentEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractContentEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="748" y="269" width="-1" height="-1"/>  
+  </class>  
+  <interface type="java" name="org.gvsig.bxml.stream.impl.workers.CharContentValueConverter" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CharContentValueConverter.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="968" y="72" width="-1" height="-1"/>  
+  </interface>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.AttributeEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AttributeEventWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="489" y="270" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.CDataSectionEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CDataSectionEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="743" y="473" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.CharContentEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CharContentEventWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="741" y="413" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.CharEntityRefEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CharEntityRefEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="995" y="447" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.CommentEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CommentEventWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="748" y="354" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.ContentAttrElementEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/ContentAttrElementEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="228" y="386" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.ContentElementEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/ContentElementEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="227" y="446" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.EmptyAttrElementEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EmptyAttrElementEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="230" y="339" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.EmptyElementEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EmptyElementEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="218" y="504" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.EndDocumentEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EndDocumentEventWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="473" y="450" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.EndElementEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EndElementEventWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="479" y="390" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.EntityRefEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EntityRefEventWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="980" y="387" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.ProcessingInstructionEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/ProcessingInstructionEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="774" y="204" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.SpaceEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/SpaceEventWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="968" y="337" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.StartDocumentEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/StartDocumentEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="468" y="138" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.StringTableWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/StringTableWorker.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="715" y="139" width="-1" height="-1"/>  
+  </class>  
+  <class type="java" name="org.gvsig.bxml.stream.impl.workers.AttributesEndEventWorker" project="bxml-impl" 
+    file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AttributesEndEventWorker.java" 
+    corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="false" attributes="false" operations="false" initial-value="false" 
+      signature="false" visibility="true"/>    
+    <position x="472" y="332" width="-1" height="-1"/>  
+  </class>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EndDocumentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EndDocumentEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>    
+    <bendpoint x="597" y="450"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AttributeEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AttributeEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>    
+    <bendpoint x="597" y="269"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.ContentElementEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/ContentElementEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.StartElementTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/StartElementTypeWorker.java"/>    
+    <bendpoint x="358" y="444"/>    
+    <bendpoint x="358" y="241"/>    
+    <bendpoint x="481" y="241"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.SpaceEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/SpaceEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractContentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractContentEventWorker.java"/>    
+    <bendpoint x="864" y="337"/>    
+    <bendpoint x="864" y="316"/>    
+    <bendpoint x="748" y="316"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AttributesEndEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AttributesEndEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>    
+    <bendpoint x="597" y="330"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.StartDocumentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/StartDocumentEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>    
+    <bendpoint x="597" y="137"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractAttrElementEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractAttrElementEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.StartElementTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/StartElementTypeWorker.java"/>    
+    <bendpoint x="358" y="266"/>    
+    <bendpoint x="358" y="241"/>    
+    <bendpoint x="481" y="241"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.ContentAttrElementEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/ContentAttrElementEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractAttrElementEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractAttrElementEventWorker.java"/>    
+    <bendpoint x="91" y="385"/>    
+    <bendpoint x="91" y="310"/>    
+    <bendpoint x="230" y="310"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.StartElementTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/StartElementTypeWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>    
+    <bendpoint x="597" y="204"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.StringTableWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/StringTableWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>    
+    <bendpoint x="597" y="138"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.CDataSectionEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CDataSectionEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractContentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractContentEventWorker.java"/>    
+    <bendpoint x="864" y="473"/>    
+    <bendpoint x="864" y="316"/>    
+    <bendpoint x="748" y="316"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractContentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractContentEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>    
+    <bendpoint x="597" y="270"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EntityRefEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EntityRefEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractContentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractContentEventWorker.java"/>    
+    <bendpoint x="864" y="387"/>    
+    <bendpoint x="864" y="316"/>    
+    <bendpoint x="748" y="316"/>  
+  </generalization>  
+  <association>    
+    <display labels="true" multiplicity="true"/>    
+    <source navigable="false" project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java">      
+      <attribute name="workerMappings"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target navigable="true" project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>  
+  </association>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.ProcessingInstructionEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/ProcessingInstructionEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>    
+    <bendpoint x="597" y="204"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.CharContentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CharContentEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractContentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractContentEventWorker.java"/>    
+    <bendpoint x="864" y="414"/>    
+    <bendpoint x="864" y="316"/>    
+    <bendpoint x="748" y="316"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EmptyElementEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EmptyElementEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.StartElementTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/StartElementTypeWorker.java"/>    
+    <bendpoint x="358" y="504"/>    
+    <bendpoint x="358" y="241"/>    
+    <bendpoint x="481" y="241"/>  
+  </generalization>  
+  <realization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractContentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractContentEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.CharContentValueConverter" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CharContentValueConverter.java"/>    
+    <bendpoint x="968" y="269"/>  
+  </realization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EndElementEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EndElementEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EventTypeWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EventTypeWorker.java"/>    
+    <bendpoint x="597" y="390"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.EmptyAttrElementEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/EmptyAttrElementEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractAttrElementEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractAttrElementEventWorker.java"/>    
+    <bendpoint x="230" y="304"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.CommentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CommentEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractContentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractContentEventWorker.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.CharEntityRefEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/CharEntityRefEventWorker.java"/>    
+    <target project="bxml-impl" name="org.gvsig.bxml.stream.impl.workers.AbstractContentEventWorker" 
+      file="/bxml-impl/src/main/java/org/gvsig/bxml/stream/impl/workers/AbstractContentEventWorker.java"/>    
+    <bendpoint x="864" y="448"/>    
+    <bendpoint x="864" y="316"/>    
+    <bendpoint x="748" y="316"/>  
+  </generalization>
+</class-diagram>

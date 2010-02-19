@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The gvSig BXML project
+         http://www.gvsig.gva.es/
+         https://gvsig.org/plone/docdev/desarrollo/subdriver/gpe/plugins/org-gvsig.bxml/
+                                                                                
+        Version: $Id$              
+     =======================================================================
+-->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- =========================================================== -->
+  <!--     Project Description                                     -->
+  <!-- =========================================================== -->
+  <parent>
+  	<groupId>org.gvsig</groupId>
+  	<artifactId>bxml</artifactId>
+ 	<version>1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.gvsig</groupId>
+  <artifactId>bxml-utils</artifactId>
+  <packaging>jar</packaging>
+  <version>${parent.version}</version>
+  <name>Binary XML Utilities/Adapters to other XML APIs</name>
+
+  <description>
+  </description>
+
+  <organization>
+    <name>Conselleria de Infraestructuras y Transporte - Generalitat Valenciana</name>
+    <url>http://www.gvsig.gva.es/</url>
+  </organization>
+  <inceptionYear>2007</inceptionYear>
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Gabriel Roldan</name>
+      <id>groldan</id>
+      <email>groldan@opengeo.org</email>
+      <organization>OpenGeo</organization>
+      <organizationUrl>http://opengeo.org</organizationUrl>
+      <roles>
+        <role>Project Maintainer</role>
+        <role>Main Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!-- =========================================================== -->
+  <!--     Dependencies to be inherited by all modules.            -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.gvsig</groupId>
+      <artifactId>bxml-impl</artifactId>
+      <version>${parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <version>1.3.04</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <!-- The version number is specified the parent pom. -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${basedir}/src/test/resources</directory>
+        <includes>
+          <include>**/*.xml</include>
+          <include>**/*.gml</include>
+          <include>**/*.bxml</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+
+</project>

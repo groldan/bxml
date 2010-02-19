@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- comment1 -->
+<!-- comment2 -->
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld"
+  xmlns:sld="http://www.opengis.net/sld" version='1.0.0'>
+  <sld:NamedLayer>
+    <Name>ALEXANDRIA:OWS-1.2&gt;&#x20;é&#233;&eacute;x</Name>
+    <NamedStyle>
+      <Title> my_style &amp; hello <!--x--> there <!--y--> </Title>
+      <Name> my_style </Name>
+    </NamedStyle>
+  </sld:NamedLayer>
+  <EmptyElement bob='jim &amp; me '/>
+</StyledLayerDescriptor>

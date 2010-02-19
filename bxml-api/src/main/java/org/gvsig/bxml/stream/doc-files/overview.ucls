@@ -1,0 +1,82 @@
+<class-diagram generalizations="true" realizations="true" associations="true" dependencies="true" 
+  nesting-relationships="true">  
+  <classifier-display autosize="true" package="true" attributes="true" operations="true" initial-value="false" 
+    signature="true" visibility="true"/>  
+  <association-display labels="true" multiplicity="true"/>  
+  <class type="java" name="org.gvsig.bxml.stream.BxmlFactoryFinder" project="bxml-api" 
+    file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlFactoryFinder.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="false" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="112" y="109" width="-1" height="-1"/>  
+  </class>  
+  <interface type="java" name="org.gvsig.bxml.stream.BxmlInputFactory" project="bxml-api" 
+    file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlInputFactory.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="false" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="291" y="61" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.gvsig.bxml.stream.BxmlOutputFactory" project="bxml-api" 
+    file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlOutputFactory.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="false" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="293" y="158" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.gvsig.bxml.stream.BxmlStreamReader" project="bxml-api" 
+    file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlStreamReader.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="false" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="463" y="63" width="-1" height="-1"/>  
+  </interface>  
+  <enumeration type="java" name="org.gvsig.bxml.stream.EventType" project="bxml-api" 
+    file="/bxml-api/src/main/java/org/gvsig/bxml/stream/EventType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="false" operations="false" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="655" y="110" width="-1" height="-1"/>  
+  </enumeration>  
+  <interface type="java" name="org.gvsig.bxml.stream.BxmlStreamWriter" project="bxml-api" 
+    file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlStreamWriter.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="false" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="465" y="158" width="-1" height="-1"/>  
+  </interface>  
+  <dependency>    
+    <source project="bxml-api" name="org.gvsig.bxml.stream.BxmlFactoryFinder" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlFactoryFinder.java"/>    
+    <target project="bxml-api" name="org.gvsig.bxml.stream.BxmlOutputFactory" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlOutputFactory.java"/>    
+    <bendpoint x="112" y="159"/>  
+  </dependency>  
+  <dependency>    
+    <source project="bxml-api" name="org.gvsig.bxml.stream.BxmlFactoryFinder" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlFactoryFinder.java"/>    
+    <target project="bxml-api" name="org.gvsig.bxml.stream.BxmlInputFactory" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlInputFactory.java"/>    
+    <bendpoint x="112" y="62"/>  
+  </dependency>  
+  <dependency>    
+    <source project="bxml-api" name="org.gvsig.bxml.stream.BxmlStreamWriter" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlStreamWriter.java"/>    
+    <target project="bxml-api" name="org.gvsig.bxml.stream.EventType" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/EventType.java"/>    
+    <bendpoint x="655" y="158"/>  
+  </dependency>  
+  <dependency>    
+    <source project="bxml-api" name="org.gvsig.bxml.stream.BxmlStreamReader" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlStreamReader.java"/>    
+    <target project="bxml-api" name="org.gvsig.bxml.stream.EventType" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/EventType.java"/>    
+    <bendpoint x="654" y="63"/>  
+  </dependency>  
+  <dependency>    
+    <source project="bxml-api" name="org.gvsig.bxml.stream.BxmlOutputFactory" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlOutputFactory.java"/>    
+    <target project="bxml-api" name="org.gvsig.bxml.stream.BxmlStreamWriter" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlStreamWriter.java"/>  
+  </dependency>  
+  <dependency>    
+    <source project="bxml-api" name="org.gvsig.bxml.stream.BxmlInputFactory" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlInputFactory.java"/>    
+    <target project="bxml-api" name="org.gvsig.bxml.stream.BxmlStreamReader" 
+      file="/bxml-api/src/main/java/org/gvsig/bxml/stream/BxmlStreamReader.java"/>  
+  </dependency>
+</class-diagram>

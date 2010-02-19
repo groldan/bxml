@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- default feature type encoders -->
+
+    <!-- reference to the WFS 1.1 Version enum constant to be used as  DefaultEncoderConfig constructor argument -->
+    <bean id="wfs11VersionRef" class="org.geoserver.wfs.WFSInfo$Version" factory-method="valueOf">
+         <constructor-arg>
+             <value>V_11</value>
+         </constructor-arg>
+    </bean>
+ 
+     <!-- Provides config info for the GML3 binary encoded output format -->
+	<bean id="binaryGml3Config" class="org.gvsig.bxml.geoserver.DefaultEncoderConfig">
+		<constructor-arg ref="geoServer" />
+		<constructor-arg ref="wfsXmlConfiguration-1.1" />
+        <constructor-arg ref="wfs11VersionRef"/>
+	</bean>
+
+    <!-- register the output format -->
+	<bean id="binaryGml3OutputFormat" class="org.gvsig.bxml.geoserver.BinaryGml3OutputFormat">
+		<constructor-arg ref="binaryGml3Config" />
+	</bean>
+</beans>
