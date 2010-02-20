@@ -32,8 +32,8 @@
   <url>https://gvsig.org/plone/docdev/desarrollo/subdriver/gpe/plugins/org-gvsig.bxml</url>
 
   <scm>
-    <connection>scm:svn:https://gvsig.org/svn/gvSIG-libGPE/trunk/libraries/bxml</connection>
-    <url>https://gvsig.org/svn/gvSIG-libGPE/trunk/libraries/bxml</url>
+    <connection>scm:svn:https://svn.forge.osor.eu/svn/gvsig-bxml/trunk</connection>
+    <url>https://svn.forge.osor.eu/svn/gvsig-bxml/trunk</url>
   </scm>
 
   <description>
