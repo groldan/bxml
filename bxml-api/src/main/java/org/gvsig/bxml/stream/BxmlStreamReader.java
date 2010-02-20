@@ -49,8 +49,8 @@ import javax.xml.namespace.QName;
  * <p>
  * <h2>Query methods</h2>
  * Some document metadata derived from the BXML header token and the XML declaration token, as well
- * as some state control may be safely queried at any time. For instance, the following methods
- * return such information:
+ * as some state control information may be safely queried at any time. For instance, the following
+ * methods return such information:
  * <ul>
  * <li>{@link #getCharset()} which character set the string content is encoded with
  * <li>{@link #getXmlVersion()} the xml version declared in the document's xml declaration token
@@ -59,6 +59,8 @@ import javax.xml.namespace.QName;
  * <li>{@link #isNamespaceAware()} whether the reader handles namespaces
  * <li>{@link #getEventType()} which is the current parsing event
  * <li>{@link #isOpen()} whether this reader is open and this able to operate
+ * <li>{@link #isValidated()} whether the bxml content is marked as already validated
+ * <li>{@link #supportsRandomAccess()} does the stream support random access?
  * </ul>
  * </p>
  * <p>
@@ -319,7 +321,7 @@ public interface BxmlStreamReader {
      * 
      * @return {@code true} if {@link #getElementPosition()} and {@link #setPosition(long)} are
      *         supported, {@code false} otherwise
-     * @throws IOException 
+     * @throws IOException
      */
     public boolean supportsRandomAccess() throws IOException;
 
