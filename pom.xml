@@ -17,8 +17,8 @@
     <stress.skip.pattern>**/*StressTest.java</stress.skip.pattern>
     <test.maxHeapSize>512M</test.maxHeapSize>
     <src.output>${basedir}/target</src.output>
-    <gt.version>2.6-SNAPSHOT</gt.version>
-    <gs.version>2.0-SNAPSHOT</gs.version>
+    <gt.version>2.7-SNAPSHOT</gt.version>
+    <gs.version>2.2-SNAPSHOT</gs.version>
   </properties>
 
   <!-- =========================================================== -->
@@ -370,7 +370,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.2-SNAPSHOT</version>
         <configuration>
           <check>
             <haltOnFailure>false</haltOnFailure>
@@ -709,7 +708,14 @@
     <module>bxml-api</module>
     <module>bxml-impl</module>
     <module>bxml-utils</module>
-    <module>bxml-gpe</module>
     <module>bxml-geoserver</module>
   </modules>
+  <profiles>
+    <profile>
+      <id>gpe</id>
+      <modules>
+        <module>bxml-gpe</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
