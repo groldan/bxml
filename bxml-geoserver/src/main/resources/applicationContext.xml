@@ -20,6 +20,7 @@
 
     <!-- register the output format -->
 	<bean id="binaryGml3OutputFormat" class="org.gvsig.bxml.geoserver.BinaryGml3OutputFormat">
+        <constructor-arg ref="geoServer" />
 		<constructor-arg ref="binaryGml3Config" />
 	</bean>
 </beans>

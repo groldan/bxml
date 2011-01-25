@@ -24,6 +24,7 @@ import net.opengis.wfs.QueryType;
 
 import org.eclipse.xsd.XSDSchema;
 import org.geoserver.catalog.FeatureTypeInfo;
+import org.geoserver.config.GeoServer;
 import org.geoserver.ows.util.OwsUtils;
 import org.geoserver.ows.util.ResponseUtils;
 import org.geoserver.platform.Operation;
@@ -83,8 +84,8 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
      * @param catalog
      * @param configuration
      */
-    public BinaryGml3OutputFormat(final EncoderConfig config) {
-        super(OUTPUT_FORMATS);
+    public BinaryGml3OutputFormat(final GeoServer gs, final EncoderConfig config) {
+        super(gs, OUTPUT_FORMATS);
         this.config = config;
         SrsNameStyle srsNameStyle = config.getSrsNameStyle();
         this.gmlEncoder = new Gml3EncodingUtils(srsNameStyle);
@@ -173,8 +174,8 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
 
         encoder.writeStartDocument();
 
-        encoder.setSchemaLocation(org.geoserver.wfs.xml.v1_1_0.WFS.NAMESPACE, ResponseUtils
-                .buildSchemaURL(baseUrl, "schemas/wfs/1.1.0/wfs.xsd"));
+        encoder.setSchemaLocation(org.geoserver.wfs.xml.v1_1_0.WFS.NAMESPACE,
+                ResponseUtils.buildSchemaURL(baseUrl, "schemas/wfs/1.1.0/wfs.xsd"));
 
         // declare application schema namespaces
         for (Iterator i = ns2metas.entrySet().iterator(); i.hasNext();) {
@@ -196,8 +197,8 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
             }
 
             // set the schema location
-            String schemaLocation = ResponseUtils.appendQueryString(ResponseUtils.buildSchemaURL(
-                    baseUrl, "wfs"),
+            String schemaLocation = ResponseUtils.appendQueryString(
+                    ResponseUtils.buildSchemaURL(baseUrl, "wfs"),
                     "service=WFS&version=1.1.0&request=DescribeFeatureType&typeName="
                             + typeNames.toString());
             encoder.setSchemaLocation(namespaceURI, schemaLocation);
