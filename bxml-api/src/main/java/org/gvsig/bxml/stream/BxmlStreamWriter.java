@@ -381,7 +381,8 @@ public interface BxmlStreamWriter {
      * traditional SAX events).
      * 
      * @pre {value != null}
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE, COMMENT)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      COMMENT)}
      * @post {getLastEvent() == VALUE_STRING}
      * @post {getValueLength() == 1}
      * @post {getWrittenValueCount() == 1}
@@ -408,7 +409,8 @@ public interface BxmlStreamWriter {
             throws IOException;
 
     /**
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @post {getWrittenValueCount() = 1 + $pre:getWrittenValueCount()}
      * @post {getLastEvent() == VALUE_INT}
      * @param value
@@ -417,7 +419,8 @@ public interface BxmlStreamWriter {
     public void writeValue(final int value) throws IOException;
 
     /**
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @post {getWrittenValueCount() = 1 + $pre:getWrittenValueCount()}
      * @post {getLastEvent() == VALUE_LONG}
      * @param value
@@ -426,7 +429,8 @@ public interface BxmlStreamWriter {
     public void writeValue(final long value) throws IOException;
 
     /**
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @post {getWrittenValueCount() = 1 + $pre:getWrittenValueCount()}
      * @post {getLastEvent() == VALUE_FLOAT}
      * @param value
@@ -435,7 +439,8 @@ public interface BxmlStreamWriter {
     public void writeValue(final float value) throws IOException;
 
     /**
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @post {getWrittenValueCount() = 1 + $pre:getWrittenValueCount()}
      * @post {getLastEvent() == VALUE_DOUBLE}
      * @param value
@@ -444,7 +449,8 @@ public interface BxmlStreamWriter {
     public void writeValue(final double value) throws IOException;
 
     /**
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @post {getWrittenValueCount() = 1 + $pre:getWrittenValueCount()}
      * @post {getLastEvent() == VALUE_BOOL}
      * @param value
@@ -457,17 +463,19 @@ public interface BxmlStreamWriter {
      * inclusive as a primitive array of length {@code length}, or appends to the currently being
      * written array.
      * <p>
-     * If an array is already being written, it shall be of the same primitive type. The {@code
-     * length} values from the {@code value} array will be appended to the current array value (most
-     * probably by directly writting them down to the underlying bxml output stream), and the
-     * {@link #getWrittenValueCount() written value count} will be increased by {@code length}.
+     * If an array is already being written, it shall be of the same primitive type. The
+     * {@code length} values from the {@code value} array will be appended to the current array
+     * value (most probably by directly writting them down to the underlying bxml output stream),
+     * and the {@link #getWrittenValueCount() written value count} will be increased by
+     * {@code length}.
      * </p>
      * <p>
      * If an array is not already being writting, the values will be written as an array of length
      * {@code length}
      * </p>
      * 
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @pre {if (true == isArrayInProgress()) getValueLength() >= getWrittenValueCount() + length}
      * @post {getValueLength() = isArrayInProgress()? $pre:getValueLength() : length}
      * @post {getWrittenValueCount == isArrayInProgress()? $pre:getWrittenValueLength() + length :
@@ -482,7 +490,8 @@ public interface BxmlStreamWriter {
             throws IOException;
 
     /**
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @post {getWrittenValueCount() = 1 + $pre:getWrittenValueCount()}
      * @post {getLastEvent() == VALUE_INT}
      * @param value
@@ -495,17 +504,19 @@ public interface BxmlStreamWriter {
      * inclusive as a primitive array of length {@code length}, or appends to the currently being
      * written array.
      * <p>
-     * If an array is already being written, it shall be of the same primitive type. The {@code
-     * length} values from the {@code value} array will be appended to the current array value (most
-     * probably by directly writting them down to the underlying bxml output stream), and the
-     * {@link #getWrittenValueCount() written value count} will be increased by {@code length}.
+     * If an array is already being written, it shall be of the same primitive type. The
+     * {@code length} values from the {@code value} array will be appended to the current array
+     * value (most probably by directly writting them down to the underlying bxml output stream),
+     * and the {@link #getWrittenValueCount() written value count} will be increased by
+     * {@code length}.
      * </p>
      * <p>
      * If an array is not already being writting, the values will be written as an array of length
      * {@code length}
      * </p>
      * 
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @pre {if (true == isArrayInProgress()) getValueLength() >= getWrittenValueCount() + length}
      * @post {getValueLength() = isArrayInProgress()? $pre:getValueLength() : length}
      * @post {getWrittenValueCount == isArrayInProgress()? $pre:getWrittenValueLength() + length :
@@ -524,17 +535,19 @@ public interface BxmlStreamWriter {
      * inclusive as a primitive array of length {@code length}, or appends to the currently being
      * written array.
      * <p>
-     * If an array is already being written, it shall be of the same primitive type. The {@code
-     * length} values from the {@code value} array will be appended to the current array value (most
-     * probably by directly writting them down to the underlying bxml output stream), and the
-     * {@link #getWrittenValueCount() written value count} will be increased by {@code length}.
+     * If an array is already being written, it shall be of the same primitive type. The
+     * {@code length} values from the {@code value} array will be appended to the current array
+     * value (most probably by directly writting them down to the underlying bxml output stream),
+     * and the {@link #getWrittenValueCount() written value count} will be increased by
+     * {@code length}.
      * </p>
      * <p>
      * If an array is not already being writting, the values will be written as an array of length
      * {@code length}
      * </p>
      * 
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @pre {if (true == isArrayInProgress()) getValueLength() >= getWrittenValueCount() + length}
      * @post {getValueLength() = isArrayInProgress()? $pre:getValueLength() : length}
      * @post {getWrittenValueCount == isArrayInProgress()? $pre:getWrittenValueLength() + length :
@@ -553,17 +566,19 @@ public interface BxmlStreamWriter {
      * inclusive as a primitive array of length {@code length}, or appends to the currently being
      * written array.
      * <p>
-     * If an array is already being written, it shall be of the same primitive type. The {@code
-     * length} values from the {@code value} array will be appended to the current array value (most
-     * probably by directly writting them down to the underlying bxml output stream), and the
-     * {@link #getWrittenValueCount() written value count} will be increased by {@code length}.
+     * If an array is already being written, it shall be of the same primitive type. The
+     * {@code length} values from the {@code value} array will be appended to the current array
+     * value (most probably by directly writting them down to the underlying bxml output stream),
+     * and the {@link #getWrittenValueCount() written value count} will be increased by
+     * {@code length}.
      * </p>
      * <p>
      * If an array is not already being writting, the values will be written as an array of length
      * {@code length}
      * </p>
      * 
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @pre {if (true == isArrayInProgress()) getValueLength() >= getWrittenValueCount() + length}
      * @post {getValueLength() = isArrayInProgress()? $pre:getValueLength() : length}
      * @post {getWrittenValueCount == isArrayInProgress()? $pre:getWrittenValueLength() + length :
@@ -582,17 +597,19 @@ public interface BxmlStreamWriter {
      * inclusive as a primitive array of length {@code length}, or appends to the currently being
      * written array.
      * <p>
-     * If an array is already being written, it shall be of the same primitive type. The {@code
-     * length} values from the {@code value} array will be appended to the current array value (most
-     * probably by directly writting them down to the underlying bxml output stream), and the
-     * {@link #getWrittenValueCount() written value count} will be increased by {@code length}.
+     * If an array is already being written, it shall be of the same primitive type. The
+     * {@code length} values from the {@code value} array will be appended to the current array
+     * value (most probably by directly writting them down to the underlying bxml output stream),
+     * and the {@link #getWrittenValueCount() written value count} will be increased by
+     * {@code length}.
      * </p>
      * <p>
      * If an array is not already being writting, the values will be written as an array of length
      * {@code length}
      * </p>
      * 
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @pre {if (true == isArrayInProgress()) getValueLength() >= getWrittenValueCount() + length}
      * @post {getValueLength() = isArrayInProgress()? $pre:getValueLength() : length}
      * @post {getWrittenValueCount == isArrayInProgress()? $pre:getWrittenValueLength() + length :
@@ -611,17 +628,19 @@ public interface BxmlStreamWriter {
      * inclusive as a primitive array of length {@code length}, or appends to the currently being
      * written array.
      * <p>
-     * If an array is already being written, it shall be of the same primitive type. The {@code
-     * length} values from the {@code value} array will be appended to the current array value (most
-     * probably by directly writting them down to the underlying bxml output stream), and the
-     * {@link #getWrittenValueCount() written value count} will be increased by {@code length}.
+     * If an array is already being written, it shall be of the same primitive type. The
+     * {@code length} values from the {@code value} array will be appended to the current array
+     * value (most probably by directly writting them down to the underlying bxml output stream),
+     * and the {@link #getWrittenValueCount() written value count} will be increased by
+     * {@code length}.
      * </p>
      * <p>
      * If an array is not already being writting, the values will be written as an array of length
      * {@code length}
      * </p>
      * 
-     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE)}
+     * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
+     *      ATTRIBUTES_END, COMMENT)}
      * @pre {if (true == isArrayInProgress()) getValueLength() >= getWrittenValueCount() + length}
      * @post {getValueLength() = isArrayInProgress()? $pre:getValueLength() : length}
      * @post {getWrittenValueCount == isArrayInProgress()? $pre:getWrittenValueLength() + length :
@@ -760,10 +779,10 @@ public interface BxmlStreamWriter {
      * <p>
      * This separation between adding an entry to the string table and writting it down as a value
      * token is needed due to the streaming nature of this encoder. For example, if the entry index
-     * is going to be used as the value of an attribute, the entry must exist before the {@code
-     * writeStartAttribute(xxx)} method is called. The same occurs if a string table reference needs
-     * to be used as an element's content token, the string table entry shall exist before the
-     * corresponding {@code writeStartElement} method is called.
+     * is going to be used as the value of an attribute, the entry must exist before the
+     * {@code writeStartAttribute(xxx)} method is called. The same occurs if a string table
+     * reference needs to be used as an element's content token, the string table entry shall exist
+     * before the corresponding {@code writeStartElement} method is called.
      * </p>
      * 
      * @pre {getLastEvent() IN (START_DOCUMENT, END_ELEMENT, START_ELEMENT)}
