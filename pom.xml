@@ -17,7 +17,7 @@
     <stress.skip.pattern>**/*StressTest.java</stress.skip.pattern>
     <test.maxHeapSize>512M</test.maxHeapSize>
     <src.output>${basedir}/target</src.output>
-    <gt.version>2.7-SNAPSHOT</gt.version>
+    <gt.version>8-SNAPSHOT</gt.version>
     <gs.version>2.2-SNAPSHOT</gs.version>
   </properties>
 

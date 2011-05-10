@@ -716,9 +716,9 @@ final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter implements
     private void assertPreValue(final String methodName) {
         lastEvent = impl.getLastEvent();
         // * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
-        // COMMENT)}
+        // ATTRIBUTES_END, COMMENT)}
         assertPre(lastEvent.isValue() || lastEvent == START_ELEMENT || lastEvent == ATTRIBUTE
-                || lastEvent == COMMENT, methodName,
+                || lastEvent == ATTRIBUTES_END || lastEvent == COMMENT, methodName,
                 ": last event should be a value event or one of START_ELEMENT, ATTRIBUTE, COMMENT");
     }
 
@@ -766,7 +766,8 @@ final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter implements
                 throw new PostconditionViolationException("final value length(" + postValueLength
                         + ") should be equal to expected written count: " + expectedIncrease);
             }
-            if (expectedIncrease != postWrittenValueCount) {
+            if ((preWrittenValueCount + expectedIncrease) != postWrittenValueCount) {
+                // ///if (expectedIncrease != postWrittenValueCount) {
                 throw new PostconditionViolationException("final written value count("
                         + postWrittenValueCount
                         + ") does not match the required written element count: "

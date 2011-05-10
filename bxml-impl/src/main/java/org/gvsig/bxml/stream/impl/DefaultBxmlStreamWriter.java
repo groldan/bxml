@@ -533,6 +533,7 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
         lastEvent = lastTagEvent = START_ELEMENT;
         this.writtenValueLength = 0;
         this.valueLength = 0;
+        this.currentValueType = null;
     }
 
     private void writePendingNamespaces() throws IOException {

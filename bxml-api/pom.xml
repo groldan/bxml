@@ -83,7 +83,9 @@
           <include>**/*</include>
         </includes>
       </resource>
-      <resource>
+    </resources>
+    <testResources>
+      <testResource>
         <directory>${basedir}/src/test/resources</directory>
         <includes>
           <include>META-INF/**</include>
@@ -91,7 +93,7 @@
           <include>**/*.gml</include>
           <include>**/*.bxml</include>
         </includes>
-      </resource>
-    </resources>
+      </testResource>
+    </testResources>
   </build>
 </project>
