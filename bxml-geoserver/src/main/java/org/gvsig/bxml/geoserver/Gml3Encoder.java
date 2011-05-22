@@ -126,6 +126,30 @@ public final class Gml3Encoder {
     }
 
     /**
+     * Generic geometry encoder, delegates to appropriate encoder based on geometry type, or writes
+     * down a {@code gml:Null} element if {@code geometry} is null;
+     */
+    public final void encodeGeometry(final BxmlStreamWriter encoder,
+            final CoordinateReferenceSystem crs, final Geometry geometry) throws IOException {
+        if (geometry == null) {
+            encoder.writeStartElement(GML.Null);
+            encoder.writeEndElement();
+            return;
+        }
+        AttributeEncoder geometryAttEncoder = getAttributeEncoder(geometry.getClass());
+        if (geometryAttEncoder == null) {
+            throw new IllegalArgumentException(
+                    "Didn't find an AttributeEncoder for this kind of Geomerty");
+        }
+        if (!(geometryAttEncoder instanceof GeometryEncoder)) {
+            throw new IllegalStateException(geometryAttEncoder.getClass().getName()
+                    + " is not a GeometryEncoder");
+        }
+        final GeometryEncoder geomEncoder = (GeometryEncoder) geometryAttEncoder;
+        geomEncoder.encode(this, geometry, encoder, crs);
+    }
+
+    /**
      * Encodes the gml:srsName attribute.
      * <p>
      * Does not close the attribute list, so the calling code shall make sure to call
