@@ -28,44 +28,38 @@
  *      gvsig@gva.es
  *      www.gvsig.gva.es
  */
-package org.gvsig.bxml.stream.impl;
+package org.gvsig.bxml.adapt.stax;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.gvsig.bxml.stream.io.TokenType.XmlDeclaration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.ByteOrder;
-import java.nio.charset.Charset;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
-import org.gvsig.bxml.stream.BxmlFactoryFinder;
-import org.gvsig.bxml.stream.BxmlOutputFactory;
-import org.gvsig.bxml.stream.BxmlStreamReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.gvsig.bxml.stream.BxmlStreamWriter;
 import org.gvsig.bxml.stream.BxmlStreamWriter_Contract;
 import org.gvsig.bxml.stream.EncodingOptions;
 import org.gvsig.bxml.stream.EventType;
-import org.gvsig.bxml.stream.io.BxmlInputStream;
-import org.gvsig.bxml.stream.io.BxmlOutputStream;
-import org.gvsig.bxml.stream.io.DefaultStreamFactory;
-import org.gvsig.bxml.stream.io.Header;
-import org.gvsig.bxml.stream.io.TokenType;
-import org.gvsig.bxml.stream.io.ValueType;
+import org.gvsig.bxml.stream.impl.DefaultBxmlStreamWriter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.w3c.dom.Document;
 
 /**
  * Unit test suite for {@link DefaultBxmlStreamWriter}
@@ -73,11 +67,11 @@ import org.junit.Test;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  */
-public class DefaultBxmlStreamWriterTest {
+public class XmlStreamWriterAdapterTest {
 
     private EncodingOptions encodingOptions;
 
-    private BxmlOutputStream mockOutputStream;
+    private ByteArrayOutputStream output;
 
     private BxmlStreamWriter writer;
 
@@ -89,35 +83,22 @@ public class DefaultBxmlStreamWriterTest {
     @After
     public void tearDown() throws Exception {
         encodingOptions = null;
-        mockOutputStream = null;
         writer = null;
     }
 
-    private void createWriter() throws IOException {
+    private void createWriter() throws Exception {
         encodingOptions = new EncodingOptions();
-        mockOutputStream = createMock(BxmlOutputStream.class);
-        // record constructor calls
-        // mockOutputStream.setEndianess(eq(encodingOptions.getByteOrder()));
-        // mockOutputStream.setCharactersEncoding(eq(encodingOptions.getCharactersEncoding()));
 
-        // no writing is done at the writer's constructor, so its safe to create it here
-        // although the expected mockWriter calls hasn't been declared
-        writer = new BxmlStreamWriter_Contract(new DefaultBxmlStreamWriter(encodingOptions, mockOutputStream));
-    }
-
-    @Test
-    public void testWriteStartDocumentDefaultOptions() throws IOException {
-        testWriteStartDocument(encodingOptions);
+        output = new ByteArrayOutputStream();
+        XMLStreamWriter staxWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(output);
+        BxmlStreamWriter impl = new XmlStreamWriterAdapter(encodingOptions, staxWriter);
+        BxmlStreamWriter_Contract c = new BxmlStreamWriter_Contract(impl);
+        this.writer = c;
     }
 
     @Test
     public void testGetLastEvent() throws IOException {
-        BxmlOutputStream outputStream = new DefaultStreamFactory()
-                .createOutputStream(new ByteArrayOutputStream());
-        BxmlStreamWriter writer = new DefaultBxmlStreamWriter(new EncodingOptions(), outputStream);
-        writer = new BxmlStreamWriter_Contract(writer);
         assertSame(EventType.NONE, writer.getLastEvent());
-
         writer.writeStartDocument();
         assertEquals(EventType.START_DOCUMENT, writer.getLastEvent());
 
@@ -177,134 +158,6 @@ public class DefaultBxmlStreamWriterTest {
 
         writer.writeEndDocument();
         assertEquals(EventType.END_DOCUMENT, writer.getLastEvent());
-    }
-
-    @Test
-    public void testWriteStartDocumentCustomOptions() throws IOException {
-        // use inverse settings than default options
-        final ByteOrder byteOrder = encodingOptions.getByteOrder() == ByteOrder.BIG_ENDIAN ? ByteOrder.LITTLE_ENDIAN
-                : ByteOrder.BIG_ENDIAN;
-        final Charset charsEncoding = Charset.forName("US-ASCII");
-        final boolean useCompression = !encodingOptions.isUseCompression();
-        final boolean useStrictXmlStrings = !encodingOptions.isUseStrictXmlStrings();
-        final boolean isValidated = !encodingOptions.isValidated();
-        final String xmlVersion = "1.1";
-        final Boolean standalone = Boolean.FALSE;
-        encodingOptions = new EncodingOptions();
-        encodingOptions.setByteOrder(byteOrder);
-        encodingOptions.setCharactersEncoding(charsEncoding);
-        encodingOptions.setUseCompression(useCompression);
-        encodingOptions.setUseStrictXmlStrings(useStrictXmlStrings);
-        encodingOptions.setValidated(isValidated);
-        encodingOptions.setXmlVersion(xmlVersion);
-        encodingOptions.setStandalone(standalone);
-
-        testWriteStartDocument(encodingOptions);
-    }
-
-    private void testWriteStartDocument(EncodingOptions encodingOptions) throws IOException {
-        // record expected writer calls
-        Header header = DefaultBxmlStreamWriter.toHeader(encodingOptions);
-        mockOutputStream.writeHeader(eq(header));
-        mockOutputStream.writeTokenType(eq(XmlDeclaration));
-        mockOutputStream.writeString(eq(encodingOptions.getXmlVersion()));
-        final boolean standalone = encodingOptions.isStandalone() == null ? true : encodingOptions
-                .isStandalone().booleanValue();
-        final boolean standaloneIsSet = encodingOptions.isStandalone() != null;
-        mockOutputStream.writeBoolean(eq(standalone));
-        mockOutputStream.writeBoolean(eq(standaloneIsSet));
-        replay(mockOutputStream);
-
-        writer = new DefaultBxmlStreamWriter(encodingOptions, mockOutputStream);
-        writer = new BxmlStreamWriter_Contract(writer);
-        writer.writeStartDocument();
-        verify(mockOutputStream);
-    }
-
-    @Test
-    public void testClose() throws IOException {
-        expect(mockOutputStream.isOpen()).andReturn(true);
-        expect(mockOutputStream.isAutoFlushing()).andReturn(true);
-        mockOutputStream.flush();
-
-        replay(mockOutputStream);
-        writer.close();
-        verify(mockOutputStream);
-    }
-
-    @Test
-    public void testCloseNotAutoFlush() throws IOException {
-        expect(mockOutputStream.isOpen()).andReturn(true);
-        expect(mockOutputStream.isAutoFlushing()).andReturn(false);
-        mockOutputStream.setAutoFlushing(eq(true));
-        mockOutputStream.flush();
-
-        replay(mockOutputStream);
-        writer.close();
-        verify(mockOutputStream);
-    }
-
-    @Test
-    public void testCloseAlreadyClosed() throws IOException {
-        expect(mockOutputStream.isOpen()).andReturn(false);
-        replay(mockOutputStream);
-        writer.close();
-        verify(mockOutputStream);
-    }
-
-    @Test
-    @Ignore
-    public void testWriteEndDocument() throws IOException {
-        expect(mockOutputStream.getPosition()).andReturn(1000L);
-        mockOutputStream.writeTokenType(TokenType.Trailer);
-        final byte[] id = { 0x01, 'T', 'R', 0x00 };
-        mockOutputStream.writeByte(id, 0, 4);
-
-        final boolean stringTableIndexIsUsed = false;
-        final boolean indexTableIsUsed = false;
-        mockOutputStream.writeBoolean(stringTableIndexIsUsed);
-        mockOutputStream.writeBoolean(indexTableIsUsed);
-
-        expect(mockOutputStream.getPosition()).andReturn(10050L);
-        final int trailerLength = 50;
-        final int trailerLengthIncludingLengthMark = ValueType.INTEGER_BYTE_COUNT + trailerLength;
-        mockOutputStream.writeInt(trailerLengthIncludingLengthMark);
-        mockOutputStream.flush();
-
-        replay(mockOutputStream);
-        writer.writeEndDocument();
-        verify(mockOutputStream);
-    }
-
-    @Test
-    public void testFlush() throws IOException {
-        mockOutputStream.flush();
-        replay(mockOutputStream);
-        writer.flush();
-        verify(mockOutputStream);
-    }
-
-    @Test
-    @Ignore
-    public void testWriteStartAttribute() throws IOException {
-        // record calls to mock stream...
-        {
-            mockOutputStream.writeTokenType(TokenType.StringTable);
-            mockOutputStream.writeCount(1L);// string table element index
-            mockOutputStream.writeString("attName");// resolved attribute name
-        }
-
-        String uri = "http://junit.org";
-        // no startElement called, bound prefix to the root context
-        // writer.setPrefix("junit", uri);
-
-        replay(mockOutputStream);
-
-        writer.writeStartAttribute(uri, "attName");
-
-        writer.getPrefix(uri);
-
-        verify(mockOutputStream);
     }
 
     @Test
@@ -409,16 +262,8 @@ public class DefaultBxmlStreamWriterTest {
      */
     @Test
     public void testWriteTestDocumentNoNameSpaces() throws Exception {
-        final File file = new File("target/testWriteTestDocumentNoNameSpaces.bxml");
-        OutputStream out = new FileOutputStream(file);
+        BxmlStreamWriter serializer = writer;
 
-        DefaultBxmlOutputFactory defaultBxmlFactory = new DefaultBxmlOutputFactory();
-        encodingOptions.setCharactersEncoding(Charset.forName("UTF-8"));
-        defaultBxmlFactory.setEncodingOptions(encodingOptions);
-
-        BxmlStreamWriter serializer = defaultBxmlFactory.createSerializer(out);
-        serializer = new BxmlStreamWriter_Contract(serializer);
-        
         final String sldNamespace = "http://www.opengis.net/sld";
         serializer.writeStartDocument();
         serializer.writeComment(" comment1 ");
@@ -474,11 +319,7 @@ public class DefaultBxmlStreamWriterTest {
         serializer.flush();
         serializer.close();
 
-        // @TODO: can't use an integration test from inside a unit test!
-        // ReadableByteChannel channel = new FileInputStream(file).getChannel();
-        // BxmlScannerIntegrationTest bxmlScannerIntegrationTest = new BxmlScannerIntegrationTest();
-        // bxmlScannerIntegrationTest.setUp();
-        // bxmlScannerIntegrationTest.testTraverseBxml(channel);
+        print();
     }
 
     /**
@@ -507,17 +348,7 @@ public class DefaultBxmlStreamWriterTest {
      */
     @Test
     public void testWriteTestDocumentWithNameSpaces() throws Exception {
-        final BxmlStreamWriter serializer;
-        final File file = new File("target/testWriteTestDocumentNameSpaces.bxml");
-        final OutputStream out = new FileOutputStream(file);
-        {
-            encodingOptions.setCharactersEncoding(Charset.forName("UTF-8"));
-            final BxmlOutputFactory defaultBxmlFactory = BxmlFactoryFinder.newOutputFactory();
-            defaultBxmlFactory.setEncodingOptions(encodingOptions);
-            BxmlStreamWriter ser = defaultBxmlFactory.createSerializer(out);
-            serializer = new BxmlStreamWriter_Contract(ser);
-        }
-
+        BxmlStreamWriter serializer = this.writer;
         final String sldNamespace = "http://www.opengis.net/sld";
         final String exampleNamespace = "http://www.example.com/test";
 
@@ -529,11 +360,11 @@ public class DefaultBxmlStreamWriterTest {
 
         serializer.setDefaultNamespace(sldNamespace);
 
-        serializer.writeNamespace("sld", sldNamespace);
 
         serializer.writeComment(" comment1 ");
         serializer.writeComment(" comment2 ");
         serializer.writeStartElement(sldNamespace, "StyledLayerDescriptor");
+        serializer.writeNamespace("sld", sldNamespace);
 
         serializer.writeStartAttribute(sldNamespace, "version");
         serializer.writeValue("1.0.0");
@@ -588,30 +419,16 @@ public class DefaultBxmlStreamWriterTest {
         serializer.writeEndDocument();
         serializer.flush();
         serializer.close();
-        out.close();
 
-        BxmlStreamReader parser = BxmlFactoryFinder.newInputFactory().createScanner(file);
-        while (parser.hasNext()) {
-            parser.next();
-        }
+        print();
     }
 
     @Test
     public void testWriteAutoReferenceableAttributeValues() throws Exception {
-        final File file = new File("target/testWriteAutoReferenceableAttributeValues.bxml");
-        OutputStream out = new FileOutputStream(file);
-
-        DefaultBxmlOutputFactory defaultBxmlFactory = new DefaultBxmlOutputFactory();
-        encodingOptions.setCharactersEncoding(Charset.forName("ISO-8859-1"));
-        defaultBxmlFactory.setEncodingOptions(encodingOptions);
-
-        BxmlStreamWriter serializer = defaultBxmlFactory.createSerializer(out);
-        serializer = new BxmlStreamWriter_Contract(serializer);
-
+        BxmlStreamWriter serializer = this.writer;
         serializer.setWriteAttributeValueAsStringTable("gml:srsName");
 
         final String gmlNs = "http://www.opengis.net/gml";
-
         serializer.writeStartDocument();
         serializer.writeStartElement("", "Test");
         serializer.writeNamespace("gml", gmlNs);
@@ -643,6 +460,40 @@ public class DefaultBxmlStreamWriterTest {
         serializer.writeEndDocument();
         serializer.flush();
         serializer.close();
-        //TODO: check the gml:srsName value was written only once as a StringTable reference
+        // TODO: check the gml:srsName value was written only once as a StringTable reference
+        print();
     }
+
+    private void printPlain() throws Exception {
+        byte[] byteArray = output.toByteArray();
+        InputStreamReader r = new InputStreamReader(new ByteArrayInputStream(byteArray));
+        int c;
+        while ((c = r.read()) != -1) {
+            System.err.print((char) c);
+        }
+        System.err.print('\n');
+    }
+
+    private void print() throws Exception {
+        printPlain();
+        TransformerFactory txFactory = TransformerFactory.newInstance();
+        try {
+            txFactory.setAttribute("{http://xml.apache.org/xalan}indent-number", new Integer(2));
+        } catch (Exception e) {
+            // some
+        }
+
+        Transformer tx = txFactory.newTransformer();
+        tx.setOutputProperty(OutputKeys.METHOD, "xml");
+        tx.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document dom = builder.parse(new ByteArrayInputStream(output.toByteArray()));
+
+        tx.transform(new DOMSource(dom), new StreamResult(new OutputStreamWriter(System.out,
+                "utf-8")));
+    }
+
 }

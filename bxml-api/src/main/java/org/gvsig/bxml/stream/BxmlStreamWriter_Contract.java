@@ -58,7 +58,7 @@ import javax.xml.namespace.QName;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  */
-final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter implements BxmlStreamWriter {
+public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter implements BxmlStreamWriter {
 
     private EventType lastEvent;
 
@@ -161,11 +161,10 @@ final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter implements
      */
     @Override
     public void writeNamespace(String prefix, String namespaceUri) throws IOException {
-        // @pre {getLastEvent() IN (START_DOCUMENT, START_ELEMENT, NAMESPACE_DECL)}
+        // @pre {getLastEvent() IN (START_ELEMENT, NAMESPACE_DECL)}
         lastEvent = impl.getLastEvent();
         assertPre(
-                lastEvent == EventType.NAMESPACE_DECL || lastEvent == START_DOCUMENT,
-                lastEvent == START_ELEMENT,
+                lastEvent == EventType.NAMESPACE_DECL || lastEvent == START_ELEMENT,
                 "setPrefix: last event shall be either NAMESPACE_DECL, START_DOCUMENT or START_ELEMENT: ",
                 lastEvent);
         assertPre(prefix != null, "setPrefix: prefix can't be null");
@@ -766,7 +765,7 @@ final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter implements
                 throw new PostconditionViolationException("final value length(" + postValueLength
                         + ") should be equal to expected written count: " + expectedIncrease);
             }
-            if ((preWrittenValueCount + expectedIncrease) != postWrittenValueCount) {
+            if (expectedIncrease != postWrittenValueCount) {
                 // ///if (expectedIncrease != postWrittenValueCount) {
                 throw new PostconditionViolationException("final written value count("
                         + postWrittenValueCount

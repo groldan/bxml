@@ -376,4 +376,11 @@ public class BxmlStreamWriterAdapter implements BxmlStreamWriter {
         impl.setWriteAttributeValueAsStringTable(qName);
     }
 
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#supportsStringTableValues()
+     */
+    public boolean supportsStringTableValues() {
+        return impl.supportsStringTableValues();
+    }
+
 }

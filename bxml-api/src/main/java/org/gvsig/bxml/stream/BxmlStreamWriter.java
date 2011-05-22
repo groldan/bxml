@@ -727,14 +727,14 @@ public interface BxmlStreamWriter {
     public String getPrefix(String uri);
 
     /**
-     * Writes a namespace declaration while at a START_DOCUMENT or START_ELEMENT event.
+     * Writes a namespace declaration while at a START_ELEMENT event.
      * <p>
      * This prefix is bound in the scope of the current START_ELEMENT / END_ELEMENT pair (current
      * context). If this method is called before a START_ELEMENT has been written the prefix is
      * bound in the root scope.
      * </p>
      * 
-     * @pre {getLastEvent() IN (START_DOCUMENT, START_ELEMENT, NAMESPACE_DECL)}
+     * @pre {getLastEvent() IN (START_ELEMENT, NAMESPACE_DECL)}
      * @pre {prefix != null}
      * @pre {namespaceUri != null}
      * @post {if(prefix == "xmlns"){getPrefix(namespaceUri) == null}else{getPrefix(namespaceUri) ==
@@ -747,6 +747,13 @@ public interface BxmlStreamWriter {
     public void writeNamespace(String defPrefix, String defUri) throws IOException;
 
     /**
+     * @return {@code true} if writing a value as a string table reference is supported
+     * @see #getStringTableReference(CharSequence)
+     * @see #writeStringTableValue(long)
+     */
+    public boolean supportsStringTableValues();
+
+    /**
      * Writes a String value as a StringTable entry reference, provided the given StringTable entry
      * reference identifier already exists.
      * <p>
@@ -754,6 +761,7 @@ public interface BxmlStreamWriter {
      * {@link #getStringTableReference(CharSequence)}
      * </p>
      * 
+     * @pre {supportsStringTableValues() == true}
      * @pre {getLastEvent().isValue() == true || getLastEvent() IN (START_ELEMENT, ATTRIBUTE,
      *      ATTRIBUTES_END )}
      * @post {getLastEvent() == VALUE_STRING}
@@ -785,6 +793,7 @@ public interface BxmlStreamWriter {
      * before the corresponding {@code writeStartElement} method is called.
      * </p>
      * 
+     * @pre {supportsStringTableValues() == true}
      * @pre {getLastEvent() IN (START_DOCUMENT, END_ELEMENT, START_ELEMENT)}
      * @pos {$return >= 0}
      * @param stringValue

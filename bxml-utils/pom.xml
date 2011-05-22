@@ -61,6 +61,11 @@
   <dependencies>
     <dependency>
       <groupId>org.gvsig</groupId>
+      <artifactId>bxml-api</artifactId>
+      <version>${parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gvsig</groupId>
       <artifactId>bxml-impl</artifactId>
       <version>${parent.version}</version>
     </dependency>
@@ -72,6 +77,12 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <!-- The version number is specified the parent pom. -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
       <!-- The version number is specified the parent pom. -->
       <scope>test</scope>
     </dependency>

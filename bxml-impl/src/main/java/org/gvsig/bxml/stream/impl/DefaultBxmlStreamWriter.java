@@ -85,10 +85,10 @@ import org.gvsig.bxml.stream.impl.workers.StringTable;
 import org.gvsig.bxml.stream.io.BxmlOutputStream;
 import org.gvsig.bxml.stream.io.CommentPositionHint;
 import org.gvsig.bxml.stream.io.Header;
-import org.gvsig.bxml.stream.io.TokenType;
-import org.gvsig.bxml.stream.io.ValueType;
 import org.gvsig.bxml.stream.io.Header.Compression;
 import org.gvsig.bxml.stream.io.Header.Flags;
+import org.gvsig.bxml.stream.io.TokenType;
+import org.gvsig.bxml.stream.io.ValueType;
 
 /**
  * @author Gabriel Roldan (OpenGeo)
@@ -429,6 +429,9 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
         lastEvent = ATTRIBUTE;
     }
 
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#setWriteAttributeValueAsStringTable(java.lang.String)
+     */
     public void setWriteAttributeValueAsStringTable(final String qName) {
         autoReferenceableAttributes.add(qName);
     }
@@ -528,7 +531,7 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
             writePendingNamespaces();
         }
         if (openElements.size() == 1) {
-            // declareSchemaLocations();
+            declareSchemaLocations();
         }
         lastEvent = lastTagEvent = START_ELEMENT;
         this.writtenValueLength = 0;
@@ -691,6 +694,14 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
     }
 
     /**
+     * @return {@code true}
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#supportsStringTableValues()
+     */
+    public boolean supportsStringTableValues() {
+        return true;
+    }
+
+    /**
      * @see org.gvsig.bxml.stream.BxmlStreamWriter#writeStringTableValue(long)
      */
     public void writeStringTableValue(long stringTableEntryId) throws IOException {
@@ -725,14 +736,16 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
      */
     public final void writeValue(final byte[] value, final int offset, final int length)
             throws IOException {
-        if (!isArrayInProgress()) {
-            startArrayValue(ByteCode, length);
+        final boolean arrayAlreadyInProgress = isArrayInProgress();
+        if (!arrayAlreadyInProgress) {
+            startArray(VALUE_BYTE, length);
         }
         writer.writeByte(value, offset, length);
-        lastEvent = VALUE_BYTE;
-        if (!isArrayInProgress()) {
+        if (!arrayAlreadyInProgress) {
+            endArray();
             valueLength = length;
         }
+        lastEvent = VALUE_BYTE;
         writtenValueLength += length;
     }
 
@@ -791,15 +804,17 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
      */
     public final void writeValue(final boolean[] value, final int offset, final int length)
             throws IOException {
-        if (!isArrayInProgress()) {
-            startArrayValue(BoolCode, length);
+        final boolean arrayAlreadyInProgress = isArrayInProgress();
+        if (!arrayAlreadyInProgress) {
+            startArray(VALUE_BOOL, length);
         }
         writer.writeBoolean(value, offset, length);
-        lastEvent = VALUE_BOOL;
-        writtenValueLength += length;
-        if (!isArrayInProgress()) {
+        if (!arrayAlreadyInProgress) {
+            endArray();
             valueLength = length;
         }
+        lastEvent = VALUE_BOOL;
+        writtenValueLength += length;
     }
 
     /**
@@ -807,14 +822,16 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
      */
     public final void writeValue(final int[] value, final int offset, final int length)
             throws IOException {
-        if (!isArrayInProgress()) {
-            startArrayValue(IntCode, length);
+        final boolean arrayAlreadyInProgress = isArrayInProgress();
+        if (!arrayAlreadyInProgress) {
+            startArray(VALUE_INT, length);
         }
         writer.writeInt(value, offset, length);
-        lastEvent = VALUE_INT;
-        if (!isArrayInProgress()) {
+        if (!arrayAlreadyInProgress) {
+            endArray();
             valueLength = length;
         }
+        lastEvent = VALUE_INT;
         writtenValueLength += length;
     }
 
@@ -823,14 +840,16 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
      */
     public final void writeValue(final long[] value, final int offset, final int length)
             throws IOException {
-        if (!isArrayInProgress()) {
-            startArrayValue(LongCode, length);
+        final boolean arrayAlreadyInProgress = isArrayInProgress();
+        if (!arrayAlreadyInProgress) {
+            startArray(VALUE_LONG, length);
         }
         writer.writeLong(value, offset, length);
-        lastEvent = VALUE_LONG;
-        if (!isArrayInProgress()) {
+        if (!arrayAlreadyInProgress) {
+            endArray();
             valueLength = length;
         }
+        lastEvent = VALUE_LONG;
         writtenValueLength += length;
     }
 
@@ -839,14 +858,16 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
      */
     public final void writeValue(final float[] value, final int offset, final int length)
             throws IOException {
-        if (!isArrayInProgress()) {
-            startArrayValue(FloatCode, length);
+        final boolean arrayAlreadyInProgress = isArrayInProgress();
+        if (!arrayAlreadyInProgress) {
+            startArray(VALUE_FLOAT, length);
         }
         writer.writeFloat(value, offset, length);
-        lastEvent = VALUE_FLOAT;
-        if (!isArrayInProgress()) {
+        if (!arrayAlreadyInProgress) {
+            endArray();
             valueLength = length;
         }
+        lastEvent = VALUE_FLOAT;
         writtenValueLength += length;
     }
 
@@ -855,14 +876,16 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
      */
     public final void writeValue(final double[] value, final int offset, final int length)
             throws IOException {
-        if (!isArrayInProgress()) {
-            startArrayValue(DoubleCode, length);
+        final boolean arrayAlreadyInProgress = isArrayInProgress();
+        if (!arrayAlreadyInProgress) {
+            startArray(VALUE_DOUBLE, length);
         }
-        writer.writeDouble(value, 0, length);
-        lastEvent = VALUE_DOUBLE;
-        if (!isArrayInProgress()) {
+        writer.writeDouble(value, offset, length);
+        if (!arrayAlreadyInProgress) {
+            endArray();
             valueLength = length;
         }
+        lastEvent = VALUE_DOUBLE;
         writtenValueLength += length;
     }
 
