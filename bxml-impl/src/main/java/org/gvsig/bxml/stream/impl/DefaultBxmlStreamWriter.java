@@ -440,13 +440,19 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
             final String namespaceUri) throws IOException {
 
         namesResolver.toQName(prefixNamespaceUri, prefix, qNamesPlaceHolder);
-        long nameIndex = getForceStringTableName(qNamesPlaceHolder);
+        final long nameIndex = getForceStringTableName(qNamesPlaceHolder);
+        final long nsUriIndex = getForceStringTableName(namespaceUri);
         writer.writeTokenType(AttributeStart);
         writer.writeCount(nameIndex);
 
-        writer.writeTokenType(TokenType.CharContent);
-        writer.writeByte(StringCode.getCode());
-        writer.writeString(namespaceUri);
+        //this is like writeStringTableValue()
+        writer.writeTokenType(TokenType.CharContentRef);
+        writer.writeCount(nsUriIndex);
+
+        
+        // writer.writeTokenType(TokenType.CharContent);
+        // writer.writeByte(StringCode.getCode());
+        // writer.writeString(namespaceUri);
 
         this.pendingNamespacesJustWritten = true;
         this.processingAttributes = true;
@@ -550,26 +556,23 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
             return;
         }
 
-        if (pendingNamespaces.size() > 0) {
-            String prefix, namespaceUri;
-            for (Map.Entry<String, String> entry : pendingNamespaces.entrySet()) {
-                prefix = entry.getKey();
-                namespaceUri = entry.getValue();
-                if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix)) {
-                    // do not declare the "xmlns" namespace, its not allowed
-                    continue;
-                }
-                if (XMLConstants.DEFAULT_NS_PREFIX.equals(prefix)) {
-                    // it's the default namespace
-                    writeNamespaceInternal(XMLConstants.NULL_NS_URI, XMLConstants.XMLNS_ATTRIBUTE,
-                            namespaceUri);
-                } else {
-                    writeNamespaceInternal(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix,
-                            namespaceUri);
-                }
+        String prefix, namespaceUri;
+        for (Map.Entry<String, String> entry : pendingNamespaces.entrySet()) {
+            prefix = entry.getKey();
+            namespaceUri = entry.getValue();
+            if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix)) {
+                // do not declare the "xmlns" namespace, its not allowed
+                continue;
             }
-            pendingNamespaces.clear();
+            if (XMLConstants.DEFAULT_NS_PREFIX.equals(prefix)) {
+                // it's the default namespace
+                writeNamespaceInternal(XMLConstants.NULL_NS_URI, XMLConstants.XMLNS_ATTRIBUTE,
+                        namespaceUri);
+            } else {
+                writeNamespaceInternal(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix, namespaceUri);
+            }
         }
+        pendingNamespaces.clear();
     }
 
     private void declareSchemaLocations() throws IOException {
@@ -705,8 +708,32 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
      * @see org.gvsig.bxml.stream.BxmlStreamWriter#writeStringTableValue(long)
      */
     public void writeStringTableValue(long stringTableEntryId) throws IOException {
+        // /
+        // /This section is like the same one in #startValue(...) but we don't need to set the
+        // CharContent token but the CharContentRef one
+//        if (currentValueType == ValueType.ArrayCode) {
+//            // ignore, being called from a writeValue(primitiveType) while encoding an array
+//            return;
+//        }
+//        if (pendingNamespacesJustWritten) {
+//            writeEndNamespaces();
+//        }
+        //if (!processingAttributes) {
+            final TokenType elementType = openElements.getCurrentElementType();
+            if (elementType == EmptyAttrElement) {
+                setCurrentElementType(ContentAttrElement);
+            } else if (elementType == EmptyAttrElement || elementType == EmptyElement) {
+                setCurrentElementType(ContentElement);
+            }
+            // Got the final current element type, can go back to auto flush mode
+            writer.setAutoFlushing(true);
+        //}
+        // /
+
         writer.writeTokenType(TokenType.CharContentRef);
         writer.writeCount(stringTableEntryId);
+        valueLength = 1;
+        writtenValueLength = 1;
         lastEvent = VALUE_STRING;
     }
 

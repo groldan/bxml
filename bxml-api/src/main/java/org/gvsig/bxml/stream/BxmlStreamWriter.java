@@ -794,7 +794,8 @@ public interface BxmlStreamWriter {
      * </p>
      * 
      * @pre {supportsStringTableValues() == true}
-     * @pre {getLastEvent() IN (START_DOCUMENT, END_ELEMENT, START_ELEMENT)}
+     * @pre {getLastEvent() IN (START_DOCUMENT, END_ELEMENT, START_ELEMENT, ATTRIBUTE,
+     *      NAMESPACE_DECL)}
      * @pos {$return >= 0}
      * @param stringValue
      * @return the identifier for the given string value in the StringTable

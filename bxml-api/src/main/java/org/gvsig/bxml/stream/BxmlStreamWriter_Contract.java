@@ -58,7 +58,8 @@ import javax.xml.namespace.QName;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  */
-public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter implements BxmlStreamWriter {
+public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter implements
+        BxmlStreamWriter {
 
     private EventType lastEvent;
 
@@ -679,8 +680,9 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
         // * @pre {getLastEvent() IN (START_DOCUMENT, END_ELEMENT, START_ELEMENT)}
         lastEvent = impl.getLastEvent();
         assertPre(START_ELEMENT == lastEvent || ATTRIBUTE == lastEvent
-                || START_DOCUMENT == lastEvent,
-                "last event shall be one of START_DOCUMENT, START_ELEMENT, END_ELEMENT: ",
+                || START_DOCUMENT == lastEvent || NAMESPACE_DECL == lastEvent
+                || ATTRIBUTE == lastEvent,
+                "last event shall be one of START_DOCUMENT, START_ELEMENT, END_ELEMENT, NAMESPACE_DECL, ATTRIBUTES: ",
                 lastEvent);
 
         long ref = impl.getStringTableReference(stringValue);
