@@ -1,6 +1,8 @@
 package org.gvsig.bxml.geoserver;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,9 +17,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeocentricCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Converters;
+import org.geotools.util.Range;
 import org.gvsig.bxml.stream.BxmlStreamWriter;
 import org.gvsig.bxml.stream.EventType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -43,7 +45,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  */
-final class Gml3EncodingUtils {
+public final class Gml3Encoder {
 
     private final SrsNameStyle srsNameStyle;
 
@@ -51,7 +53,8 @@ final class Gml3EncodingUtils {
 
     private static final Map<Class<?>, AttributeEncoder> encodingBindings;
 
-    public Gml3EncodingUtils(final SrsNameStyle srsNameStyle) {
+    public Gml3Encoder(final EncoderConfig config) {
+        SrsNameStyle srsNameStyle = config.getSrsNameStyle();
         this.srsNameStyle = srsNameStyle;
         srsNameUris = new TreeMap<CoordinateReferenceSystem, String>(
                 new Comparator<CoordinateReferenceSystem>() {
@@ -67,7 +70,7 @@ final class Gml3EncodingUtils {
 
     private static final AttributeEncoder UNKNOWN_ATT_TYPE_ENCODER = new AttributeEncoder() {
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, Object value,
+        public void encode(final Gml3Encoder gmlEncoder, Object value,
                 AttributeDescriptor descriptor, BxmlStreamWriter encoder) throws IOException {
             String stringValue = (String) Converters.convert(value, String.class);
             if (stringValue != null) {
@@ -90,10 +93,12 @@ final class Gml3EncodingUtils {
         encoders.put(Float.class, new FloatEncoder());
         encoders.put(Double.class, new DoubleEncoder());
         encoders.put(String.class, new StringEncoder());
-        encoders.put(java.util.Date.class, new DateEncoder());
+        encoders.put(java.util.Date.class, new DateTimeEncoder());
         encoders.put(java.sql.Date.class, new DateEncoder());
+        encoders.put(java.sql.Time.class, new TimeEncoder());
         encoders.put(Timestamp.class, new TimestampEncoder());
-
+        encoders.put(BigInteger.class, new BigIntegerEncoder());
+        encoders.put(BigDecimal.class, new BigDecimalEncoder());
         encoders.put(BoundingBox.class, new BoundingBoxEncoder());
         encoders.put(GeometryCollection.class, new GeometryCollectionEncoder());
         encoders.put(Point.class, new PointEncoder());
@@ -116,7 +121,7 @@ final class Gml3EncodingUtils {
          * @param encoder
          * @throws IOException
          */
-        public abstract void encode(Gml3EncodingUtils gmlEncoder, Object value,
+        public abstract void encode(Gml3Encoder gmlEncoder, Object value,
                 AttributeDescriptor descriptor, BxmlStreamWriter encoder) throws IOException;
     }
 
@@ -142,18 +147,23 @@ final class Gml3EncodingUtils {
             return;
         }
 
-        final long srsUriStringTableEntryId = encoder.getStringTableReference(srsUri);
-        encoder.writeStartAttribute(GML.srsName);
-        encoder.writeStringTableValue(srsUriStringTableEntryId);
+        if (encoder.supportsStringTableValues()) {
+            final long srsUriStringTableEntryId = encoder.getStringTableReference(srsUri);
+            encoder.writeStartAttribute(GML.srsName);
+            encoder.writeStringTableValue(srsUriStringTableEntryId);
+        } else {
+            encoder.writeStartAttribute(GML.srsName);
+            encoder.writeValue(srsUri);
+        }
     }
 
     private String getSrsUri(final CoordinateReferenceSystem crs) {
         String srsUri = srsNameUris.get(crs);
         if (srsUri == null) {
             String epsgCode;
-            if(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs)){
+            if (CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs)) {
                 epsgCode = "4326";
-            }else{
+            } else {
                 epsgCode = GML2EncodingUtils.epsgCode(crs);
             }
             srsUri = this.srsNameStyle.getPrefix() + epsgCode;
@@ -247,8 +257,8 @@ final class Gml3EncodingUtils {
      * Encodes a {@link GML#Envelope gml:Envelope} for {@code bounds}, or {@link GML#Null} if
      * {@code bounds} is {@code null}.
      * <p>
-     * If {@code bounds} is {@code null}, the {@code gml:Null} element will be written with {@code
-     * "unknown"} reason, like in {@code <gml:Null>unknown</gml:Null>}
+     * If {@code bounds} is {@code null}, the {@code gml:Null} element will be written with
+     * {@code "unknown"} reason, like in {@code <gml:Null>unknown</gml:Null>}
      * </p>
      * 
      * @param encoder
@@ -299,8 +309,8 @@ final class Gml3EncodingUtils {
     }
 
     /**
-     * Writes down a {@link GML#LinearRing LinearRing} element out of the provided {@code
-     * linearRing} coordinates.
+     * Writes down a {@link GML#LinearRing LinearRing} element out of the provided
+     * {@code linearRing} coordinates.
      * 
      * @param encoder
      * @param linearRing
@@ -403,14 +413,14 @@ final class Gml3EncodingUtils {
      */
     private static abstract class GeometryEncoder extends AttributeEncoder {
 
-        public final void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public final void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
-            encode(gmlEncoder, value, encoder, ((GeometryDescriptor) descriptor)
-                    .getCoordinateReferenceSystem());
+            encode(gmlEncoder, value, encoder,
+                    ((GeometryDescriptor) descriptor).getCoordinateReferenceSystem());
         }
 
-        public abstract void encode(final Gml3EncodingUtils gmlEncoder, Object value,
+        public abstract void encode(final Gml3Encoder gmlEncoder, Object value,
                 BxmlStreamWriter encoder, CoordinateReferenceSystem crs) throws IOException;
     }
 
@@ -435,7 +445,7 @@ final class Gml3EncodingUtils {
          * @throws IOException
          */
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
 
@@ -459,7 +469,7 @@ final class Gml3EncodingUtils {
          * @see org.gvsig.bxml.geoserver.BinaryGml3OutputFormat.AttributeEncoder#encode
          */
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object geom,
+        public void encode(final Gml3Encoder gmlEncoder, final Object geom,
                 final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs)
                 throws IOException {
             if (geom != null) {
@@ -483,7 +493,7 @@ final class Gml3EncodingUtils {
          * @see GML#Polygon
          */
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object geom,
+        public void encode(final Gml3Encoder gmlEncoder, final Object geom,
                 final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs)
                 throws IOException {
             if (geom != null) {
@@ -509,7 +519,7 @@ final class Gml3EncodingUtils {
          * @see GML#LinearRing
          */
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object geom,
+        public void encode(final Gml3Encoder gmlEncoder, final Object geom,
                 final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs)
                 throws IOException {
             if (geom != null) {
@@ -531,7 +541,7 @@ final class Gml3EncodingUtils {
          * @see GML#LineString
          */
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object geom,
+        public void encode(final Gml3Encoder gmlEncoder, final Object geom,
                 final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs)
                 throws IOException {
             if (geom != null) {
@@ -555,7 +565,7 @@ final class Gml3EncodingUtils {
          * @see LineStringEncoder#encode
          */
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object geom,
+        public void encode(final Gml3Encoder gmlEncoder, final Object geom,
                 final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs)
                 throws IOException {
             if (geom != null) {
@@ -579,7 +589,7 @@ final class Gml3EncodingUtils {
          * @see PointEncoder#encode
          */
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object geom,
+        public void encode(final Gml3Encoder gmlEncoder, final Object geom,
                 final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs)
                 throws IOException {
             if (geom != null) {
@@ -602,7 +612,7 @@ final class Gml3EncodingUtils {
          * @see GML#geometryMembers
          */
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object geom,
+        public void encode(final Gml3Encoder gmlEncoder, final Object geom,
                 final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs)
                 throws IOException {
             final GeometryCollection gcol = (GeometryCollection) geom;
@@ -616,8 +626,8 @@ final class Gml3EncodingUtils {
                     member = gcol.getGeometryN(geomN);
                     if (member != null) {
                         GeometryEncoder memberEncoder;
-                        memberEncoder = (GeometryEncoder) Gml3EncodingUtils
-                                .getAttributeEncoder(member.getClass());
+                        memberEncoder = (GeometryEncoder) Gml3Encoder.getAttributeEncoder(member
+                                .getClass());
                         memberEncoder.encode(gmlEncoder, member, encoder, crs);
                     }
                 }
@@ -628,19 +638,57 @@ final class Gml3EncodingUtils {
     }
 
     /**
-     * Value encoder for {@link Date} and {@link java.sql.Date}
+     * Value encoder for {@link java.util.Date}
+     * 
+     * @version $Id$
+     */
+    private static class DateTimeEncoder extends AttributeEncoder {
+
+        @Override
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
+                final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
+                throws IOException {
+            final Date date = (Date) value;
+            if (date != null) {
+                String stringValue = DateUtil.serializeDateTime(date.getTime(), true);
+                encoder.writeValue(stringValue);
+            }
+        }
+    }
+
+    /**
+     * Value encoder for {@link java.sql.Date}
      * 
      * @version $Id$
      */
     private static class DateEncoder extends AttributeEncoder {
 
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
-            final Date date = (Date) value;
+            final java.sql.Date date = (java.sql.Date) value;
             if (date != null) {
                 String stringValue = DateUtil.serializeDate(date);
+                encoder.writeValue(stringValue);
+            }
+        }
+    }
+
+    /**
+     * Value encoder for {@link java.sql.Time}
+     * 
+     * @version $Id$
+     */
+    private static class TimeEncoder extends AttributeEncoder {
+
+        @Override
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
+                final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
+                throws IOException {
+            final java.sql.Time time = (java.sql.Time) value;
+            if (time != null) {
+                String stringValue = DateUtil.serializeSqlTime(time);
                 encoder.writeValue(stringValue);
             }
         }
@@ -654,12 +702,12 @@ final class Gml3EncodingUtils {
     private static class TimestampEncoder extends AttributeEncoder {
 
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             final Timestamp timeStamp = (Timestamp) value;
             if (timeStamp != null) {
-                String stringValue = DateUtil.serializeDateTime(timeStamp);
+                String stringValue = DateUtil.serializeTimestamp(timeStamp);
                 encoder.writeValue(stringValue);
             }
         }
@@ -673,7 +721,7 @@ final class Gml3EncodingUtils {
     private static class StringEncoder extends AttributeEncoder {
 
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {
@@ -690,11 +738,76 @@ final class Gml3EncodingUtils {
     private static class DoubleEncoder extends AttributeEncoder {
 
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {
                 encoder.writeValue(((Double) value).doubleValue());
+            }
+        }
+    }
+
+    /**
+     * Value encoder for {@link BigInteger}
+     * 
+     * @version $Id$
+     */
+    private static class BigIntegerEncoder extends AttributeEncoder {
+
+        private static final Range<BigInteger> BYTE_RANGE = new Range<BigInteger>(BigInteger.class,
+                BigInteger.valueOf(Byte.MIN_VALUE), true, BigInteger.valueOf(Byte.MAX_VALUE), true);
+
+        private static final Range<BigInteger> INT_RANGE = new Range<BigInteger>(BigInteger.class,
+                BigInteger.valueOf(Integer.MIN_VALUE), true, BigInteger.valueOf(Integer.MAX_VALUE),
+                true);
+
+        private static final Range<BigInteger> LONG_RANGE = new Range<BigInteger>(BigInteger.class,
+                BigInteger.valueOf(Long.MIN_VALUE), true, BigInteger.valueOf(Long.MAX_VALUE), true);
+
+        @Override
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
+                final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
+                throws IOException {
+            if (value != null) {
+                final BigInteger bi = (BigInteger) value;
+                if (BYTE_RANGE.contains(bi)) {
+                    encoder.writeValue(bi.byteValue());
+                } else if (INT_RANGE.contains(bi)) {
+                    encoder.writeValue(bi.intValue());
+                } else if (LONG_RANGE.contains(bi)) {
+                    encoder.writeValue(bi.longValue());
+                } else {
+                    // well, it really was a big number...
+                    encoder.writeValue(bi.toString());
+                }
+            }
+        }
+    }
+
+    /**
+     * Value encoder for {@link BigDecimal}
+     * 
+     * @version $Id$
+     */
+    private static class BigDecimalEncoder extends AttributeEncoder {
+
+        private static final Range<BigDecimal> DOUBLE_RANGE = new Range<BigDecimal>(
+                BigDecimal.class, BigDecimal.valueOf(Double.MIN_VALUE), true,
+                BigDecimal.valueOf(Double.MAX_VALUE), true);
+
+        @Override
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
+                final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
+                throws IOException {
+            if (value != null) {
+                final BigDecimal bd = (BigDecimal) value;
+                if (DOUBLE_RANGE.contains(bd)) {
+                    // ehem... nobody really uses large scales, right?
+                    encoder.writeValue(bd.doubleValue());
+                } else {
+                    // well, it really was a big number...
+                    encoder.writeValue(bd.toString());
+                }
             }
         }
     }
@@ -707,7 +820,7 @@ final class Gml3EncodingUtils {
     private static class FloatEncoder extends AttributeEncoder {
 
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {
@@ -724,7 +837,7 @@ final class Gml3EncodingUtils {
     private static class LongEncoder extends AttributeEncoder {
 
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {
@@ -741,7 +854,7 @@ final class Gml3EncodingUtils {
     private static class IntegerEncoder extends AttributeEncoder {
 
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {
@@ -758,7 +871,7 @@ final class Gml3EncodingUtils {
     private static class ShortEncoder extends AttributeEncoder {
 
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {
@@ -775,7 +888,7 @@ final class Gml3EncodingUtils {
     private static class ByteEncoder extends AttributeEncoder {
 
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {
@@ -791,7 +904,7 @@ final class Gml3EncodingUtils {
      */
     private static class BooleanEncoder extends AttributeEncoder {
         @Override
-        public void encode(final Gml3EncodingUtils gmlEncoder, final Object value,
+        public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {

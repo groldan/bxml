@@ -11,7 +11,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.gml3.GML;
 import org.geotools.util.logging.Logging;
-import org.gvsig.bxml.geoserver.Gml3EncodingUtils.AttributeEncoder;
+import org.gvsig.bxml.geoserver.Gml3Encoder.AttributeEncoder;
 import org.gvsig.bxml.stream.BxmlStreamWriter;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -33,7 +33,7 @@ public class AttributeEncoders {
 
     private final String defaultNamespaceURI;
 
-    private final Gml3EncodingUtils gmlEncoder;
+    private final Gml3Encoder gmlEncoder;
 
     /**
      * 
@@ -43,7 +43,7 @@ public class AttributeEncoders {
      *            the namespace to use for attribtue names whose {@link AttributeDescriptor
      *            descriptor} name has no namespace
      */
-    public AttributeEncoders(final Gml3EncodingUtils gmlEncoder, final FeatureType featureType,
+    public AttributeEncoders(final Gml3Encoder gmlEncoder, final FeatureType featureType,
             final String defaultNamespaceURI) {
         this.gmlEncoder = gmlEncoder;
         this.defaultNamespaceURI = defaultNamespaceURI;
@@ -139,7 +139,7 @@ public class AttributeEncoders {
 
     /**
      * A private implementation for {@link AttributeEncoderExecutor} based on
-     * {@link Gml3EncodingUtils#getAttributeEncoder(Class)}
+     * {@link Gml3Encoder#getAttributeEncoder(Class)}
      * 
      * @author Gabriel Roldan
      * @version $Id$
@@ -156,7 +156,7 @@ public class AttributeEncoders {
 
         protected final AttributeDescriptor descriptor;
 
-        protected final Gml3EncodingUtils gmlEncoder;
+        protected final Gml3Encoder gmlEncoder;
 
         /**
          * 
@@ -164,7 +164,7 @@ public class AttributeEncoders {
          * @param attributeName
          * @param binding
          */
-        public DefaultAttributeEncoderExecutor(final Gml3EncodingUtils gmlEncoder,
+        public DefaultAttributeEncoderExecutor(final Gml3Encoder gmlEncoder,
                 final String defaultNamespaceURI, final AttributeDescriptor descriptor) {
             this.gmlEncoder = gmlEncoder;
             this.descriptor = descriptor;
@@ -175,7 +175,7 @@ public class AttributeEncoders {
             this.localName = attributeName.getLocalPart();
             AttributeType type = descriptor.getType();
             Class<?> binding = type.getBinding();
-            attributeValueEncoder = Gml3EncodingUtils.getAttributeEncoder(binding);
+            attributeValueEncoder = Gml3Encoder.getAttributeEncoder(binding);
         }
 
         /**
@@ -197,7 +197,7 @@ public class AttributeEncoders {
          * <p>
          * The actual value encoding is done with an encoding binding for the java type of the
          * AttributeType for this encoder executor, from the
-         * {@link Gml3EncodingUtils#getAttributeEncoder(Class)} utility.
+         * {@link Gml3Encoder#getAttributeEncoder(Class)} utility.
          * </p>
          * 
          * @param feature
@@ -205,7 +205,7 @@ public class AttributeEncoders {
          * @param encoder
          *            the encoder used to write the feature attribute with
          * @throws IOException
-         * @see {@link Gml3EncodingUtils#getAttributeEncoder(Class)}
+         * @see {@link Gml3Encoder#getAttributeEncoder(Class)}
          */
         protected void encodeValue(final SimpleFeature feature, final BxmlStreamWriter encoder)
                 throws IOException {
@@ -246,7 +246,7 @@ public class AttributeEncoders {
         /**
          * Default constructor, uses the special {@code boundedByAttributeType} AttributeType
          */
-        public BoundedByEncoderExecutor(final Gml3EncodingUtils gmlEncoder) {
+        public BoundedByEncoderExecutor(final Gml3Encoder gmlEncoder) {
             super(gmlEncoder, GML.NAMESPACE, boundedByAttribute);
         }
 

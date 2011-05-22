@@ -29,26 +29,21 @@ import org.geoserver.ows.util.OwsUtils;
 import org.geoserver.ows.util.ResponseUtils;
 import org.geoserver.platform.Operation;
 import org.geoserver.platform.ServiceException;
+import org.geoserver.wfs.GMLInfo.SrsNameStyle;
 import org.geoserver.wfs.WFSException;
 import org.geoserver.wfs.WFSGetFeatureOutputFormat;
-import org.geoserver.wfs.GMLInfo.SrsNameStyle;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.type.DateUtil;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.XSD;
-import org.gvsig.bxml.geoserver.AttributeEncoders.AttributeEncoderExecutor;
 import org.gvsig.bxml.stream.BxmlFactoryFinder;
 import org.gvsig.bxml.stream.BxmlOutputFactory;
 import org.gvsig.bxml.stream.BxmlStreamWriter;
 import org.gvsig.bxml.stream.EncodingOptions;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.Name;
 
 /**
  * @author Gabriel Roldan (OpenGeo)
@@ -74,7 +69,7 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
 
     private final EncoderConfig config;
 
-    private final Gml3EncodingUtils gmlEncoder;
+    private final Gml3Encoder gmlEncoder;
 
     /**
      * Creates a new WFS output format encoder that generates GML 3.1.1 documents encoded as per the
@@ -87,8 +82,7 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
     public BinaryGml3OutputFormat(final GeoServer gs, final EncoderConfig config) {
         super(gs, OUTPUT_FORMATS);
         this.config = config;
-        SrsNameStyle srsNameStyle = config.getSrsNameStyle();
-        this.gmlEncoder = new Gml3EncodingUtils(srsNameStyle);
+        this.gmlEncoder = new Gml3Encoder(config);
     }
 
     /**
@@ -316,70 +310,19 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
      * attributes.
      * 
      * @param fc
-     * @param encoder
+     * @param writer
      * @throws IOException
      */
     void encode(final FeatureCollection<SimpleFeatureType, SimpleFeature> fc,
-            final BxmlStreamWriter encoder) throws IOException {
-        // final FeatureType fType = fc.getSchema();
-        // final XSDSchema schema = configuration.schema();
-        // TODO: traverse gathering properties in the schema defined order...
-        // by now using the FeatureType declared order
+            final BxmlStreamWriter writer) throws IOException {
 
-        final SimpleFeatureType featureType = fc.getSchema();
-        final boolean featureBounding = config.isFeatureBounding();
-        // lazily create so we have the actual Feature namespace as the default for attribtues that
-        // have no ns declared (quite common in geotools SimpleFeatures)
-        AttributeEncoders encoders = null;
-
+        final SimpleFeatureEncoder sfEncoder = new SimpleFeatureEncoder(config, gmlEncoder);
         final FeatureIterator<SimpleFeature> features = fc.features();
         try {
             SimpleFeature feature;
-            AttributeDescriptor descriptor;
-            Name featureName;
-            String featureNamespaceURI, featureLocalName;
             while (features.hasNext()) {
                 feature = features.next();
-                {
-                    descriptor = feature.getDescriptor();
-                    if (descriptor == null) {
-                        featureName = feature.getFeatureType().getName();
-                    } else {
-                        featureName = descriptor.getName();
-                    }
-                    featureNamespaceURI = featureName.getNamespaceURI();
-                    featureLocalName = featureName.getLocalPart();
-
-                    encoder.writeStartElement(featureNamespaceURI, featureLocalName);
-                }
-                encoder.writeStartAttribute(GML.id);
-                encoder.writeValue(feature.getIdentifier().getID());
-                encoder.writeEndAttributes();
-
-                if (encoders == null) {
-                    encoders = new AttributeEncoders(gmlEncoder, featureType, featureNamespaceURI);
-                }
-
-                if (featureBounding) {
-                    final AttributeEncoderExecutor boundedByEncoder = encoders
-                            .getBoundedByEncoder();
-                    boundedByEncoder.encode(feature, encoder);
-                }
-
-                AttributeEncoderExecutor attEncoder;
-                AttributeDescriptor attDescriptor;
-                for (Property prop : feature.getProperties()) {
-                    if (prop instanceof Attribute) {
-                        attDescriptor = ((Attribute) prop).getDescriptor();
-                        attEncoder = encoders.getEncoder(attDescriptor);
-                        attEncoder.encode(feature, encoder);
-                    } else {
-                        LOGGER.info("Ignoring property " + prop.getName()
-                                + " as it is not an Attribute instance");
-                    }
-                }
-
-                encoder.writeEndElement();
+                sfEncoder.encode(feature, writer);
             }
         } finally {
             features.close();
