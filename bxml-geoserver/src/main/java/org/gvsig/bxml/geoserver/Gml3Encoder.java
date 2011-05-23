@@ -53,7 +53,10 @@ public final class Gml3Encoder {
 
     private static final Map<Class<?>, AttributeEncoder> encodingBindings;
 
+    private final EncoderConfig config;
+
     public Gml3Encoder(final EncoderConfig config) {
+        this.config = config;
         SrsNameStyle srsNameStyle = config.getSrsNameStyle();
         this.srsNameStyle = srsNameStyle;
         srsNameUris = new TreeMap<CoordinateReferenceSystem, String>(
@@ -66,6 +69,10 @@ public final class Gml3Encoder {
                         return 1;
                     }
                 });
+    }
+
+    public EncoderConfig getConfig() {
+        return config;
     }
 
     private static final AttributeEncoder UNKNOWN_ATT_TYPE_ENCODER = new AttributeEncoder() {

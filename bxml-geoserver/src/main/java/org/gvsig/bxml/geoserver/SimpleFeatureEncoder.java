@@ -20,24 +20,23 @@ public class SimpleFeatureEncoder {
 
     private final Gml3Encoder gmlEncoder;
 
-    private final EncoderConfig config;
-
     // lazily created so we have the actual Feature namespace as the default for attribtues that
     // have no ns declared (quite common in geotools SimpleFeatures)
     private AttributeEncoders encoders;
 
-    public SimpleFeatureEncoder(EncoderConfig config, Gml3Encoder gmlEncoder) {
-        this.config = config;
+    public SimpleFeatureEncoder(final Gml3Encoder gmlEncoder) {
         this.gmlEncoder = gmlEncoder;
     }
 
-    public void encode(final SimpleFeature feature, final BxmlStreamWriter encoder) throws IOException {
+    public void encode(final SimpleFeature feature, final BxmlStreamWriter encoder)
+            throws IOException {
         // final FeatureType fType = fc.getSchema();
         // final XSDSchema schema = configuration.schema();
         // TODO: traverse gathering properties in the schema defined order...
         // by now using the FeatureType declared order
 
         final SimpleFeatureType featureType = feature.getFeatureType();
+        final EncoderConfig config = gmlEncoder.getConfig();
         final boolean featureBounding = config.isFeatureBounding();
 
         AttributeDescriptor descriptor;

@@ -316,7 +316,7 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
     void encode(final FeatureCollection<SimpleFeatureType, SimpleFeature> fc,
             final BxmlStreamWriter writer) throws IOException {
 
-        final SimpleFeatureEncoder sfEncoder = new SimpleFeatureEncoder(config, gmlEncoder);
+        final SimpleFeatureEncoder sfEncoder = new SimpleFeatureEncoder(gmlEncoder);
         final FeatureIterator<SimpleFeature> features = fc.features();
         try {
             SimpleFeature feature;
