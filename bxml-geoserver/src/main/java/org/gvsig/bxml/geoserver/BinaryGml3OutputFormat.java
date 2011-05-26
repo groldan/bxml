@@ -289,7 +289,7 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
         final Map namePrefixToNamespaceMap = schema.getQNamePrefixToNamespaceMap();
 
         final String defaultNamespaceUri = schema.getTargetNamespace();
-        encoder.setDefaultNamespace(defaultNamespaceUri);
+        encoder.writeDefaultNamespace(defaultNamespaceUri);
 
         for (Iterator itr = namePrefixToNamespaceMap.entrySet().iterator(); itr.hasNext();) {
             final Map.Entry entry = (Map.Entry) itr.next();

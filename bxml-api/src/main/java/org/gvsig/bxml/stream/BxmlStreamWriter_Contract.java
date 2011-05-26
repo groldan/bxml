@@ -129,10 +129,10 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
 
     /**
      * @throws IOException
-     * @see org.gvsig.bxml.stream.BxmlStreamWriter#setDefaultNamespace(java.lang.String)
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#writeDefaultNamespace(java.lang.String)
      */
     @Override
-    public void setDefaultNamespace(String defaultNamespaceUri) throws IOException {
+    public void writeDefaultNamespace(String defaultNamespaceUri) throws IOException {
         assertPre(defaultNamespaceUri != null, "default namespace URI can't be null");
         // @pre {getLastEvent() IN (START_DOCUMENT , START_ELEMENT, NAMESPACE_DECL)}
         lastEvent = impl.getLastEvent();
@@ -141,7 +141,7 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
                         || lastEvent == NAMESPACE_DECL,
                 "setDefaultNamespace: last event shall be either NONE, START_ELEMENT or NAMESPACE_DECL: ",
                 lastEvent);
-        impl.setDefaultNamespace(defaultNamespaceUri);
+        impl.writeDefaultNamespace(defaultNamespaceUri);
         lastEvent = impl.getLastEvent();
         assertPost(lastEvent == NAMESPACE_DECL,
                 "expected last event to be NAMESPACE_DECL, but is ", lastEvent);
@@ -154,6 +154,24 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
     public String getPrefix(String uri) {
         assertPre(uri != null, "uri can't be null. Did you mean the empty string?");
         return impl.getPrefix(uri);
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamWriterAdapter#setPrefix(java.lang.String,
+     *      java.lang.String)
+     */
+    @Override
+    public void setPrefix(String prefix, String uri) {
+        // @pre {getLastEvent() IN (NONE, START_DOCUMENT , START_ELEMENT, NAMESPACE_DECL)}
+        assertPre(prefix != null, "prefix can't be null. Did you mean the empty string?");
+        assertPre(uri != null, "uri can't be null. Did you mean the empty string?");
+        lastEvent = impl.getLastEvent();
+        assertPre(
+                lastEvent == NONE || lastEvent == START_DOCUMENT || lastEvent == NAMESPACE_DECL
+                        || lastEvent == START_ELEMENT,
+                "setPrefix: last event shall be either NONE, START_DOCUMENT, START_ELEMENT, or NAMESPACE_DECL: ",
+                lastEvent);
+        impl.setPrefix(prefix, uri);
     }
 
     /**
@@ -679,9 +697,9 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
     public long getStringTableReference(final CharSequence stringValue) throws IOException {
         // * @pre {getLastEvent() IN (START_DOCUMENT, END_ELEMENT, START_ELEMENT)}
         lastEvent = impl.getLastEvent();
-        assertPre(START_ELEMENT == lastEvent || ATTRIBUTE == lastEvent
-                || START_DOCUMENT == lastEvent || NAMESPACE_DECL == lastEvent
-                || ATTRIBUTE == lastEvent,
+        assertPre(
+                START_ELEMENT == lastEvent || ATTRIBUTE == lastEvent || START_DOCUMENT == lastEvent
+                        || NAMESPACE_DECL == lastEvent || ATTRIBUTE == lastEvent,
                 "last event shall be one of START_DOCUMENT, START_ELEMENT, END_ELEMENT, NAMESPACE_DECL, ATTRIBUTES: ",
                 lastEvent);
 

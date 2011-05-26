@@ -134,13 +134,13 @@ public class BxmlStreamWriter_ContractTest {
 
     /**
      * @throws IOException
-     * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#setDefaultNamespace(java.lang.String)} .
+     * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#writeDefaultNamespace(java.lang.String)} .
      */
     @Test
     public void testSetDefaultNamespace() throws IOException {
         // * @pre {defaultNamespaceUri != null}
         try {
-            writer.setDefaultNamespace(null);
+            writer.writeDefaultNamespace(null);
             fail("Expected precondition violation on null nsuri");
         } catch (PreconditionViolationException e) {
             assertTrue(true);
@@ -155,7 +155,7 @@ public class BxmlStreamWriter_ContractTest {
         replay(mocks);
 
         try {
-            writer.setDefaultNamespace(defaultNamespaceUri);
+            writer.writeDefaultNamespace(defaultNamespaceUri);
             fail("Expcted failure on non valid last event");
         } catch (PreconditionViolationException e) {
             assertTrue(true);
@@ -167,11 +167,11 @@ public class BxmlStreamWriter_ContractTest {
         // postcondition violation
         createMockWriter();
         expect(mocks.getLastEvent()).andReturn(NONE);
-        mocks.setDefaultNamespace(defaultNamespaceUri);
+        mocks.writeDefaultNamespace(defaultNamespaceUri);
         expect(mocks.getLastEvent()).andReturn(START_DOCUMENT);
         replay(mocks);
         try {
-            writer.setDefaultNamespace(defaultNamespaceUri);
+            writer.writeDefaultNamespace(defaultNamespaceUri);
             fail("Expcted failure on non valid last event for postcondition");
         } catch (PostconditionViolationException e) {
             assertTrue(true);
@@ -181,28 +181,28 @@ public class BxmlStreamWriter_ContractTest {
         // valid pre/post events 1
         createMockWriter();
         expect(mocks.getLastEvent()).andReturn(NONE);
-        mocks.setDefaultNamespace(defaultNamespaceUri);
+        mocks.writeDefaultNamespace(defaultNamespaceUri);
         expect(mocks.getLastEvent()).andReturn(NAMESPACE_DECL);
         replay(mocks);
-        writer.setDefaultNamespace(defaultNamespaceUri);
+        writer.writeDefaultNamespace(defaultNamespaceUri);
         verify(mocks);
 
         // valid pre/post events 2
         createMockWriter();
         expect(mocks.getLastEvent()).andReturn(START_ELEMENT);
-        mocks.setDefaultNamespace(defaultNamespaceUri);
+        mocks.writeDefaultNamespace(defaultNamespaceUri);
         expect(mocks.getLastEvent()).andReturn(NAMESPACE_DECL);
         replay(mocks);
-        writer.setDefaultNamespace(defaultNamespaceUri);
+        writer.writeDefaultNamespace(defaultNamespaceUri);
         verify(mocks);
 
         // valid pre/post events 3
         createMockWriter();
         expect(mocks.getLastEvent()).andReturn(NAMESPACE_DECL);
-        mocks.setDefaultNamespace(defaultNamespaceUri);
+        mocks.writeDefaultNamespace(defaultNamespaceUri);
         expect(mocks.getLastEvent()).andReturn(NAMESPACE_DECL);
         replay(mocks);
-        writer.setDefaultNamespace(defaultNamespaceUri);
+        writer.writeDefaultNamespace(defaultNamespaceUri);
         verify(mocks);
     }
 

@@ -126,10 +126,10 @@ public class BxmlStreamWriterAdapter implements BxmlStreamWriter {
 
     /**
      * @throws IOException
-     * @see org.gvsig.bxml.stream.BxmlStreamWriter#setDefaultNamespace(java.lang.String)
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#writeDefaultNamespace(java.lang.String)
      */
-    public void setDefaultNamespace(String defaultNamespaceUri) throws IOException {
-        impl.setDefaultNamespace(defaultNamespaceUri);
+    public void writeDefaultNamespace(String defaultNamespaceUri) throws IOException {
+        impl.writeDefaultNamespace(defaultNamespaceUri);
     }
 
     /**
@@ -137,6 +137,13 @@ public class BxmlStreamWriterAdapter implements BxmlStreamWriter {
      */
     public String getPrefix(String uri) {
         return impl.getPrefix(uri);
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#setPrefix(java.lang.String, java.lang.String)
+     */
+    public void setPrefix(String prefix, String uri) {
+        impl.setPrefix(prefix, uri);
     }
 
     /**

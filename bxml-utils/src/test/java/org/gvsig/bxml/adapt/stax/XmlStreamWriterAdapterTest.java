@@ -358,12 +358,13 @@ public class XmlStreamWriterAdapterTest {
                 "http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd");
         serializer.setSchemaLocation(exampleNamespace, "http://www.example.com/test/example.xsd");
 
-        serializer.setDefaultNamespace(sldNamespace);
-
+        serializer.setPrefix("sld", sldNamespace);
 
         serializer.writeComment(" comment1 ");
         serializer.writeComment(" comment2 ");
         serializer.writeStartElement(sldNamespace, "StyledLayerDescriptor");
+
+        serializer.writeDefaultNamespace(sldNamespace);
         serializer.writeNamespace("sld", sldNamespace);
 
         serializer.writeStartAttribute(sldNamespace, "version");

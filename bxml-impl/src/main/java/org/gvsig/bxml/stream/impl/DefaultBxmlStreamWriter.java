@@ -227,10 +227,17 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
     }
 
     /**
-     * @throws IOException
-     * @see org.gvsig.bxml.stream.BxmlStreamWriter#setDefaultNamespace(java.lang.String)
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#setPrefix(java.lang.String, java.lang.String)
      */
-    public void setDefaultNamespace(final String defaultNamespaceUri) throws IOException {
+    public void setPrefix(String prefix, String uri) {
+        namesResolver.declarePrefix(prefix, uri);
+    }
+
+    /**
+     * @throws IOException
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#writeDefaultNamespace(java.lang.String)
+     */
+    public void writeDefaultNamespace(final String defaultNamespaceUri) throws IOException {
         writeNamespace(XMLConstants.DEFAULT_NS_PREFIX, defaultNamespaceUri);
     }
 
@@ -445,11 +452,10 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
         writer.writeTokenType(AttributeStart);
         writer.writeCount(nameIndex);
 
-        //this is like writeStringTableValue()
+        // this is like writeStringTableValue()
         writer.writeTokenType(TokenType.CharContentRef);
         writer.writeCount(nsUriIndex);
 
-        
         // writer.writeTokenType(TokenType.CharContent);
         // writer.writeByte(StringCode.getCode());
         // writer.writeString(namespaceUri);
@@ -522,15 +528,15 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
         writer.writeTokenType(EmptyElement);
         writer.writeCount(nameIndex);
 
-        if (!XMLConstants.NULL_NS_URI.equals(namespaceUri)) {
-            final String prefix = namesResolver.getPrefix(namespaceUri);
-            if (prefix == null) {
-                // we got a non prefix mapped namespace for this element
-                // lets declare the element namespace inline
-                writeNamespaceInternal(XMLConstants.NULL_NS_URI, XMLConstants.XMLNS_ATTRIBUTE,
-                        namespaceUri);
-            }
-        }
+//        if (!XMLConstants.NULL_NS_URI.equals(namespaceUri)) {
+//            final String prefix = namesResolver.getPrefix(namespaceUri);
+//            if (prefix == null) {
+//                // we got a non prefix mapped namespace for this element
+//                // lets declare the element namespace inline
+//                writeNamespaceInternal(XMLConstants.NULL_NS_URI, XMLConstants.XMLNS_ATTRIBUTE,
+//                        namespaceUri);
+//            }
+//        }
 
         lastEvent = lastTagEvent = START_ELEMENT;
         if (openElements.size() == 1 && pendingNamespaces.size() > 0) {
@@ -711,23 +717,23 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
         // /
         // /This section is like the same one in #startValue(...) but we don't need to set the
         // CharContent token but the CharContentRef one
-//        if (currentValueType == ValueType.ArrayCode) {
-//            // ignore, being called from a writeValue(primitiveType) while encoding an array
-//            return;
-//        }
-//        if (pendingNamespacesJustWritten) {
-//            writeEndNamespaces();
-//        }
-        //if (!processingAttributes) {
-            final TokenType elementType = openElements.getCurrentElementType();
-            if (elementType == EmptyAttrElement) {
-                setCurrentElementType(ContentAttrElement);
-            } else if (elementType == EmptyAttrElement || elementType == EmptyElement) {
-                setCurrentElementType(ContentElement);
-            }
-            // Got the final current element type, can go back to auto flush mode
-            writer.setAutoFlushing(true);
-        //}
+        // if (currentValueType == ValueType.ArrayCode) {
+        // // ignore, being called from a writeValue(primitiveType) while encoding an array
+        // return;
+        // }
+        // if (pendingNamespacesJustWritten) {
+        // writeEndNamespaces();
+        // }
+        // if (!processingAttributes) {
+        final TokenType elementType = openElements.getCurrentElementType();
+        if (elementType == EmptyAttrElement) {
+            setCurrentElementType(ContentAttrElement);
+        } else if (elementType == EmptyAttrElement || elementType == EmptyElement) {
+            setCurrentElementType(ContentElement);
+        }
+        // Got the final current element type, can go back to auto flush mode
+        writer.setAutoFlushing(true);
+        // }
         // /
 
         writer.writeTokenType(TokenType.CharContentRef);

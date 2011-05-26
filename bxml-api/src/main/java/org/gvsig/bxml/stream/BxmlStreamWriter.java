@@ -714,7 +714,7 @@ public interface BxmlStreamWriter {
      * @param defaultNamespaceUri
      *            the uri to bind to the default namespace, may be {@code null}
      */
-    public void setDefaultNamespace(String defaultNamespaceUri) throws IOException;
+    public void writeDefaultNamespace(String defaultNamespaceUri) throws IOException;
 
     /**
      * Returns the prefix the {@code uri} is bound to in the current context
@@ -725,6 +725,26 @@ public interface BxmlStreamWriter {
      * @return the prefix the {@code uri} is bound to or {@code null} if not bound
      */
     public String getPrefix(String uri);
+
+    /**
+     * Sets the prefix the uri is bound to.
+     * <p>
+     * This prefix is bound in the scope of the current START_ELEMENT / END_ELEMENT pair. If this
+     * method is called before a START_ELEMENT has been written the prefix is bound in the root
+     * scope.
+     * </p>
+     * 
+     * @pre {uri != null}
+     * @pre {getLastEvent() IN (NONE, START_DOCUMENT , START_ELEMENT, NAMESPACE_DECL)}
+     * 
+     * @param prefix
+     *            the prefix to bind to the uri, may not be null
+     * @param uri
+     *            the uri to bind to the prefix, may be null
+     * 
+     * @return the prefix the {@code uri} is bound to or {@code null} if not bound
+     */
+    public void setPrefix(String prefix, String uri);
 
     /**
      * Writes a namespace declaration while at a START_ELEMENT event.

@@ -527,7 +527,7 @@ public class DefaultBxmlStreamWriterTest {
                 "http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd");
         serializer.setSchemaLocation(exampleNamespace, "http://www.example.com/test/example.xsd");
 
-        serializer.setDefaultNamespace(sldNamespace);
+        serializer.writeDefaultNamespace(sldNamespace);
 
         serializer.writeNamespace("sld", sldNamespace);
 

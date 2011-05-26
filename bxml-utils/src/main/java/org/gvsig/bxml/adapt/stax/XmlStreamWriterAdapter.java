@@ -225,7 +225,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
             if (prefix == null) {
                 // we got a non prefix mapped namespace for this element
                 // lets declare the element namespace inline
-                // staxWriter.writeDefaultNamespace(namespaceUri);
+                //staxWriter.writeDefaultNamespace(namespaceUri);
                 staxWriter.setDefaultNamespace(namespaceUri);
             }
             staxWriter.writeStartElement(namespaceUri, localName);
@@ -650,11 +650,11 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
     }
 
     /**
-     * @see org.gvsig.bxml.stream.BxmlStreamWriter#setDefaultNamespace(java.lang.String)
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#writeDefaultNamespace(java.lang.String)
      */
-    public void setDefaultNamespace(String defaultNamespaceUri) throws IOException {
+    public void writeDefaultNamespace(String defaultNamespaceUri) throws IOException {
         try {
-            staxWriter.setDefaultNamespace(defaultNamespaceUri);
+            staxWriter.writeDefaultNamespace(defaultNamespaceUri);
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
@@ -673,12 +673,23 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
     }
 
     /**
+     * @param prefix
+     * @param uri
+     */
+    public void setPrefix(String prefix, String uri) {
+        try {
+            staxWriter.setPrefix(prefix, uri);
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * @see org.gvsig.bxml.stream.BxmlStreamWriter#writeNamespace(java.lang.String,
      *      java.lang.String)
      */
     public void writeNamespace(String prefix, String namespaceUri) throws IOException {
         try {
-            staxWriter.setPrefix(prefix, namespaceUri);
             staxWriter.writeNamespace(prefix, namespaceUri);
         } catch (XMLStreamException e) {
             throw new IOException(e);
