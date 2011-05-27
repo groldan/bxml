@@ -855,7 +855,7 @@ public final class Gml3Encoder {
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {
-                encoder.writeValue(((Boolean) value).booleanValue());
+                encoder.writeValue(((Float) value).floatValue());
             }
         }
     }
@@ -866,13 +866,26 @@ public final class Gml3Encoder {
      * @version $Id$
      */
     private static class LongEncoder extends AttributeEncoder {
+        private static final Range<Long> BYTE_RANGE = new Range<Long>(Long.class,
+                Long.valueOf(Byte.MIN_VALUE), true, Long.valueOf(Byte.MAX_VALUE), true);
+
+        private static final Range<Long> INT_RANGE = new Range<Long>(Long.class,
+                Long.valueOf(Long.MIN_VALUE), true, Long.valueOf(Long.MAX_VALUE), true);
 
         @Override
         public void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
             if (value != null) {
-                encoder.writeValue(((Long) value).longValue());
+                Long lval = (Long) value;
+                long longValue = lval.longValue();
+                if (BYTE_RANGE.contains(longValue)) {
+                    encoder.writeValue(lval.byteValue());
+                } else if (INT_RANGE.contains(longValue)) {
+                    encoder.writeValue(lval.intValue());
+                } else {
+                    encoder.writeValue(longValue);
+                }
             }
         }
     }
