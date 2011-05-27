@@ -107,6 +107,8 @@ public final class Gml3Encoder {
         encoders.put(BigInteger.class, new BigIntegerEncoder());
         encoders.put(BigDecimal.class, new BigDecimalEncoder());
         encoders.put(BoundingBox.class, new BoundingBoxEncoder());
+
+        encoders.put(Geometry.class, new GeometryEncoder());
         encoders.put(GeometryCollection.class, new GeometryCollectionEncoder());
         encoders.put(Point.class, new PointEncoder());
         encoders.put(MultiPoint.class, new MultiPointEncoder());
@@ -148,11 +150,11 @@ public final class Gml3Encoder {
             throw new IllegalArgumentException(
                     "Didn't find an AttributeEncoder for this kind of Geomerty");
         }
-        if (!(geometryAttEncoder instanceof GeometryEncoder)) {
+        if (!(geometryAttEncoder instanceof AbstractGeometryEncoder)) {
             throw new IllegalStateException(geometryAttEncoder.getClass().getName()
                     + " is not a GeometryEncoder");
         }
-        final GeometryEncoder geomEncoder = (GeometryEncoder) geometryAttEncoder;
+        final AbstractGeometryEncoder geomEncoder = (AbstractGeometryEncoder) geometryAttEncoder;
         geomEncoder.encode(this, geometry, encoder, crs);
     }
 
@@ -442,7 +444,7 @@ public final class Gml3Encoder {
      * @author Gabriel Roldan (OpenGeo)
      * @version $Id$
      */
-    private static abstract class GeometryEncoder extends AttributeEncoder {
+    private static abstract class AbstractGeometryEncoder extends AttributeEncoder {
 
         public final void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
@@ -453,6 +455,27 @@ public final class Gml3Encoder {
 
         public abstract void encode(final Gml3Encoder gmlEncoder, Object value,
                 BxmlStreamWriter encoder, CoordinateReferenceSystem crs) throws IOException;
+    }
+
+    /**
+     * Value encoder for a generic {@link Geometry}
+     * 
+     * @author Gabriel Roldan (OpenGeo)
+     * @version $Id$
+     */
+    private static class GeometryEncoder extends AbstractGeometryEncoder {
+
+        /**
+         * @see org.gvsig.bxml.geoserver.BinaryGml3OutputFormat.AttributeEncoder#encode
+         */
+        @Override
+        public void encode(final Gml3Encoder gmlEncoder, final Object geom,
+                final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs)
+                throws IOException {
+            if (geom != null) {
+                gmlEncoder.encodeGeometry(encoder, crs, (Geometry) geom);
+            }
+        }
     }
 
     /**
@@ -494,7 +517,7 @@ public final class Gml3Encoder {
      * @author Gabriel Roldan (OpenGeo)
      * @version $Id$
      */
-    private static class PointEncoder extends GeometryEncoder {
+    private static class PointEncoder extends AbstractGeometryEncoder {
 
         /**
          * @see org.gvsig.bxml.geoserver.BinaryGml3OutputFormat.AttributeEncoder#encode
@@ -515,7 +538,7 @@ public final class Gml3Encoder {
      * @author Gabriel Roldan (OpenGeo)
      * @version $Id$
      */
-    private static class MultiPolygonEncoder extends GeometryEncoder {
+    private static class MultiPolygonEncoder extends AbstractGeometryEncoder {
 
         /**
          * @see org.gvsig.bxml.geoserver.BinaryGml3OutputFormat.PolygonEncoder#encode
@@ -540,7 +563,7 @@ public final class Gml3Encoder {
      * @author Gabriel Roldan (OpenGeo)
      * @version $Id$
      */
-    private static class PolygonEncoder extends GeometryEncoder {
+    private static class PolygonEncoder extends AbstractGeometryEncoder {
 
         /**
          * @see org.gvsig.bxml.geoserver.BinaryGml3OutputFormat.AttributeEncoder#encode
@@ -565,7 +588,7 @@ public final class Gml3Encoder {
      * @author Gabriel Roldan (OpenGeo)
      * @version $Id$
      */
-    private static class LineStringEncoder extends GeometryEncoder {
+    private static class LineStringEncoder extends AbstractGeometryEncoder {
 
         /**
          * @see org.gvsig.bxml.geoserver.BinaryGml3OutputFormat.AttributeEncoder#encode
@@ -587,7 +610,7 @@ public final class Gml3Encoder {
      * @author Gabriel Roldan (OpenGeo)
      * @version $Id$
      */
-    private static class MultiLineStringEncoder extends GeometryEncoder {
+    private static class MultiLineStringEncoder extends AbstractGeometryEncoder {
 
         /**
          * @see org.gvsig.bxml.geoserver.BinaryGml3OutputFormat.LineStringEncoder#encode
@@ -611,7 +634,7 @@ public final class Gml3Encoder {
      * @author Gabriel Roldan (OpenGeo)
      * @version $Id$
      */
-    private static class MultiPointEncoder extends GeometryEncoder {
+    private static class MultiPointEncoder extends AbstractGeometryEncoder {
 
         /**
          * @see org.gvsig.bxml.geoserver.BinaryGml3OutputFormat.PointEncoder#encode
@@ -635,7 +658,7 @@ public final class Gml3Encoder {
      * @author Gabriel Roldan (OpenGeo)
      * @version $Id$
      */
-    private static class GeometryCollectionEncoder extends GeometryEncoder {
+    private static class GeometryCollectionEncoder extends AbstractGeometryEncoder {
 
         /**
          * @see AttributeEncoder#encode
@@ -656,9 +679,9 @@ public final class Gml3Encoder {
                 for (int geomN = 0; geomN < nGeoms; geomN++) {
                     member = gcol.getGeometryN(geomN);
                     if (member != null) {
-                        GeometryEncoder memberEncoder;
-                        memberEncoder = (GeometryEncoder) Gml3Encoder.getAttributeEncoder(member
-                                .getClass());
+                        AbstractGeometryEncoder memberEncoder;
+                        memberEncoder = (AbstractGeometryEncoder) Gml3Encoder
+                                .getAttributeEncoder(member.getClass());
                         memberEncoder.encode(gmlEncoder, member, encoder, crs);
                     }
                 }
