@@ -125,8 +125,8 @@ public enum EventType {
     /**
      * Signals the end of the current element. No content elements such as {@code <element/>} and
      * {@code <element att="attval"/>} will be notified by an START_ELEMENT and END_ELEMENT event
-     * with no value event in between, to preserve semantic equivalence with the {@code
-     * <element></element>} tag sequence.
+     * with no value event in between, to preserve semantic equivalence with the
+     * {@code <element></element>} tag sequence.
      */
     END_ELEMENT,
 
@@ -205,7 +205,7 @@ public enum EventType {
      * @see BxmlStreamWriter#writeEndAttributes()
      */
     ATTRIBUTES_END,
-    
+
     /**
      * Indicates the presence of a namespace declaration
      */

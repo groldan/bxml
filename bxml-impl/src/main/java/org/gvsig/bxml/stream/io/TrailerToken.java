@@ -60,10 +60,10 @@ import java.util.Set;
  * </p>
  * <p>
  * Finally, the {@code TrailerToken.tokenLength} attribute is useful at decoding time, yet we're
- * defining a {@link #getPosition() position} property instead, as a derived property of the {@code
- * filesize - TrailerToken.tokenLength - 4}, which marks the file-offset of the trailer token, and
- * is of more help to runtime execution usages, such as to gain direct access to the trailer token
- * during reading, and during writing if it needs to be overridden.
+ * defining a {@link #getPosition() position} property instead, as a derived property of the
+ * {@code filesize - TrailerToken.tokenLength - 4}, which marks the file-offset of the trailer
+ * token, and is of more help to runtime execution usages, such as to gain direct access to the
+ * trailer token during reading, and during writing if it needs to be overridden.
  * </p>
  * 
  * @author Gabriel Roldan (OpenGeo)

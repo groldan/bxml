@@ -134,7 +134,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
         try {
             staxWriter.close();
         } catch (XMLStreamException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException(e.getMessage()).initCause(e);
         } finally {
             open = false;
         }
@@ -154,7 +154,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
         try {
             staxWriter.flush();
         } catch (XMLStreamException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException(e.getMessage()).initCause(e);
         }
     }
 
@@ -193,7 +193,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
         try {
             staxWriter.writeStartDocument();
         } catch (XMLStreamException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException(e.getMessage()).initCause(e);
         }
         lastEvent = START_DOCUMENT;
     }
@@ -206,7 +206,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
             staxWriter.writeEndDocument();
             staxWriter.flush();
         } catch (XMLStreamException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException(e.getMessage()).initCause(e);
         }
         lastEvent = END_DOCUMENT;
     }
@@ -225,12 +225,12 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
             if (prefix == null) {
                 // we got a non prefix mapped namespace for this element
                 // lets declare the element namespace inline
-                //staxWriter.writeDefaultNamespace(namespaceUri);
+                // staxWriter.writeDefaultNamespace(namespaceUri);
                 staxWriter.setDefaultNamespace(namespaceUri);
             }
             staxWriter.writeStartElement(namespaceUri, localName);
         } catch (XMLStreamException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException(e.getMessage()).initCause(e);
         }
 
         lastEvent = lastTagEvent = START_ELEMENT;
@@ -266,7 +266,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
                 staxWriter.writeAttribute(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI,
                         "schemaLocation", sl.toString());
             } catch (XMLStreamException e) {
-                throw new IOException(e);
+                throw (IOException) new IOException(e.getMessage()).initCause(e);
             }
 
             schemaLocations.clear();
@@ -295,7 +295,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
         try {
             staxWriter.writeEndElement();
         } catch (XMLStreamException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException(e.getMessage()).initCause(e);
         }
 
         openElements.popCurrentElement();
@@ -335,7 +335,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
                 }
                 staxWriter.writeAttribute(namespaceURI, localPart, value);
             } catch (XMLStreamException e) {
-                throw new IOException(e);
+                throw (IOException) new IOException(e.getMessage()).initCause(e);
             }
             currAttName = null;
             currAttValue.setLength(0);
@@ -382,7 +382,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
                 }
                 staxWriter.writeCharacters(value);
             } catch (XMLStreamException e) {
-                throw new IOException(e);
+                throw (IOException) new IOException(e.getMessage()).initCause(e);
             }
         }
     }
@@ -578,7 +578,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
         try {
             staxWriter.writeComment(commentContent);
         } catch (XMLStreamException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException(e.getMessage()).initCause(e);
         }
         lastEvent = COMMENT;
     }
@@ -692,7 +692,7 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
         try {
             staxWriter.writeNamespace(prefix, namespaceUri);
         } catch (XMLStreamException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException(e.getMessage()).initCause(e);
         }
         // this.namesResolver.declarePrefix(prefix, namespaceUri);
         // this.pendingNamespaces.put(prefix, namespaceUri);

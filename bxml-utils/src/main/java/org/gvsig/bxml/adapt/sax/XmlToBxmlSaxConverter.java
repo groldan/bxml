@@ -117,8 +117,8 @@ public class XmlToBxmlSaxConverter {
 
     /**
      * Resolves everything to an empty xml document, useful for skipping errors due to missing dtds
-     * and the like. Stolen from GeoServerver's {@code
-     * org.geoserver.test.GeoServerAbstractTestSupport}
+     * and the like. Stolen from GeoServerver's
+     * {@code org.geoserver.test.GeoServerAbstractTestSupport}
      * 
      * @author Andrea Aime - TOPP
      */

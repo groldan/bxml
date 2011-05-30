@@ -99,8 +99,8 @@ final class DefaultBxmlOutputStream implements BxmlOutputStream {
     public void close() throws IOException {
         if (writeChannel != null) {
             flush();
-            //do not close the channel, its up to the client code to do so...
-            //writeChannel.close();
+            // do not close the channel, its up to the client code to do so...
+            // writeChannel.close();
             stringEncoder.dispose();
         }
         position = -1;

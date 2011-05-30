@@ -203,8 +203,8 @@ public class DocumentBuilderImpl extends DocumentBuilder {
                 if (XMLConstants.DEFAULT_NS_PREFIX.equals(atts.getURI(i))) {
                     ((Element) currNode).setAttribute(atts.getLocalName(i), atts.getValue(i));
                 } else {
-                    ((Element) currNode).setAttributeNS(atts.getURI(i), atts.getQName(i), atts
-                            .getValue(i));
+                    ((Element) currNode).setAttributeNS(atts.getURI(i), atts.getQName(i),
+                            atts.getValue(i));
                 }
             }
         }
@@ -270,7 +270,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
          * @see org.xml.sax.helpers.DefaultHandler#endPrefixMapping(java.lang.String)
          */
         public void endPrefixMapping(String prefix) throws SAXException {
-            // 
+            //
         }
 
         /*

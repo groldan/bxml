@@ -29,7 +29,6 @@ import org.geoserver.ows.util.OwsUtils;
 import org.geoserver.ows.util.ResponseUtils;
 import org.geoserver.platform.Operation;
 import org.geoserver.platform.ServiceException;
-import org.geoserver.wfs.GMLInfo.SrsNameStyle;
 import org.geoserver.wfs.WFSException;
 import org.geoserver.wfs.WFSGetFeatureOutputFormat;
 import org.geotools.feature.FeatureCollection;

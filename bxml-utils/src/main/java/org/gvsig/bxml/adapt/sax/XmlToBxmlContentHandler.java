@@ -93,7 +93,7 @@ public class XmlToBxmlContentHandler extends DefaultHandler {
     }
 
     public void endPrefixMapping(String prefix) throws SAXException {
-        //out.setPrefix(prefix, null);
+        // out.setPrefix(prefix, null);
     }
 
     public void startDocument() throws SAXException {
@@ -116,7 +116,7 @@ public class XmlToBxmlContentHandler extends DefaultHandler {
             throws SAXException {
         characters.setLength(0);
         try {
-            String elemName = localName;//"".equals(localName) ? qName : localName;
+            String elemName = localName;// "".equals(localName) ? qName : localName;
             out.writeStartElement(uri, elemName);
             final int length = attributes.getLength();
             String nsUri;

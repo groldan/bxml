@@ -241,8 +241,8 @@ public interface BxmlStreamReader {
      * Returns the event type for the current position of the BXML reader cursor.
      * <p>
      * When a {@code BxmlStreamReader} is first created, the current event type is
-     * {@link EventType#NONE NONE}. It is after the first call to {@code next()} when {@code
-     * getEventType()} will return {@link EventType#START_DOCUMENT START_DOCUMENT}.
+     * {@link EventType#NONE NONE}. It is after the first call to {@code next()} when
+     * {@code getEventType()} will return {@link EventType#START_DOCUMENT START_DOCUMENT}.
      * </p>
      * 
      * @return the {@link EventType} returned by the last {@link #next()} call, or
@@ -486,8 +486,8 @@ public interface BxmlStreamReader {
      * out of the underlying input stream and stores them in {@code dst}, starting at array index
      * {@code offset}.
      * <p>
-     * This operation is semantically equivalent to calling {@link #getBooleanValue()} {@code
-     * length} times, though its recommended for bulk reads as the implementation may perform
+     * This operation is semantically equivalent to calling {@link #getBooleanValue()}
+     * {@code length} times, though its recommended for bulk reads as the implementation may perform
      * better.
      * </p>
      * 
@@ -529,8 +529,8 @@ public interface BxmlStreamReader {
 
     /**
      * Being at a {@link EventType#VALUE_BYTE byte value} event, reads {@code length} bytes out of
-     * the underlying input stream and stores them in {@code dst}, starting at array index {@code
-     * offset}.
+     * the underlying input stream and stores them in {@code dst}, starting at array index
+     * {@code offset}.
      * <p>
      * This operation is semantically equivalent to calling {@link #getByteValue()} {@code length}
      * times, though its recommended for bulk reads as the implementation may perform better.
@@ -579,8 +579,8 @@ public interface BxmlStreamReader {
 
     /**
      * Being at a {@link EventType#VALUE_INT int value} event, reads {@code length} integers out of
-     * the underlying input stream and stores them in {@code dst}, starting at array index {@code
-     * offset}.
+     * the underlying input stream and stores them in {@code dst}, starting at array index
+     * {@code offset}.
      * <p>
      * This operation is semantically equivalent to calling {@link #getIntValue()} {@code length}
      * times, though its recommended for bulk reads as the implementation may perform better.
@@ -629,8 +629,8 @@ public interface BxmlStreamReader {
 
     /**
      * Being at a {@link EventType#VALUE_LONG long value} event, reads {@code length} longs out of
-     * the underlying input stream and stores them in {@code dst}, starting at array index {@code
-     * offset}.
+     * the underlying input stream and stores them in {@code dst}, starting at array index
+     * {@code offset}.
      * <p>
      * This operation is semantically equivalent to calling {@link #getLongValue()} {@code length}
      * times, though its recommended for bulk reads as the implementation may perform better.

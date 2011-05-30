@@ -132,7 +132,7 @@ public interface BxmlOutputStream {
      * be either a {@link TokenType#EmptyElement}, {@link TokenType#EmptyAttrElement},
      * {@link TokenType#ContentElement}, or {@link TokenType#ContentAttrElement}, and which one
      * might not be known in advance.
-     *</p>
+     * </p>
      * 
      * @param autoFlush
      *            {@code true} for this output stream to decide when to flush content, {@code false}
@@ -193,8 +193,8 @@ public interface BxmlOutputStream {
      * prepend the lenght of a string to the string itself, etc. Most of the times, counts are
      * pretty small values, and thus there exist a number of Count tokens: SmallNum, UShort, Int and
      * Long. This method,thus, allows to use a single value type to encode any count type.
-     * Implementations shall write down the count type whose value range fits for the given {@code
-     * count}.
+     * Implementations shall write down the count type whose value range fits for the given
+     * {@code count}.
      * </p>
      * 
      * @param count
@@ -245,8 +245,8 @@ public interface BxmlOutputStream {
     public void writeByte(int _byte) throws IOException;
 
     /**
-     * Writes {@code length} bytes from the provided {@code buffer}, starting at array index {@code
-     * offset}.
+     * Writes {@code length} bytes from the provided {@code buffer}, starting at array index
+     * {@code offset}.
      * 
      * @param buffer
      *            the source of data to write down to the underlying output stream
@@ -329,8 +329,8 @@ public interface BxmlOutputStream {
     public void writeInt(int _int) throws IOException;
 
     /**
-     * Writes {@code length} integers the provided {@code buffer}, starting at array index {@code
-     * offset} and using this writer's byte order.
+     * Writes {@code length} integers the provided {@code buffer}, starting at array index
+     * {@code offset} and using this writer's byte order.
      * 
      * @param buffer
      *            the source of data to write down to the underlying output stream
@@ -357,8 +357,8 @@ public interface BxmlOutputStream {
     public void writeLong(long _long) throws IOException;
 
     /**
-     * Writes {@code length} longs the provided {@code buffer}, starting at array index {@code
-     * offset} and using this writer's byte order.
+     * Writes {@code length} longs the provided {@code buffer}, starting at array index
+     * {@code offset} and using this writer's byte order.
      * 
      * @param buffer
      *            the source of data to write down to the underlying output stream

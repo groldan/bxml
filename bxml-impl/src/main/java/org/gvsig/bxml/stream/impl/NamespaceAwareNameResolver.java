@@ -87,8 +87,9 @@ class NamespaceAwareNameResolver implements NamesResolver {
         // isAttribute);
         String[] namePartsHolder = namespaces
                 .processName(prefixedName, this.namePartsHolder, false);
-        if(namePartsHolder == null){
-            throw new IllegalStateException("Ubound " + (isAttribute? "attribute":"element") + " name: " + prefixedName);
+        if (namePartsHolder == null) {
+            throw new IllegalStateException("Ubound " + (isAttribute ? "attribute" : "element")
+                    + " name: " + prefixedName);
         }
         final String nsUri = namePartsHolder[0];
         final String localName = namePartsHolder[1];

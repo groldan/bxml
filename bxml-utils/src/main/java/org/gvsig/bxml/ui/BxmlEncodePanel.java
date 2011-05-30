@@ -163,7 +163,7 @@ public class BxmlEncodePanel extends JPanel implements BxmlWorkbench.Worker {
             panel.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(), "Source"));
             panel.add(new JLabel("Source XML file:"), BorderLayout.WEST);
             sourceFile = new JTextField();
-            
+
             panel.add(sourceFile, BorderLayout.CENTER);
             JButton button = new JButton("...");
             panel.add(button, BorderLayout.EAST);
@@ -257,8 +257,8 @@ public class BxmlEncodePanel extends JPanel implements BxmlWorkbench.Worker {
         }
 
         private JComponent createCharsetOptionsGui() {
-            SortedMap<String, Charset> availableCharsets = new TreeMap<String, Charset>(Charset
-                    .availableCharsets());
+            SortedMap<String, Charset> availableCharsets = new TreeMap<String, Charset>(
+                    Charset.availableCharsets());
             List<Charset> highRateCharsets = new ArrayList<Charset>();
             highRateCharsets.add(availableCharsets.remove("UTF-8"));
             highRateCharsets.add(availableCharsets.remove("US-ASCII"));

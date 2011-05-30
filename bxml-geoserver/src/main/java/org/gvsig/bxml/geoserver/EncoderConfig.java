@@ -29,7 +29,7 @@ public interface EncoderConfig {
      * wfsInfo.isF...
      */
     boolean isFeatureBounding();
-    
+
     SrsNameStyle getSrsNameStyle();
 
 }

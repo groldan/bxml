@@ -314,8 +314,7 @@ public class DefaultBxmlStreamReaderTest {
      * shall return {@link EventType#ATTRIBUTE}, and a last call {@link EventType#END_ELEMENT}.
      * </p>
      * <p>
-     * {@code
-     * [EmptyAttrElementToken],<StringTableToken>,[AttributeStartToken]+,[AttributeListEndToken] }
+     * {@code [EmptyAttrElementToken],<StringTableToken>,[AttributeStartToken]+,[AttributeListEndToken] }
      * </p>
      * 
      * @throws IOException

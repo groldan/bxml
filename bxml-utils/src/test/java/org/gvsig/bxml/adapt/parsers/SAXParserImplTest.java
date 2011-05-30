@@ -59,8 +59,8 @@ public class SAXParserImplTest {
         // Document doc = new DocumentBuilderImpl().parse(inputStream);
         // print(doc);
 
-        //SAXParser parser = new SAXParserImpl(true);
-         SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+        // SAXParser parser = new SAXParserImpl(true);
+        SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 
         TransformerFactory txFactory = TransformerFactory.newInstance();
         try {

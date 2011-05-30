@@ -66,7 +66,7 @@ public class DocumentBuilderImplTest {
         assertNotNull(doc);
 
         print(doc);
-        
+
         assertEquals(Node.COMMENT_NODE, doc.getFirstChild().getNodeType());
         assertEquals(Node.COMMENT_NODE, doc.getFirstChild().getNextSibling().getNodeType());
         assertEquals("comment1", doc.getFirstChild().getNodeValue());

@@ -51,10 +51,11 @@ final class EndElementEventWorker extends EventTypeWorker {
         // and set it as the current element name
         sharedState.popElement();
         /*
-         * NOTE: same reason than for StartElementTypeWorker for not pushing namespace contexts anymore
+         * NOTE: same reason than for StartElementTypeWorker for not pushing namespace contexts
+         * anymore
          */
-        //////final NamesResolver namesResolver = sharedState.getNamesResolver();
-        //////namesResolver.popContext();
+        // ////final NamesResolver namesResolver = sharedState.getNamesResolver();
+        // ////namesResolver.popContext();
         return this;
     }
 

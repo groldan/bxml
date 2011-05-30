@@ -513,8 +513,8 @@ public final class Header {
     }
 
     /**
-     * Creates a new header with default {@link Version} and provided {@code flags}, {@code
-     * compression} and {@code charsEncoding}.
+     * Creates a new header with default {@link Version} and provided {@code flags},
+     * {@code compression} and {@code charsEncoding}.
      */
     public static final Header valueOf(final Flags flags, final Compression compression,
             final Charset charsEncoding) {
@@ -522,8 +522,8 @@ public final class Header {
     }
 
     /**
-     * Creates a new header with default {@link Version} and provided {@code flags}, {@code
-     * compression} and {@code charsEncoding}.
+     * Creates a new header with default {@link Version} and provided {@code flags},
+     * {@code compression} and {@code charsEncoding}.
      */
     public static final Header valueOf(final Version version, final Flags flags,
             final Compression compression, final Charset charsEncoding) {

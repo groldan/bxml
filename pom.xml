@@ -140,6 +140,11 @@
         <scope>test</scope>
       </dependency>
       <dependency>
+        <groupId>xml-apis</groupId>
+        <artifactId>xml-apis</artifactId>
+        <version>1.3.04</version>
+      </dependency>
+      <dependency>
         <!-- StAX API is the standard java XML processing API defined by JSR-173 -->
         <groupId>stax</groupId>
         <artifactId>stax-api</artifactId>

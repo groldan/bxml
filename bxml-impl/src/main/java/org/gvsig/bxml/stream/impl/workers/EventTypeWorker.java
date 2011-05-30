@@ -176,8 +176,8 @@ public abstract class EventTypeWorker {
     protected EventTypeWorker nextImpl(final BxmlInputStream stream, ParseState state)
             throws IOException {
         final long tokenPosition = stream.getPosition();
-        final TokenType tokenType = stream.readTokenType();        
-        
+        final TokenType tokenType = stream.readTokenType();
+
         EventTypeWorker nextWorker = getWorker(tokenType);
         state.setCurrentTokenType(tokenType);
         state.setCurrentTokenPosition(tokenPosition);

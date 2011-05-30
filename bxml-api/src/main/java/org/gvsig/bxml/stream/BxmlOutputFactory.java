@@ -45,9 +45,9 @@ import java.nio.channels.WritableByteChannel;
  * <p>
  * {@code BxmlOutputFactory} instances are stateful. Its sole state is meant to be an instance of
  * {@link EncodingOptions}, which determines the encoding preferences the {@link BxmlStreamWriter}s
- * created by the factory will operate with. Yet externally modifying the state of the {@code
- * EncodingOptions} object used to alter this factory state shall not actually alter the factory
- * state. EncodingOptions are mutable for the sake of simplicity using this API, though
+ * created by the factory will operate with. Yet externally modifying the state of the
+ * {@code EncodingOptions} object used to alter this factory state shall not actually alter the
+ * factory state. EncodingOptions are mutable for the sake of simplicity using this API, though
  * implementations shall use a safe copy internally or other way of ensuring information hiding.
  * </p>
  * <p>

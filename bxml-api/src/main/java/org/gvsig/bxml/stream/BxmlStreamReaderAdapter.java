@@ -179,7 +179,7 @@ public class BxmlStreamReaderAdapter implements BxmlStreamReader {
     }
 
     /**
-     * @throws IOException 
+     * @throws IOException
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getElementPosition()
      */
     public long getElementPosition() throws IOException {
@@ -187,7 +187,7 @@ public class BxmlStreamReaderAdapter implements BxmlStreamReader {
     }
 
     /**
-     * @throws IOException 
+     * @throws IOException
      * @see org.gvsig.bxml.stream.BxmlStreamReader#supportsRandomAccess()
      */
     public boolean supportsRandomAccess() throws IOException {

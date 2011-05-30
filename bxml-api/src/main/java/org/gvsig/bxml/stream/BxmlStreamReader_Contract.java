@@ -139,7 +139,7 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
     /**
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getElementPosition()
      */
-    public long getElementPosition() throws IOException{
+    public long getElementPosition() throws IOException {
         assertPre(impl.supportsRandomAccess(),
                 "This BxmlStreamReader does not support random access");
         assertPre(impl.getEventType() == START_ELEMENT,

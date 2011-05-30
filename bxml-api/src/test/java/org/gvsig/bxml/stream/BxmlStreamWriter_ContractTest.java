@@ -126,8 +126,8 @@ public class BxmlStreamWriter_ContractTest {
             writer.getTagDeep();
             fail("expected contract violation failure");
         } catch (PostconditionViolationException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains(
-                    "getTagDeep: return value should be >= 0:"));
+            assertTrue(e.getMessage(),
+                    e.getMessage().contains("getTagDeep: return value should be >= 0:"));
         }
         verify(mocks);
     }
@@ -162,7 +162,6 @@ public class BxmlStreamWriter_ContractTest {
         }
         verify(mocks);
 
-        
         // * @post {getLastEvent() == NAMESPACE_DECL}
         // postcondition violation
         createMockWriter();

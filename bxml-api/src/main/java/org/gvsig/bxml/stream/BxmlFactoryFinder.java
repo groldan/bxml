@@ -44,11 +44,11 @@ import java.util.NoSuchElementException;
  * Performs a {@link BxmlInputFactory} and {@link BxmlOutputFactory} lookup using the default SPI
  * (Service Provider Interface) mechanism in the Java platform.
  * <p>
- * Registered implementations of these factories are looked up in the classpath under the {@code
- * META-INF/services/org.gvsig.bxml.stream.BxmlInputFactory} and {@code
- * META-INF/services/org.gvsig.bxml.stream.BxmlOutputFactory} files, whose content shall be the
- * fully qualified class name of the factory implementations. More than one implementation may be
- * registered at the same file by stating one implementation class name per line.
+ * Registered implementations of these factories are looked up in the classpath under the
+ * {@code META-INF/services/org.gvsig.bxml.stream.BxmlInputFactory} and
+ * {@code META-INF/services/org.gvsig.bxml.stream.BxmlOutputFactory} files, whose content shall be
+ * the fully qualified class name of the factory implementations. More than one implementation may
+ * be registered at the same file by stating one implementation class name per line.
  * </p>
  * <p>
  * Factory implementations shall have a default empty constructor.

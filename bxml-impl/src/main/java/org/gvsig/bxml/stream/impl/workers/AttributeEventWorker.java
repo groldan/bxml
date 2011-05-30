@@ -55,8 +55,8 @@ final class AttributeEventWorker extends EventTypeWorker {
 
     /**
      * Reads the String table reference from the stream and sets the current attribute name, and
-     * then parses the coalesced attribute value and stores the name/value pair in the {@code
-     * sharedState}
+     * then parses the coalesced attribute value and stores the name/value pair in the
+     * {@code sharedState}
      * 
      * @pre {sharedState.getCurrentTokenType() == AttributeStart}
      * @param stream

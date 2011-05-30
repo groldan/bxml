@@ -44,8 +44,8 @@ public class BxmlDecoder {
         final TransformerFactory txFactory = TransformerFactory.newInstance();
         if (indentSpaces > 0) {
             try {
-                txFactory.setAttribute("{http://xml.apache.org/xalan}indent-number", Integer
-                        .valueOf(indentSpaces));
+                txFactory.setAttribute("{http://xml.apache.org/xalan}indent-number",
+                        Integer.valueOf(indentSpaces));
             } catch (Exception e) {
                 // some
             }

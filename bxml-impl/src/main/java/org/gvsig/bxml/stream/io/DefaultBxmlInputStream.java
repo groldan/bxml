@@ -301,19 +301,19 @@ final class DefaultBxmlInputStream implements BxmlInputStream {
         }
 
         final long delta = newPosition - position;
-        if(delta < 0){
-            if(buffer.position() > Math.abs(delta)){
-                //rewind
+        if (delta < 0) {
+            if (buffer.position() > Math.abs(delta)) {
+                // rewind
                 buffer.position((int) (buffer.position() - Math.abs(delta)));
                 position = newPosition;
                 return;
             }
-        }else if(buffer.remaining() > delta){
+        } else if (buffer.remaining() > delta) {
             buffer.position((int) (buffer.position() + delta));
             position = newPosition;
             return;
         }
-            
+
         // skip directly on the channel, but preserve what might already be available in the
         // buffer to prevent multiple unnecessary subsequent reads
         FileChannel fileChannel = (FileChannel) readChannel;

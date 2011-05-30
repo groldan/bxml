@@ -102,7 +102,8 @@ public class DefaultBxmlStreamWriterTest {
 
         // no writing is done at the writer's constructor, so its safe to create it here
         // although the expected mockWriter calls hasn't been declared
-        writer = new BxmlStreamWriter_Contract(new DefaultBxmlStreamWriter(encodingOptions, mockOutputStream));
+        writer = new BxmlStreamWriter_Contract(new DefaultBxmlStreamWriter(encodingOptions,
+                mockOutputStream));
     }
 
     @Test
@@ -418,7 +419,7 @@ public class DefaultBxmlStreamWriterTest {
 
         BxmlStreamWriter serializer = defaultBxmlFactory.createSerializer(out);
         serializer = new BxmlStreamWriter_Contract(serializer);
-        
+
         final String sldNamespace = "http://www.opengis.net/sld";
         serializer.writeStartDocument();
         serializer.writeComment(" comment1 ");
@@ -643,6 +644,6 @@ public class DefaultBxmlStreamWriterTest {
         serializer.writeEndDocument();
         serializer.flush();
         serializer.close();
-        //TODO: check the gml:srsName value was written only once as a StringTable reference
+        // TODO: check the gml:srsName value was written only once as a StringTable reference
     }
 }

@@ -51,10 +51,10 @@ public class AttributeEncoders {
         this.BOUNDED_BY_ENCODER = new BoundedByEncoderExecutor(gmlEncoder);
     }
 
-    public AttributeEncoderExecutor getBoundedByEncoder(){
+    public AttributeEncoderExecutor getBoundedByEncoder() {
         return BOUNDED_BY_ENCODER;
     }
-    
+
     /**
      * @param attribute
      * @return
@@ -234,8 +234,8 @@ public class AttributeEncoders {
         static {
             FeatureTypeFactory ff = new FeatureTypeFactoryImpl();// CommonFactoryFinder.getFeatureTypeFactory(null);
             AttributeType boundedByAttributeType;
-            Name boundedByTypeName = new NameImpl(GML.NAMESPACE, GML.BoundingShapeType
-                    .getLocalPart());
+            Name boundedByTypeName = new NameImpl(GML.NAMESPACE,
+                    GML.BoundingShapeType.getLocalPart());
             boundedByAttributeType = ff.createAttributeType(boundedByTypeName, BoundingBox.class,
                     false, false, null, null, null);
             Name name = new NameImpl(GML.boundedBy.getNamespaceURI(), GML.boundedBy.getLocalPart());

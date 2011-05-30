@@ -142,9 +142,9 @@ public interface BxmlInputStream {
     public String readString() throws IOException;
 
     /**
-     * Reads as much characters as possible and stores them in {@code dst} starting at index {@code
-     * offset}, and returns the number of characters stored or {@code -1} if there are no more
-     * characters for the current string token.
+     * Reads as much characters as possible and stores them in {@code dst} starting at index
+     * {@code offset}, and returns the number of characters stored or {@code -1} if there are no
+     * more characters for the current string token.
      * 
      * @param dst
      * @param offset

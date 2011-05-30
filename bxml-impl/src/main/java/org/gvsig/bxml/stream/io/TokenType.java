@@ -161,8 +161,8 @@ public enum TokenType {
     ContentAttrElement(0x03),
     /**
      * This token is equivalent to the XML element-closing markup, e.g., {@code "</blah>"} and is
-     * used to terminate only element-token types that explicitly include content, i.e., {@code
-     * ContentElement} token and {@code ContentAttrElement} token.
+     * used to terminate only element-token types that explicitly include content, i.e.,
+     * {@code ContentElement} token and {@code ContentAttrElement} token.
      * <p>
      * Structure:
      * 
@@ -211,10 +211,11 @@ public enum TokenType {
      * character in the attribute content using {@code "&quot;"} or {@code "&apos;"} as appropriate.
      * </p>
      * <p>
-     * The attribute-value-definition content tokens must be followed by either another {@code
-     * AttributeStart} token to continue the attribute list or an {@code AttributeListEnd} token to
-     * terminate the attribute list of an element. However, as noted elsewhere, any {@code
-     * AttributeStart} token may be directly preceded by a StringTableToken, to simplify writers.
+     * The attribute-value-definition content tokens must be followed by either another
+     * {@code AttributeStart} token to continue the attribute list or an {@code AttributeListEnd}
+     * token to terminate the attribute list of an element. However, as noted elsewhere, any
+     * {@code AttributeStart} token may be directly preceded by a StringTableToken, to simplify
+     * writers.
      * </p>
      */
     AttributeStart(0x05),
@@ -321,12 +322,12 @@ public enum TokenType {
      * XML. If the {@code strictXmlStrings} header flag is set, then the content string must not
      * include the character sequence {@code "]]>"}. If this header flag is not set, then the
      * content may include the sequence. However, since XML {@code CDATA} sections must not include
-     * the character sequence {@code "]]>"}, it may not be possible to regenerate a valid {@code
-     * CDATA} section in textual XML in all cases. If it is not, then regular character content must
-     * be regenerated with appropriate escape sequences. A {@code CDATA} section is normally used in
-     * XML to represent strings with literal {@code "<"}, {@code ">"}, or {@code "&"} characters,
-     * where these characters are used literally for the purposes of visual appearance or
-     * convenience.
+     * the character sequence {@code "]]>"}, it may not be possible to regenerate a valid
+     * {@code CDATA} section in textual XML in all cases. If it is not, then regular character
+     * content must be regenerated with appropriate escape sequences. A {@code CDATA} section is
+     * normally used in XML to represent strings with literal {@code "<"}, {@code ">"}, or
+     * {@code "&"} characters, where these characters are used literally for the purposes of visual
+     * appearance or convenience.
      * </p>
      */
     CDataSection(0x12),
@@ -424,10 +425,10 @@ public enum TokenType {
      * </p>
      * <p>
      * A string-table reference is used to identify the entity name, as with attribute and element
-     * names. The entity references of {@code "&amp;"}, {@code "&lt;"}, {@code "&gt;"} , {@code
-     * "&quot;"}, and {@code "&apos;"} are normally used as character-escape sequences in textual
-     * XML, but it is suggested that the characters that these entities represent be used literally
-     * in BXML content, for efficiency and convenience.
+     * names. The entity references of {@code "&amp;"}, {@code "&lt;"}, {@code "&gt;"} ,
+     * {@code "&quot;"}, and {@code "&apos;"} are normally used as character-escape sequences in
+     * textual XML, but it is suggested that the characters that these entities represent be used
+     * literally in BXML content, for efficiency and convenience.
      * </p>
      */
     EntityRef(0x15),
@@ -510,9 +511,9 @@ public enum TokenType {
      * The semantics for the {@code version} and {@code standalone} fields are the same as for the
      * attributes of the same names for the XML-declaration. The version field may be logically
      * marked as not being present for the XML semantics by assigning them a zero-length string, and
-     * the logical presence of the {@code standalone} field is indicated by the {@code
-     * standaloneIsSet} field. No character-set {@code "encoding"} value is given here, but the
-     * value implied for that attribute of the XML declaration is the {@code charEncoding} value
+     * the logical presence of the {@code standalone} field is indicated by the
+     * {@code standaloneIsSet} field. No character-set {@code "encoding"} value is given here, but
+     * the value implied for that attribute of the XML declaration is the {@code charEncoding} value
      * from the Header structure.
      * </p>
      */
@@ -535,13 +536,14 @@ public enum TokenType {
      * </p>
      * <p>
      * "Bang" is a synonym used sometimes for the exclamation mark (!). This construct is
-     * infrequently used in practice. The name is given by a string-table reference and the {@code
-     * content} is represented simply as a verbatim unparsed string. The name and content have the
-     * same semantics and restrictions as in textual XML. An example name is {@code "DOCTYPE"} and
-     * this type has a complex structure that is not worth tokenizing in the BXML file since
-     * non-validating parsers/generators likely will not understand it, and the parsers that do will
-     * most likely also support the textual XML format and will therefore be able to handle the
-     * unparsed string anyway. {@code "ENTITY"} declarations also use this token, among others.
+     * infrequently used in practice. The name is given by a string-table reference and the
+     * {@code content} is represented simply as a verbatim unparsed string. The name and content
+     * have the same semantics and restrictions as in textual XML. An example name is
+     * {@code "DOCTYPE"} and this type has a complex structure that is not worth tokenizing in the
+     * BXML file since non-validating parsers/generators likely will not understand it, and the
+     * parsers that do will most likely also support the textual XML format and will therefore be
+     * able to handle the unparsed string anyway. {@code "ENTITY"} declarations also use this token,
+     * among others.
      * </p>
      */
     Bang(0x21), // <!name ...>
@@ -722,13 +724,13 @@ public enum TokenType {
      * </pre>
      * </code>
      * 
-     * The {@code id} field serves a similar purpose to the {@code identifier} field of the {@code
-     * Header} structure at the beginning of the BXML file. It is included in the trailer token to
-     * help assure the detection of a truncated BXML file. If the BXML file is truncated, then
-     * random access will not work, and the file can probably be discarded as a whole. To check for
-     * truncation, the reader must first access the {@code tokenLength} field to locate the start of
-     * the {@code Trailer} token, and then check that the {@code tokenType} and id fields have the
-     * correct values.
+     * The {@code id} field serves a similar purpose to the {@code identifier} field of the
+     * {@code Header} structure at the beginning of the BXML file. It is included in the trailer
+     * token to help assure the detection of a truncated BXML file. If the BXML file is truncated,
+     * then random access will not work, and the file can probably be discarded as a whole. To check
+     * for truncation, the reader must first access the {@code tokenLength} field to locate the
+     * start of the {@code Trailer} token, and then check that the {@code tokenType} and id fields
+     * have the correct values.
      * </p>
      * <p>
      * The index-table index is defined as:
