@@ -176,6 +176,22 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
     }
 
     /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getPrefix(java.lang.String)
+     */
+    public String getPrefix(final String namespaceURI) {
+        assertPre(namespaceURI != null, "namespaceURI is null");
+        return impl.getPrefix(namespaceURI);
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getNamespaceURI(java.lang.String)
+     */
+    public String getNamespaceURI(final String prefix) {
+        assertPre(prefix != null, "prefix is null");
+        return impl.getNamespaceURI(prefix);
+    }
+
+    /**
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getBooleanValue()
      */
     public boolean getBooleanValue() throws IOException {

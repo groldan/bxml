@@ -30,8 +30,10 @@
  */
 package org.gvsig.bxml.stream.impl;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -96,6 +98,14 @@ class NotNamespaceAwareNameResolver implements NamesResolver {
 
     public String getPrefix(String namespaceUri) {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    /**
+     * @return empty set
+     * @see org.gvsig.bxml.stream.impl.NamesResolver#getPrefixes()
+     */
+    public Set<String> getPrefixes() {
+        return Collections.emptySet();
     }
 
 }

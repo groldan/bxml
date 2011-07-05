@@ -32,7 +32,9 @@ package org.gvsig.bxml.stream.impl;
 
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -186,6 +188,18 @@ class NamespaceAwareNameResolver implements NamesResolver {
      */
     public String getPrefix(String namespaceUri) {
         return namespaces.getPrefix(namespaceUri);
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.impl.NamesResolver#getPrefixes()
+     */
+    public Set<String> getPrefixes() {
+        Set<String> ret = new HashSet<String>();
+        Enumeration<String> prefixes = namespaces.getPrefixes();
+        while (prefixes.hasMoreElements()) {
+            ret.add(prefixes.nextElement());
+        }
+        return ret;
     }
 
 }

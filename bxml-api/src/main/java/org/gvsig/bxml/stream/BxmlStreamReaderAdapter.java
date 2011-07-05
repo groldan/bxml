@@ -32,6 +32,7 @@ package org.gvsig.bxml.stream;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -140,6 +141,27 @@ public class BxmlStreamReaderAdapter implements BxmlStreamReader {
      */
     public boolean isStandalone() throws IllegalStateException {
         return impl.isStandalone();
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getPrefixes()
+     */
+    public Set<String> getPrefixes() {
+        return impl.getPrefixes();
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getPrefix(java.lang.String)
+     */
+    public String getPrefix(String namespaceURI) {
+        return impl.getPrefix(namespaceURI);
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getNamespaceURI(java.lang.String)
+     */
+    public String getNamespaceURI(String prefix) {
+        return impl.getNamespaceURI(prefix);
     }
 
     /**
@@ -319,4 +341,5 @@ public class BxmlStreamReaderAdapter implements BxmlStreamReader {
     public long getLongValue() throws IOException {
         return impl.getLongValue();
     }
+
 }

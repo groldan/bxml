@@ -306,6 +306,25 @@ public class DefaultBxmlStreamReaderTest {
         verify(mockInput);
     }
 
+    @Test
+    public void testNamespaceAware() throws IOException {
+        expect(mockInput.readTokenType()).andReturn(Comment);
+        expect(mockInput.readByte()).andReturn(CommentPositionHint.INDENTED.getCode());
+        replay(mockInput);
+
+        scanner = new TestDefaultBxmlScanner(mockInput, new NamespaceAwareNameResolver());
+        assertTrue(scanner.isNamespaceAware());
+    }
+
+    @Test
+    public void testNonNamespaceAware() throws IOException {
+        expect(mockInput.readTokenType()).andReturn(Comment);
+        expect(mockInput.readByte()).andReturn(CommentPositionHint.INDENTED.getCode());
+        replay(mockInput);
+        scanner = new TestDefaultBxmlScanner(mockInput, new NotNamespaceAwareNameResolver());
+        assertFalse(scanner.isNamespaceAware());
+    }
+
     /**
      * Check behavior when next() is called and an {@link TokenType#EmptyAttrElement} token is
      * found.

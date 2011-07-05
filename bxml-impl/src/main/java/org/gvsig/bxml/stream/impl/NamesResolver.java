@@ -31,6 +31,7 @@
 package org.gvsig.bxml.stream.impl;
 
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -139,5 +140,13 @@ public interface NamesResolver {
      * @return a prefix bound to {@code namespaceUri}, or {@code null} if there's none
      */
     public String getPrefix(String namespaceUri);
+
+    /**
+     * Returns an enumeration of all prefixes whose declarations are active in the current context.
+     * <p>
+     * This includes declarations from parent contexts that have not been overridden.
+     * </p>
+     */
+    public Set<String> getPrefixes();
 
 }

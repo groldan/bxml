@@ -47,11 +47,11 @@ import org.gvsig.bxml.stream.impl.workers.ParseState;
 import org.gvsig.bxml.stream.impl.workers.StringTable;
 import org.gvsig.bxml.stream.io.BxmlInputStream;
 import org.gvsig.bxml.stream.io.Header;
+import org.gvsig.bxml.stream.io.Header.Flags;
 import org.gvsig.bxml.stream.io.StringTableIndexEntry;
 import org.gvsig.bxml.stream.io.TokenType;
 import org.gvsig.bxml.stream.io.TrailerToken;
 import org.gvsig.bxml.stream.io.ValueType;
-import org.gvsig.bxml.stream.io.Header.Flags;
 
 /**
  * TODO: describe.
@@ -246,6 +246,27 @@ class DefaultBxmlStreamReader implements BxmlStreamReader {
             throw new IllegalStateException("expected element's local name to be " + localName
                     + " but is " + elementName.getLocalPart());
         }
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getPrefixes()
+     */
+    public Set<String> getPrefixes() {
+        return namesResolver.getPrefixes();
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getPrefix(java.lang.String)
+     */
+    public String getPrefix(final String namespaceURI) {
+        return namesResolver.getPrefix(namespaceURI);
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getNamespaceURI(java.lang.String)
+     */
+    public String getNamespaceURI(final String prefix) {
+        return namesResolver.getNamespace(prefix);
     }
 
     /**

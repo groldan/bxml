@@ -52,6 +52,11 @@ class TestDefaultBxmlScanner extends DefaultBxmlStreamReader {
         super(reader);
     }
 
+    public TestDefaultBxmlScanner(BxmlInputStream reader, NamesResolver nameResolver)
+            throws IOException {
+        super(reader, nameResolver);
+    }
+
     /**
      * Exposes the string table so test cases can populate it prior to call a method under test.
      */
