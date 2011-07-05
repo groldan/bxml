@@ -301,7 +301,15 @@ class DefaultBxmlStreamReader implements BxmlStreamReader {
      *      java.lang.String)
      */
     public String getAttributeValue(final String namespaceURI, final String localName) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        final int attributeCount = parseState.getAttributeCount();
+        for (int i = 0; i < attributeCount; i++) {
+            QName name = getAttributeName(i);
+            if (name.getLocalPart().equals(localName)
+                    && (namespaceURI == null || name.getNamespaceURI().equals(namespaceURI))) {
+                return getAttributeValue(i);
+            }
+        }
+        return null;
     }
 
     /**
