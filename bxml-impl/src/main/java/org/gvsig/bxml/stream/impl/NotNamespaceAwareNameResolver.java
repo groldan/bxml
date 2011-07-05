@@ -108,4 +108,8 @@ class NotNamespaceAwareNameResolver implements NamesResolver {
         return Collections.emptySet();
     }
 
+    public Set<String> getPrefixes(String uri) {
+        return Collections.emptySet();
+    }
+
 }

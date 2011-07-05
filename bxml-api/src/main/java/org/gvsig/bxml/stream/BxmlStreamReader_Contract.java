@@ -43,6 +43,7 @@ import static org.gvsig.bxml.stream.EventType.VALUE_LONG;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -184,6 +185,25 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
     }
 
     /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReaderAdapter#getPrefixes()
+     */
+    public Set<String> getPrefixes() {
+        Set<String> prefixes = impl.getPrefixes();
+        assertPost(prefixes != null, "Return value can't be null");
+        return prefixes;
+    }
+
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReaderAdapter#getPrefixes(java.lang.String)
+     */
+    public Set<String> getPrefixes(String uri) {
+        assertPre(uri != null, "namespaceURI is null");
+        Set<String> prefixes = impl.getPrefixes(uri);
+        assertPost(prefixes != null, "Return value can't be null");
+        return prefixes;
+    }
+
+    /**
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getNamespaceURI(java.lang.String)
      */
     public String getNamespaceURI(final String prefix) {
@@ -195,7 +215,7 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getBooleanValue()
      */
     public boolean getBooleanValue() throws IOException {
-        assertGetSingleValue(VALUE_BOOL, "getBooleanValue()");
+        assertPreGetSingleValue(VALUE_BOOL, "getBooleanValue()");
         return impl.getBooleanValue();
     }
 
@@ -203,7 +223,7 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getByteValue()
      */
     public int getByteValue() throws IOException, IllegalArgumentException {
-        assertGetSingleValue(VALUE_BYTE, "getByteValue()");
+        assertPreGetSingleValue(VALUE_BYTE, "getByteValue()");
         return impl.getByteValue();
     }
 
@@ -346,7 +366,7 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
     /**
      * Runs the precondition checks for the getXXXValue() methods
      */
-    private void assertGetSingleValue(final EventType eventType, final String methodName) {
+    private void assertPreGetSingleValue(final EventType eventType, final String methodName) {
         assertEventType(eventType);
         assertPre(impl.getValueReadCount() < impl.getValueCount(), methodName,
                 ": getValueReadCount() shall be < than getValueCount()");
@@ -356,7 +376,7 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getDoubleValue()
      */
     public double getDoubleValue() throws IOException {
-        assertGetSingleValue(VALUE_DOUBLE, "getDoubleValue()");
+        assertPreGetSingleValue(VALUE_DOUBLE, "getDoubleValue()");
         return impl.getDoubleValue();
     }
 
@@ -364,7 +384,7 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getFloatValue()
      */
     public float getFloatValue() throws IOException {
-        assertGetSingleValue(VALUE_FLOAT, "getFloatValue()");
+        assertPreGetSingleValue(VALUE_FLOAT, "getFloatValue()");
         return impl.getFloatValue();
     }
 
@@ -372,7 +392,7 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getIntValue()
      */
     public int getIntValue() throws IOException {
-        assertGetSingleValue(VALUE_INT, "getIntValue()");
+        assertPreGetSingleValue(VALUE_INT, "getIntValue()");
         return impl.getIntValue();
     }
 
@@ -380,7 +400,7 @@ final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getLongValue()
      */
     public long getLongValue() throws IOException {
-        assertGetSingleValue(VALUE_LONG, "getLongValue()");
+        assertPreGetSingleValue(VALUE_LONG, "getLongValue()");
         return impl.getLongValue();
     }
 }

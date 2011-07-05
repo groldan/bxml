@@ -149,4 +149,19 @@ public interface NamesResolver {
      */
     public Set<String> getPrefixes();
 
+    /**
+     * Return all the prefixes for a given URI whose declarations are active in the current context.
+     * This includes declarations from parent contexts that have not been overridden.
+     * 
+     * <p>
+     * <strong>Note:</strong> the empty (default) prefix is <em>never</em> included in this
+     * enumeration; to check for the presence of a default Namespace, use the {@link #getURI getURI}
+     * method with an argument of "".
+     * </p>
+     * 
+     * @param uri
+     *            The Namespace URI.
+     * @return the prefixes bound to the {@code uri}, may be empty.
+     */
+    public Set<String> getPrefixes(String uri);
 }

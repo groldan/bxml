@@ -292,6 +292,11 @@ public interface BxmlStreamReader {
     public Set<String> getPrefixes();
 
     /**
+     * Get all prefixes bound to the given Namespace URI in the current scope.
+     */
+    public Set<String> getPrefixes(String uri);
+
+    /**
      * <p>
      * Get prefix bound to Namespace URI in the current scope.
      * </p>

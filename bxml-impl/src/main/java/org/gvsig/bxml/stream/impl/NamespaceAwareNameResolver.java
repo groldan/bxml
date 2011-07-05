@@ -202,4 +202,16 @@ class NamespaceAwareNameResolver implements NamesResolver {
         return ret;
     }
 
+    /**
+     * @see org.gvsig.bxml.stream.impl.NamesResolver#getPrefixes(java.lang.String)
+     */
+    public Set<String> getPrefixes(final String uri) {
+        Set<String> ret = new HashSet<String>();
+        Enumeration<String> prefixes = namespaces.getPrefixes(uri);
+        while (prefixes.hasMoreElements()) {
+            ret.add(prefixes.nextElement());
+        }
+        return ret;
+    }
+
 }

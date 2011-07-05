@@ -342,4 +342,11 @@ public class BxmlStreamReaderAdapter implements BxmlStreamReader {
         return impl.getLongValue();
     }
 
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getPrefixes(java.lang.String)
+     */
+    public Set<String> getPrefixes(String uri) {
+        return impl.getPrefixes(uri);
+    }
+
 }

@@ -256,6 +256,13 @@ class DefaultBxmlStreamReader implements BxmlStreamReader {
     }
 
     /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getPrefixes(java.lang.String)
+     */
+    public Set<String> getPrefixes(String uri) {
+        return namesResolver.getPrefixes(uri);
+    }
+
+    /**
      * @see org.gvsig.bxml.stream.BxmlStreamReader#getPrefix(java.lang.String)
      */
     public String getPrefix(final String namespaceURI) {
