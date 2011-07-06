@@ -53,7 +53,8 @@ import javax.xml.namespace.QName;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  */
-final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements BxmlStreamReader {
+public final class BxmlStreamReader_Contract extends BxmlStreamReaderAdapter implements
+        BxmlStreamReader {
 
     /**
      * Creates a contract enforcement wrapper for the given {@link BxmlStreamReader}

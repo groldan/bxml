@@ -54,7 +54,7 @@ public class SAXParserImplTest {
 
     @Test
     public void testParseOriginalCubeWerxTestFile() throws Exception {
-        InputStream inputStream = getClass().getResourceAsStream("test-data/cwxml-test.xml");
+        InputStream inputStream = getClass().getResourceAsStream("/test-data/cwxml-test.xml");
 
         // Document doc = new DocumentBuilderImpl().parse(inputStream);
         // print(doc);

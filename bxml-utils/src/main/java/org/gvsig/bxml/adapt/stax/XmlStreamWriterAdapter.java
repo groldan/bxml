@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -44,7 +43,27 @@ import org.gvsig.bxml.stream.EventType;
 import org.gvsig.bxml.stream.io.TokenType;
 import org.gvsig.bxml.stream.io.ValueType;
 
+/**
+ * 
+ * Adapts a StAX {@link XMLStreamWriter} as a {@link BxmlStreamWriter}.
+ * 
+ * @author groldan
+ * 
+ */
 public class XmlStreamWriterAdapter implements BxmlStreamWriter {
+    /**
+     * <p>
+     * W3C XML Schema Instance Namespace URI.
+     * </p>
+     * 
+     * <p>
+     * Defined to be "<code>http://www.w3.org/2001/XMLSchema-instance</code>".
+     * </p>
+     * 
+     * @see <a href= "http://www.w3.org/TR/xmlschema-1/#Instance_Document_Constructions"> XML Schema
+     *      Part 1: Structures, 2.6 Schema-Related Markup in Documents Being Validated</a>
+     */
+    private static final String W3C_XML_SCHEMA_INSTANCE_NS_URI = "http://www.w3.org/2001/XMLSchema-instance";
 
     private final EncodingOptions encodingOptions;
 
@@ -101,6 +120,9 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
         return lastEvent;
     }
 
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#getLastTagEvent()
+     */
     public EventType getLastTagEvent() {
         return lastTagEvent;
     }
@@ -261,10 +283,10 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
             }
 
             try {
-                staxWriter.setPrefix("xsi", XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
-                staxWriter.writeNamespace("xsi", XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
-                staxWriter.writeAttribute(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI,
-                        "schemaLocation", sl.toString());
+                staxWriter.setPrefix("xsi", W3C_XML_SCHEMA_INSTANCE_NS_URI);
+                staxWriter.writeNamespace("xsi", W3C_XML_SCHEMA_INSTANCE_NS_URI);
+                staxWriter.writeAttribute(W3C_XML_SCHEMA_INSTANCE_NS_URI, "schemaLocation",
+                        sl.toString());
             } catch (XMLStreamException e) {
                 throw (IOException) new IOException(e.getMessage()).initCause(e);
             }

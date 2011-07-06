@@ -553,7 +553,8 @@ public interface BxmlStreamReader {
      * @pre {getEventType() == START_ELEMENT}
      * @pre {localName != null}
      * @param namespaceURI
-     *            the namespace of the attribute
+     *            the namespace of the attribute, if {@code null} the namespace will not be checked
+     *            for equality
      * @param localName
      *            the local name of the attribute, cannot be null
      * @return returns the value of the attribute , or {@code null} if not found

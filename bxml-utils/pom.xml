@@ -94,6 +94,12 @@
       <!-- The version number is specified the parent pom. -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <!-- The version number is specified the parent pom. -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

@@ -64,7 +64,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class BxmlScannerIntegrationTest {
+public class BxmlStreamReaderIntegrationTest {
 
     private DefaultBxmlInputFactory bxmlFactory;
 
@@ -80,6 +80,114 @@ public class BxmlScannerIntegrationTest {
     public void tearDown() throws Exception {
         bxmlFactory = null;
         streamFactory = null;
+    }
+
+    @Test
+    public void testRead() throws Exception {
+        final String fileName = "cwxml-test.bxml";
+        final File file = TestData.file(this, fileName);
+        final BxmlStreamReader reader = createFileReader(file, true);
+
+        assertEquals(EventType.NONE, reader.getEventType());
+        reader.next();
+        assertEquals(EventType.START_DOCUMENT, reader.getEventType());
+        assertEquals(EventType.COMMENT, reader.next());
+        assertEquals("comment1", reader.getStringValue());
+        assertEquals(EventType.COMMENT, reader.next());
+        assertEquals("comment2", reader.getStringValue());
+        assertEquals(EventType.START_ELEMENT, reader.next());
+
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("StyledLayerDescriptor", reader.getElementName().getLocalPart());
+
+        assertEquals("http://www.opengis.net/sld", reader.getNamespaceURI("sld"));
+        assertEquals("sld", reader.getPrefix("http://www.opengis.net/sld"));
+
+        assertEquals(1, reader.getAttributeCount());
+        assertEquals("1.0.0", reader.getAttributeValue(0));
+        // assertEquals("1.0.0", reader.getAttributeValue("", "version"));
+        assertEquals("1.0.0", reader.getAttributeValue(null, "version"));
+
+        assertEquals(EventType.START_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("NamedLayer", reader.getElementName().getLocalPart());
+        assertEquals(0, reader.getAttributeCount());
+
+        assertEquals(EventType.START_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("Name", reader.getElementName().getLocalPart());
+
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals("ALEXANDRIA:OWS-1.2", reader.getStringValue());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals(">", reader.getStringValue());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals(" ", reader.getStringValue());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals("é", reader.getStringValue());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals("é", reader.getStringValue());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals("é", reader.getStringValue());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals("x", reader.getStringValue());
+
+        assertEquals(EventType.END_ELEMENT, reader.next());
+
+        assertEquals(EventType.START_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("NamedStyle", reader.getElementName().getLocalPart());
+
+        assertEquals(EventType.START_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("Title", reader.getElementName().getLocalPart());
+
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals("my_style ", reader.getStringValue());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals("&", reader.getStringValue());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals(" hello", reader.getStringValue());
+
+        assertEquals(EventType.COMMENT, reader.next());
+        assertEquals("x", reader.getStringValue());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals(" there", reader.getStringValue());
+        assertEquals(EventType.COMMENT, reader.next());
+        assertEquals("y", reader.getStringValue());
+        assertEquals(EventType.END_ELEMENT, reader.next());
+
+        assertEquals(EventType.START_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("Name", reader.getElementName().getLocalPart());
+        assertEquals(EventType.VALUE_STRING, reader.next());
+        assertEquals("my_style", reader.getStringValue());
+        assertEquals(EventType.END_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("Name", reader.getElementName().getLocalPart());
+
+        assertEquals(EventType.END_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("NamedStyle", reader.getElementName().getLocalPart());
+
+        assertEquals(EventType.END_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("NamedLayer", reader.getElementName().getLocalPart());
+
+        assertEquals(EventType.START_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("EmptyElement", reader.getElementName().getLocalPart());
+        assertEquals("jim & me ", reader.getAttributeValue(0));
+        assertEquals("jim & me ", reader.getAttributeValue(null, "bob"));
+        assertEquals(EventType.END_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("EmptyElement", reader.getElementName().getLocalPart());
+
+        assertEquals(EventType.END_ELEMENT, reader.nextTag());
+        assertEquals("http://www.opengis.net/sld", reader.getElementName().getNamespaceURI());
+        assertEquals("StyledLayerDescriptor", reader.getElementName().getLocalPart());
+
+        assertEquals(EventType.END_DOCUMENT, reader.next());
     }
 
     /**
@@ -364,7 +472,7 @@ public class BxmlScannerIntegrationTest {
 
     public static void main(String[] argv) {
         try {
-            BxmlScannerIntegrationTest bxmlScannerIntegrationTest = new BxmlScannerIntegrationTest();
+            BxmlStreamReaderIntegrationTest bxmlScannerIntegrationTest = new BxmlStreamReaderIntegrationTest();
             for (int i = 0; i < 10; i++) {
                 bxmlScannerIntegrationTest.testParseLargeGML2();
             }

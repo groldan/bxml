@@ -32,7 +32,6 @@ package org.gvsig.bxml.adapt.stax;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -54,20 +53,18 @@ import org.gvsig.bxml.stream.BxmlStreamWriter;
 import org.gvsig.bxml.stream.BxmlStreamWriter_Contract;
 import org.gvsig.bxml.stream.EncodingOptions;
 import org.gvsig.bxml.stream.EventType;
-import org.gvsig.bxml.stream.impl.DefaultBxmlStreamWriter;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
 /**
- * Unit test suite for {@link DefaultBxmlStreamWriter}
+ * Integration test suite for {@link XmlStreamWriterAdapter}
  * 
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  */
-public class XmlStreamWriterAdapterTest {
+public class XmlStreamWriterAdapterIntegrationTest {
 
     private EncodingOptions encodingOptions;
 
@@ -160,84 +157,6 @@ public class XmlStreamWriterAdapterTest {
         assertEquals(EventType.END_DOCUMENT, writer.getLastEvent());
     }
 
-    @Test
-    @Ignore
-    public void testWriteStartElement() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteEndElement() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueString() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueInt() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueLong() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueFloat() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueDouble() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueBoolean() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueStringArray() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueIntArray() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueLongArray() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueFloatArray() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    @Ignore
-    public void testWriteValueDoubleArray() {
-        fail("Not yet implemented");
-    }
-
     /**
      * <pre>
      * &lt;code&gt;
@@ -262,62 +181,61 @@ public class XmlStreamWriterAdapterTest {
      */
     @Test
     public void testWriteTestDocumentNoNameSpaces() throws Exception {
-        BxmlStreamWriter serializer = writer;
 
         final String sldNamespace = "http://www.opengis.net/sld";
-        serializer.writeStartDocument();
-        serializer.writeComment(" comment1 ");
-        serializer.writeComment(" comment2 ");
-        serializer.writeStartElement(sldNamespace, "StyledLayerDescriptor");
+        writer.writeStartDocument();
+        writer.writeComment(" comment1 ");
+        writer.writeComment(" comment2 ");
+        writer.writeStartElement(sldNamespace, "StyledLayerDescriptor");
 
-        serializer.writeStartAttribute("", "xmlns");
-        serializer.writeValue(sldNamespace);
-        serializer.writeStartAttribute("", "xmlns:sld");
-        serializer.writeValue(sldNamespace);
-        serializer.writeStartAttribute("", "version");
-        serializer.writeValue("1.0.0");
-        serializer.writeEndAttributes();
+        writer.writeStartAttribute("", "xmlns");
+        writer.writeValue(sldNamespace);
+        writer.writeStartAttribute("", "xmlns:sld");
+        writer.writeValue(sldNamespace);
+        writer.writeStartAttribute("", "version");
+        writer.writeValue("1.0.0");
+        writer.writeEndAttributes();
 
-        serializer.writeStartElement("", "NamedLayer");
-        serializer.writeStartElement("", "Name");
-        serializer.writeValue("ALEXANDRIA:OWS-1.2");
-        serializer.writeValue("&gt;");
-        serializer.writeValue("&#x20;");
-        serializer.writeValue("�");
-        serializer.writeValue("&#233;");
-        serializer.writeValue("&eacute;");
-        serializer.writeValue("x");
-        serializer.writeEndElement();// Name
+        writer.writeStartElement("", "NamedLayer");
+        writer.writeStartElement("", "Name");
+        writer.writeValue("ALEXANDRIA:OWS-1.2");
+        writer.writeValue("&gt;");
+        writer.writeValue("&#x20;");
+        writer.writeValue("é");
+        writer.writeValue("&#233;");
+        writer.writeValue("&eacute;");
+        writer.writeValue("x");
+        writer.writeEndElement();// Name
 
-        serializer.writeStartElement("", "NamedStyle");
-        serializer.writeStartElement("", "Title");
-        serializer.writeValue(" my_style ");
-        serializer.writeValue("&amp;");
-        serializer.writeValue(" hello ");
-        serializer.writeComment("x"); // /comment
+        writer.writeStartElement("", "NamedStyle");
+        writer.writeStartElement("", "Title");
+        writer.writeValue(" my_style ");
+        writer.writeValue("&amp;");
+        writer.writeValue(" hello ");
+        writer.writeComment("x"); // /comment
 
-        serializer.writeValue(" there ");
-        serializer.writeComment("y");
-        serializer.writeEndElement();// Title
+        writer.writeValue(" there ");
+        writer.writeComment("y");
+        writer.writeEndElement();// Title
 
-        serializer.writeStartElement("", "Name");
-        serializer.writeValue("my_style");
-        serializer.writeEndElement();// Name
+        writer.writeStartElement("", "Name");
+        writer.writeValue("my_style");
+        writer.writeEndElement();// Name
 
-        serializer.writeEndElement();// NamedStyle
+        writer.writeEndElement();// NamedStyle
 
-        serializer.writeEndElement();// NamedLayer
+        writer.writeEndElement();// NamedLayer
 
-        serializer.writeStartElement("", "EmptyElement");
-        serializer.writeStartAttribute("", "bob");
-        serializer.writeValue("jim &amp; me");
-        serializer.writeEndAttributes();
-        serializer.writeEndElement();// EmptyElement
-        serializer.writeEndElement();// StyledLayerDescriptor
+        writer.writeStartElement("", "EmptyElement");
+        writer.writeStartAttribute("", "bob");
+        writer.writeValue("jim &amp; me");
+        writer.writeEndAttributes();
+        writer.writeEndElement();// EmptyElement
+        writer.writeEndElement();// StyledLayerDescriptor
 
-        serializer.writeEndDocument();
-        serializer.flush();
-        serializer.close();
+        writer.writeEndDocument();
+        writer.flush();
+        writer.close();
 
         print();
     }

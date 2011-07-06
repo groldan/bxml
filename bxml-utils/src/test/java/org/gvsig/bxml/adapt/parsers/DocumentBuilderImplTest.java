@@ -54,7 +54,7 @@ public class DocumentBuilderImplTest {
     @Test
     @Ignore
     public void testParse() throws Exception {
-        final String bxmlFile = "test-data/cwxml-test.bxml";
+        final String bxmlFile = "/test-data/cwxml-test.bxml";
         InputStream inputStream = getClass().getResourceAsStream(bxmlFile);
         if (inputStream == null) {
             throw new FileNotFoundException(bxmlFile);
