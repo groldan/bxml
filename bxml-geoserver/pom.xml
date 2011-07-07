@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.gvsig</groupId>
     <artifactId>bxml</artifactId>
-    <version>1.0-M2</version>
+    <version>1.0-SNAPSHOT</version>
   </parent>
   <groupId>org.gvsig</groupId>
   <artifactId>bxml-geoserver</artifactId>
