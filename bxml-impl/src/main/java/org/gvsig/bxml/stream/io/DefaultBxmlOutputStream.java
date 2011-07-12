@@ -105,6 +105,7 @@ final class DefaultBxmlOutputStream implements BxmlOutputStream {
         }
         position = -1;
         writeChannel = null;
+        ByteBufferPool.returnToPool(buffer);
         buffer = EMPTY_BUFFER;
     }
 
@@ -211,7 +212,9 @@ final class DefaultBxmlOutputStream implements BxmlOutputStream {
     private void expandBuffer(final int newBufferSize) {
         final ByteBuffer previousBuffer = this.buffer;
 
-        buffer = ByteBuffer.allocateDirect(newBufferSize);
+        //buffer = ByteBuffer.allocateDirect(newBufferSize);
+        ByteBufferPool.returnToPool(buffer);
+        buffer = ByteBufferPool.getByteBuffer(newBufferSize);
         buffer.position(0);
         buffer.limit(buffer.capacity());
 

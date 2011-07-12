@@ -53,7 +53,7 @@ public class DefaultStreamFactory implements BxmlStreamFactory {
     /**
      * Number of bytes to try to read at once so we don't do a lot of one-byte reads.
      */
-    public static final int DEFAULT_BUFFER_SIZE = 64 * 1024;
+    public static final int DEFAULT_BUFFER_SIZE = 4 * 1024;
 
     private static DefaultStreamFactory INSTANCE;
 

@@ -134,7 +134,7 @@ final class DefaultBxmlInputStream implements BxmlInputStream {
         this.bufferIsMappeable = channel instanceof FileChannel;
 
         ByteBuffer buffer;
-        if (bufferIsMappeable) {
+        if (false && bufferIsMappeable) {
             final FileChannel fileChannel = (FileChannel) channel;
             final long size = fileChannel.size();
             final long mapSize = Math.min(size, pageSize);
@@ -142,7 +142,8 @@ final class DefaultBxmlInputStream implements BxmlInputStream {
             buffer = fileChannel.map(MapMode.READ_ONLY, 0, mapSize);
         } else {
             this.fileSize = -1L;
-            buffer = ByteBuffer.allocateDirect(pageSize);
+            //buffer = ByteBuffer.allocate(pageSize);
+            buffer = ByteBufferPool.getByteBuffer(pageSize);
             // start empty
             buffer.position(0);
             buffer.limit(0);
@@ -216,7 +217,7 @@ final class DefaultBxmlInputStream implements BxmlInputStream {
         if (buffer.remaining() >= length) {
             return;
         }
-        if (bufferIsMappeable) {
+        if (false && bufferIsMappeable) {
             long mapSize = Math.max(buffer.capacity(), length);
             long mapFrom = Math.min(position, fileSize - mapSize);
             buffer = ((FileChannel) readChannel).map(MapMode.READ_ONLY, mapFrom, mapSize);
@@ -353,6 +354,7 @@ final class DefaultBxmlInputStream implements BxmlInputStream {
         }
         position = -1;
         readChannel = null;
+        ByteBufferPool.returnToPool(buffer);
         buffer = EMPTY_BUFFER;
     }
 
