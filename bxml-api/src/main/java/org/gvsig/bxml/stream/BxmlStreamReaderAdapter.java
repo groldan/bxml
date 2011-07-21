@@ -349,4 +349,11 @@ public class BxmlStreamReaderAdapter implements BxmlStreamReader {
         return impl.getPrefixes(uri);
     }
 
+    /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getTagDepth()
+     */
+    public int getTagDepth() {
+        return impl.getTagDepth();
+    }
+
 }

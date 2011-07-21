@@ -145,7 +145,7 @@ public interface BxmlStreamWriter {
      * @post {$return >= 0}
      * @return how deep is the current element tree
      */
-    public int getTagDeep();
+    public int getTagDepth();
 
     /**
      * Closes this stream writer and releases any system resources associated with it, but does not

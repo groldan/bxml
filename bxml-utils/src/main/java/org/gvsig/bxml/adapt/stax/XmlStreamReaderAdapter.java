@@ -49,6 +49,8 @@ public class XmlStreamReaderAdapter implements BxmlStreamReader {
 
     private final XMLInputFactory factory;
 
+    private int tagDepth;
+
     /**
      * @param factory
      * @param stream
@@ -174,6 +176,13 @@ public class XmlStreamReaderAdapter implements BxmlStreamReader {
     }
 
     /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getTagDepth()
+     */
+    public int getTagDepth() {
+        return tagDepth;
+    }
+
+    /**
      * @see org.gvsig.bxml.stream.BxmlStreamReader#next()
      */
     public EventType next() throws IOException {
@@ -182,7 +191,13 @@ public class XmlStreamReaderAdapter implements BxmlStreamReader {
             while (event == XMLStreamConstants.ATTRIBUTE) {
                 event = reader.next();
             }
-            return EventMap.event(event);
+            EventType eventType = EventMap.event(event);
+            if (EventType.START_ELEMENT.equals(eventType)) {
+                tagDepth++;
+            } else if (EventType.END_ELEMENT.equals(eventType)) {
+                tagDepth--;
+            }
+            return eventType;
         } catch (XMLStreamException e) {
             propagate(e);
             return null;// will never reach here
@@ -193,27 +208,21 @@ public class XmlStreamReaderAdapter implements BxmlStreamReader {
      * @see org.gvsig.bxml.stream.BxmlStreamReader#nextTag()
      */
     public EventType nextTag() throws IOException {
-        try {
-            /*
-             * Note: can't call directly reader.nextTag() cause it fails under circumstances that
-             * are allowed by BxmlStreamReader.nextTag()
-             */
-            int event;
-            while (true) {
-                event = reader.next();
-                if (event == XMLStreamConstants.START_ELEMENT
-                        || event == XMLStreamConstants.END_ELEMENT) {
-                    break;
-                }
-                if (event == XMLStreamConstants.END_DOCUMENT) {
-                    throw new IOException("End of document reached");
-                }
+        /*
+         * Note: can't call directly reader.nextTag() cause it fails under circumstances that are
+         * allowed by BxmlStreamReader.nextTag()
+         */
+        EventType eventType;
+        while (true) {
+            eventType = next();
+            if (eventType.isTag()) {
+                break;
             }
-            return EventMap.event(event);
-        } catch (XMLStreamException e) {
-            propagate(e);
-            return null;// will never reach here
+            if (EventType.END_DOCUMENT.equals(eventType)) {
+                throw new IOException("End of document reached");
+            }
         }
+        return eventType;
     }
 
     /**

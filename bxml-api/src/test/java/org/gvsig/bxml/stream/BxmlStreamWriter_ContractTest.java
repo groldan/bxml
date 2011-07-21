@@ -116,14 +116,14 @@ public class BxmlStreamWriter_ContractTest {
     }
 
     /**
-     * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#getTagDeep()}.
+     * @see {@link org.gvsig.bxml.stream.BxmlStreamWriter#getTagDepth()}.
      */
     @Test
     public void testGetTagDeep() {
-        expect(mocks.getTagDeep()).andReturn(-1);
+        expect(mocks.getTagDepth()).andReturn(-1);
         replay(mocks);
         try {
-            writer.getTagDeep();
+            writer.getTagDepth();
             fail("expected contract violation failure");
         } catch (PostconditionViolationException e) {
             assertTrue(e.getMessage(),

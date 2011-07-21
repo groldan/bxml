@@ -76,7 +76,7 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
      */
     @Override
     public String getCurrentElementName() {
-        assertPre(impl.getTagDeep() > 0, "There are no open elements");
+        assertPre(impl.getTagDepth() > 0, "There are no open elements");
         String currentElementName = impl.getCurrentElementName();
         assertPost(currentElementName != null, "current element name is null");
         return currentElementName;
@@ -87,7 +87,7 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
      */
     @Override
     public String getCurrentElementNamespace() {
-        assertPre(impl.getTagDeep() > 0, "There are no open elements");
+        assertPre(impl.getTagDepth() > 0, "There are no open elements");
         String currentElementNamespace = impl.getCurrentElementNamespace();
         assertPost(currentElementNamespace != null, "current element namespace is null");
         return currentElementNamespace;
@@ -101,7 +101,7 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
             throws IllegalStateException {
         // @pre {if( namespaceUri != null || localName != null ) getTagDeep() > 0}
         if (namespaceUri != null || localName != null) {
-            assertPre(impl.getTagDeep() > 0,
+            assertPre(impl.getTagDepth() > 0,
                     "Can't check the current element's namespace or localname, there are no open elements");
         }
         impl.require(type, namespaceUri, localName);
@@ -118,11 +118,11 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
     }
 
     /**
-     * @see org.gvsig.bxml.stream.BxmlStreamWriter#getTagDeep()
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#getTagDepth()
      */
     @Override
-    public int getTagDeep() {
-        int deepness = impl.getTagDeep();
+    public int getTagDepth() {
+        int deepness = impl.getTagDepth();
         assertPost(deepness > -1, "getTagDeep: return value should be >= 0: ", deepness);
         return deepness;
     }
@@ -371,7 +371,7 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
     @Override
     public void writeEndDocument() throws IOException {
         // * @pre {getTagDeep() == 0}
-        final int tagDeep = impl.getTagDeep();
+        final int tagDeep = impl.getTagDepth();
         assertPre(0 == tagDeep, "writeEndDocument: tag deepness should be 0: ", tagDeep);
 
         impl.writeEndDocument();
@@ -401,7 +401,7 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
                     lastEvent);
         }
         // * @pre {getTagDeep() > 0}
-        assertPre(impl.getTagDeep() > 0, "writeEndElement: there are no open tags");
+        assertPre(impl.getTagDepth() > 0, "writeEndElement: there are no open tags");
 
         impl.writeEndElement();
 

@@ -189,9 +189,9 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
     }
 
     /**
-     * @see org.gvsig.bxml.stream.BxmlStreamWriter#getTagDeep()
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#getTagDepth()
      */
-    public int getTagDeep() {
+    public int getTagDepth() {
         final int size = openElements.size();
         return size;
     }

@@ -104,10 +104,10 @@ public class BxmlStreamWriterAdapter implements BxmlStreamWriter {
     }
 
     /**
-     * @see org.gvsig.bxml.stream.BxmlStreamWriter#getTagDeep()
+     * @see org.gvsig.bxml.stream.BxmlStreamWriter#getTagDepth()
      */
-    public int getTagDeep() {
-        return impl.getTagDeep();
+    public int getTagDepth() {
+        return impl.getTagDepth();
     }
 
     /**

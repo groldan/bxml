@@ -193,6 +193,8 @@ public interface BxmlStreamReader {
      */
     public boolean isOpen();
 
+    public int getTagDepth();
+    
     /**
      * Returns whether there are more parsing events to be processed.
      * 

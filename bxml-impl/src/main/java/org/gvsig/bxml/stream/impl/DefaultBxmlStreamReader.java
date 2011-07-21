@@ -91,6 +91,8 @@ class DefaultBxmlStreamReader implements BxmlStreamReader {
 
     private TrailerToken trailer;
 
+    private int tagDepth;
+
     /**
      * Creates a new, non namespace aware, DefaultBxmlStreamReader.
      * 
@@ -191,6 +193,13 @@ class DefaultBxmlStreamReader implements BxmlStreamReader {
     }
 
     /**
+     * @see org.gvsig.bxml.stream.BxmlStreamReader#getTagDepth()
+     */
+    public int getTagDepth() {
+        return tagDepth;
+    }
+
+    /**
      * @see BxmlStreamReader#getEventType()
      */
     public EventType getEventType() {
@@ -210,7 +219,13 @@ class DefaultBxmlStreamReader implements BxmlStreamReader {
      */
     public EventType next() throws IOException {
         this.worker = worker.next(reader, parseState);
-        return worker.getEventType(parseState);
+        EventType eventType = worker.getEventType(parseState);
+        if (EventType.START_ELEMENT.equals(eventType)) {
+            tagDepth++;
+        } else if (EventType.END_ELEMENT.equals(eventType)) {
+            tagDepth--;
+        }
+        return eventType;
     }
 
     /**
