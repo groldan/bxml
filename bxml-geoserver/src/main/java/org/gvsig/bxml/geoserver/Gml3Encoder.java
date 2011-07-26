@@ -279,7 +279,7 @@ public final class Gml3Encoder {
         final int dimension = directPosition.getDimension();
         encoder.startArray(EventType.VALUE_DOUBLE, dimension);
         for (int dim = 0; dim < dimension; dim++) {
-            encoder.writeValue(directPosition.getOrdinate(0));
+            encoder.writeValue(directPosition.getOrdinate(dim));
         }
         encoder.endArray();
 
