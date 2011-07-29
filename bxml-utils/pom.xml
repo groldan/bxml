@@ -69,18 +69,6 @@
       <artifactId>bxml-impl</artifactId>
       <version>${parent.version}</version>
     </dependency>
-    <dependency>
-      <groupId>xml-apis</groupId>
-      <artifactId>xml-apis</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>stax</groupId>
-      <artifactId>stax-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>stax</groupId>
-      <artifactId>stax</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>junit</groupId>
