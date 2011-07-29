@@ -310,8 +310,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.5</source><!-- The -source argument for the Java compiler. -->
-          <target>1.5</target><!-- The -target argument for the Java compiler. -->
+          <source>1.6</source><!-- The -source argument for the Java compiler. -->
+          <target>1.6</target><!-- The -target argument for the Java compiler. -->
           <debug>true</debug><!-- Whether to include debugging information.   -->
           <encoding>ISO-8859-1</encoding><!-- The -encoding argument for the Java compiler. -->
         </configuration>
@@ -475,8 +475,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <!-- Necessary to enable javadoc to handle J2SE 1.5 features. -->
-          <source>1.5</source>
+          <!-- Necessary to enable javadoc to handle J2SE 1.6 features. -->
+          <source>1.6</source>
           <!-- Specifies whether or not the version text is included.-->
           <version>true</version>
           <!-- Omit qualifying package name before class names in output.-->
@@ -552,7 +552,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>http://java.sun.com/j2se/1.5/docs/api</link>
+            <link>http://java.sun.com/j2se/1.6/docs/api</link>
             <link>https://stax-utils.dev.java.net/nonav/javadoc/api</link>
           </links>
         </configuration>
@@ -605,7 +605,7 @@
           <linkXref>true</linkXref>
           <sourceEncoding>ISO-8859-1</sourceEncoding>
           <minimumTokens>100</minimumTokens>
-          <targetJdk>1.5</targetJdk>
+          <targetJdk>1.6</targetJdk>
           <!--excludes>
             <exclude>**/*Bean.java</exclude>
             <exclude>**/generated/*.java</exclude>
