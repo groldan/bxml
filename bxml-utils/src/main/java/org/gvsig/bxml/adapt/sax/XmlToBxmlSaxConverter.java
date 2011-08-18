@@ -32,8 +32,10 @@ package org.gvsig.bxml.adapt.sax;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
@@ -85,6 +87,13 @@ public class XmlToBxmlSaxConverter {
 
     public void convert(final InputStream xmlFile, final File bxmlOutputFile,
             final ProgressListener pl, boolean encodeGmlPosList) throws Exception {
+        OutputStream out = new FileOutputStream(bxmlOutputFile);
+        convert(xmlFile, out, pl, encodeGmlPosList);
+    }
+
+    public void convert(final InputStream xmlFile, final OutputStream bxmlOutputFile,
+            final ProgressListener pl, boolean encodeGmlPosList) throws Exception {
+
         final BxmlStreamWriter bxmlSerializer;
         bxmlFactory.setEncodingOptions(encodingOptions);
         bxmlSerializer = bxmlFactory.createSerializer(bxmlOutputFile);

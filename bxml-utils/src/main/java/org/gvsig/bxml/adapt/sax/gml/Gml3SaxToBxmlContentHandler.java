@@ -37,8 +37,8 @@ import org.gvsig.bxml.stream.BxmlStreamWriter;
 import org.xml.sax.SAXException;
 
 /**
- * A simple SAX to BXML writing SAX content handler that encodes {@code gml:postList} coordinates as
- * a {@code double[]}.
+ * A simple SAX to BXML writing SAX content handler that encodes {@code gml:pos} and
+ * {@code gml:postList} coordinates as a {@code double[]}.
  * <p>
  * The approach is quite naive, though it serves well to the purpose while a better approach is
  * defined.
@@ -58,8 +58,8 @@ public class Gml3SaxToBxmlContentHandler extends XmlToBxmlContentHandler {
         try {
             if (characters.length() > 0) {
                 String value = characters.toString();
-                if ("gml:posList".equals(qName)) {
-                    value = value.replaceAll("\\s+", " ");
+                if ("gml:pos".equals(qName) || "gml:posList".equals(qName)) {
+                    value = value.trim().replaceAll("\\s+", " ");
                     String[] split = value.split(" ");
                     final int arrayLength = split.length;
                     if (arrayLength > doubleBuffer.length) {

@@ -6,6 +6,27 @@ package org.gvsig.bxml.util;
 import org.gvsig.bxml.stream.EventType;
 
 public interface ProgressListener {
+
+    public ProgressListener NULL = new ProgressListener() {
+
+        @Override
+        public boolean isCancelled() {
+            return false;
+        }
+
+        @Override
+        public void start() {
+        }
+
+        @Override
+        public void end() {
+        }
+
+        @Override
+        public void event(EventType event) {
+        }
+    };
+
     /**
      * Notifies the subject to cancel processing
      * 
