@@ -255,9 +255,14 @@ public final class Gml3Encoder {
             throws IOException {
         encoder.writeStartElement(GML.posList);
 
-        encodeSrsName(encoder, crs);
+        final int crsDimension;
+        if (crs != null) {
+            encodeSrsName(encoder, crs);
+            crsDimension = crs.getCoordinateSystem().getDimension();
+        } else {
+            crsDimension = 2;
+        }
 
-        final int crsDimension = crs.getCoordinateSystem().getDimension();
         encoder.writeStartAttribute(GML.NAMESPACE, "srsDimension");
         encoder.writeValue(crsDimension);
 
@@ -327,20 +332,6 @@ public final class Gml3Encoder {
         }
     }
 
-    public void encodePoint(final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs,
-            Point point) throws IOException {
-        encoder.writeStartElement(GML.Point);
-        final CoordinateSequence coordinates = (point).getCoordinateSequence();
-
-        encoder.writeStartElement(GML.pos);
-        encodeSrsName(encoder, crs);
-        encoder.writeEndAttributes();
-
-        encodeCoordinates(coordinates, encoder, crs.getCoordinateSystem().getDimension());
-        encoder.writeEndElement();
-        encoder.writeEndElement();
-    }
-
     /**
      * Writes down a {@link GML#LinearRing LinearRing} element out of the provided
      * {@code linearRing} coordinates.
@@ -362,17 +353,22 @@ public final class Gml3Encoder {
     public void encode(final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs,
             final Polygon poly) throws IOException {
         encoder.writeStartElement(GML.Polygon);
+        if (crs != null) {
+            encodeSrsName(encoder, crs);
+            encoder.writeEndAttributes();
+        }
+
         CoordinateSequence linearRing;
         linearRing = poly.getExteriorRing().getCoordinateSequence();
         encoder.writeStartElement(GML.exterior);
-        encodeLinearRring(encoder, linearRing, crs);
+        encodeLinearRring(encoder, linearRing, null);
         encoder.writeEndElement();// exterior
 
         final int numInteriorRings = poly.getNumInteriorRing();
         for (int ringN = 0; ringN < numInteriorRings; ringN++) {
             linearRing = poly.getInteriorRingN(ringN).getCoordinateSequence();
             encoder.writeStartElement(GML.interior);
-            encodeLinearRring(encoder, linearRing, crs);
+            encodeLinearRring(encoder, linearRing, null);
             encoder.writeEndElement();// interior
         }
         encoder.writeEndElement();
@@ -381,6 +377,10 @@ public final class Gml3Encoder {
     public void encode(final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs,
             final MultiPolygon mpoly) throws IOException {
         encoder.writeStartElement(GML.MultiSurface);
+        if (crs != null) {
+            encodeSrsName(encoder, crs);
+            encoder.writeEndAttributes();
+        }
 
         final int numGeoms = mpoly.getNumGeometries();
         Polygon poly;
@@ -388,7 +388,7 @@ public final class Gml3Encoder {
             poly = (Polygon) mpoly.getGeometryN(geomN);
             if (poly != null) {
                 encoder.writeStartElement(GML.surfaceMember);
-                encode(encoder, crs, poly);
+                encode(encoder, null, poly);
                 encoder.writeEndElement();
             }
         }
@@ -399,14 +399,23 @@ public final class Gml3Encoder {
     public void encode(final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs,
             LineString line) throws IOException {
         encoder.writeStartElement(GML.LineString);
+        if (crs != null) {
+            encodeSrsName(encoder, crs);
+            encoder.writeEndAttributes();
+        }
+
         CoordinateSequence coordinates = (line).getCoordinateSequence();
-        encodePosList(encoder, coordinates, crs);
+        encodePosList(encoder, coordinates, null);
         encoder.writeEndElement();
     }
 
     public void encode(final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs,
             final MultiLineString mline) throws IOException {
         encoder.writeStartElement(GML.MultiLineString);
+        if (crs != null) {
+            encodeSrsName(encoder, crs);
+            encoder.writeEndAttributes();
+        }
 
         final int nGeoms = mline.getNumGeometries();
         LineString member;
@@ -414,7 +423,7 @@ public final class Gml3Encoder {
             member = (LineString) mline.getGeometryN(geomN);
             if (member != null) {
                 encoder.writeStartElement(GML.lineStringMember);
-                encode(encoder, crs, member);
+                encode(encoder, null, member);
                 encoder.writeEndElement();
             }
         }
@@ -422,8 +431,32 @@ public final class Gml3Encoder {
     }
 
     public void encode(final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs,
+            Point point) throws IOException {
+
+        encoder.writeStartElement(GML.Point);
+        if (crs != null) {
+            encodeSrsName(encoder, crs);
+            encoder.writeEndAttributes();
+        }
+        {
+            final CoordinateSequence coordinates = (point).getCoordinateSequence();
+            encoder.writeStartElement(GML.pos);
+            {
+                int dimension = crs == null ? 2 : crs.getCoordinateSystem().getDimension();
+                encodeCoordinates(coordinates, encoder, dimension);
+            }
+            encoder.writeEndElement();
+        }
+        encoder.writeEndElement();
+    }
+
+    public void encode(final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs,
             final MultiPoint mpoint) throws IOException {
         encoder.writeStartElement(GML.MultiPoint);
+        if (crs != null) {
+            encodeSrsName(encoder, crs);
+            encoder.writeEndAttributes();
+        }
 
         final int nGeoms = mpoint.getNumGeometries();
         Geometry member;
@@ -431,7 +464,7 @@ public final class Gml3Encoder {
             encoder.writeStartElement(GML.pointMember);
             member = mpoint.getGeometryN(geomN);
             if (member != null) {
-                encodePoint(encoder, crs, (Point) member);
+                encode(encoder, null, (Point) member);
             }
             encoder.writeEndElement();
         }
@@ -527,7 +560,7 @@ public final class Gml3Encoder {
                 final BxmlStreamWriter encoder, final CoordinateReferenceSystem crs)
                 throws IOException {
             if (geom != null) {
-                gmlEncoder.encodePoint(encoder, crs, (Point) geom);
+                gmlEncoder.encode(encoder, crs, (Point) geom);
             }
         }
     }

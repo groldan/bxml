@@ -12,7 +12,7 @@
     </bean>
  
      <!-- Provides config info for the GML3 binary encoded output format -->
-	<bean id="binaryGml3Config" class="org.gvsig.bxml.geoserver.DefaultEncoderConfig">
+	<bean id="binaryGml3Config" class="org.gvsig.bxml.geoserver.GeoServerEncoderConfig">
 		<constructor-arg ref="geoServer" />
 		<constructor-arg ref="wfsXmlConfiguration-1.1" />
         <constructor-arg ref="wfs11VersionRef"/>

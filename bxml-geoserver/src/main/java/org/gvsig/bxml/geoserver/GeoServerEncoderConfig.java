@@ -11,7 +11,7 @@ import org.geoserver.wfs.WFSInfo;
 import org.geoserver.wfs.WFSInfo.Version;
 import org.geotools.xml.Configuration;
 
-public class DefaultEncoderConfig implements EncoderConfig {
+public class GeoServerEncoderConfig implements EncoderConfig {
 
     private final GeoServer gs;
 
@@ -23,7 +23,7 @@ public class DefaultEncoderConfig implements EncoderConfig {
 
     private SrsNameStyle srsNameStyle;
 
-    public DefaultEncoderConfig(final GeoServer geoserverConfig,
+    public GeoServerEncoderConfig(final GeoServer geoserverConfig,
             final Configuration wfsConfiguration, final Version version) {
         this.gs = geoserverConfig;
         this.wfsConfiguration = wfsConfiguration;
