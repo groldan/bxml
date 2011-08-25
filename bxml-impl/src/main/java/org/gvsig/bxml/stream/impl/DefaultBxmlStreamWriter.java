@@ -528,15 +528,15 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
         writer.writeTokenType(EmptyElement);
         writer.writeCount(nameIndex);
 
-        // if (!XMLConstants.NULL_NS_URI.equals(namespaceUri)) {
-        // final String prefix = namesResolver.getPrefix(namespaceUri);
-        // if (prefix == null) {
-        // // we got a non prefix mapped namespace for this element
-        // // lets declare the element namespace inline
-        // writeNamespaceInternal(XMLConstants.NULL_NS_URI, XMLConstants.XMLNS_ATTRIBUTE,
-        // namespaceUri);
-        // }
-        // }
+        if (!XMLConstants.NULL_NS_URI.equals(namespaceUri)) {
+            final String prefix = namesResolver.getPrefix(namespaceUri);
+            if (prefix == null) {
+                // we got a non prefix mapped namespace for this element
+                // lets declare the element namespace inline
+                writeNamespaceInternal(XMLConstants.NULL_NS_URI, XMLConstants.XMLNS_ATTRIBUTE,
+                        namespaceUri);
+            }
+        }
 
         lastEvent = lastTagEvent = START_ELEMENT;
         if (openElements.size() == 1 && pendingNamespaces.size() > 0) {
