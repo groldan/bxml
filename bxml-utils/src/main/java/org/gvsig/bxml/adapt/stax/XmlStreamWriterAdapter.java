@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -244,13 +245,18 @@ public class XmlStreamWriterAdapter implements BxmlStreamWriter {
         }
         try {
             final String prefix = staxWriter.getPrefix(namespaceUri);
+            boolean writeDefaultNamespace = false;
             if (prefix == null) {
                 // we got a non prefix mapped namespace for this element
                 // lets declare the element namespace inline
                 // staxWriter.writeDefaultNamespace(namespaceUri);
                 staxWriter.setDefaultNamespace(namespaceUri);
+                writeDefaultNamespace = encodingOptions.isNamespaceAware();
             }
             staxWriter.writeStartElement(namespaceUri, localName);
+            if(writeDefaultNamespace){
+                staxWriter.writeNamespace(XMLConstants.DEFAULT_NS_PREFIX, namespaceUri);
+            }
         } catch (XMLStreamException e) {
             throw (IOException) new IOException(e.getMessage()).initCause(e);
         }

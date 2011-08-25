@@ -41,7 +41,9 @@ import java.io.OutputStreamWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -74,6 +76,7 @@ public class XmlStreamWriterAdapterIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
+        encodingOptions = new EncodingOptions();
         createWriter();
     }
 
@@ -84,10 +87,10 @@ public class XmlStreamWriterAdapterIntegrationTest {
     }
 
     private void createWriter() throws Exception {
-        encodingOptions = new EncodingOptions();
-
         output = new ByteArrayOutputStream();
-        XMLStreamWriter staxWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(output);
+        XMLOutputFactory staxFactory = XMLOutputFactory.newInstance();
+
+        XMLStreamWriter staxWriter = staxFactory.createXMLStreamWriter(output);
         BxmlStreamWriter impl = new XmlStreamWriterAdapter(encodingOptions, staxWriter);
         BxmlStreamWriter_Contract c = new BxmlStreamWriter_Contract(impl);
         this.writer = c;
@@ -181,6 +184,8 @@ public class XmlStreamWriterAdapterIntegrationTest {
      */
     @Test
     public void testWriteTestDocumentNoNameSpaces() throws Exception {
+        encodingOptions.setNamespaceAware(false);
+        createWriter();
 
         final String sldNamespace = "http://www.opengis.net/sld";
         writer.writeStartDocument();
