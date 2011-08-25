@@ -183,7 +183,8 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
         // @pre {getLastEvent() IN (START_ELEMENT, NAMESPACE_DECL)}
         lastEvent = impl.getLastEvent();
         assertPre(
-                lastEvent == EventType.NAMESPACE_DECL || lastEvent == START_ELEMENT,
+                lastEvent == EventType.NAMESPACE_DECL || lastEvent == START_ELEMENT
+                        || lastEvent == START_DOCUMENT,
                 "setPrefix: last event shall be either NAMESPACE_DECL, START_DOCUMENT or START_ELEMENT: ",
                 lastEvent);
         assertPre(prefix != null, "setPrefix: prefix can't be null");
@@ -469,6 +470,9 @@ public final class BxmlStreamWriter_Contract extends BxmlStreamWriterAdapter imp
     @Override
     public void writeStartElement(QName qname) throws IOException {
         assertPre(qname != null, "writeStartElement: qname can't be null");
+
+        lastEvent = impl.getLastEvent();
+        assertPre(lastEvent != EventType.NONE, "writeStartDocument has not been called");
 
         impl.writeStartElement(qname);
 

@@ -110,7 +110,7 @@ public class EncodingOptions implements Cloneable {
      * @param namespaceAware
      *            whether the {@code BxmlStreamWriter} shall be namespace aware
      */
-    final void setNamespaceAware(boolean namespaceAware) {
+    public final void setNamespaceAware(boolean namespaceAware) {
         this.namespaceAware = namespaceAware;
     }
 

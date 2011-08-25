@@ -270,6 +270,7 @@ public interface BxmlStreamWriter {
             throws IOException;
 
     /**
+     * @pre {getLastEvent() != NONE}
      * @pre {qname != null}
      * @post {getLastEvent() == START_ELEMENT}
      * @param qname
@@ -754,7 +755,7 @@ public interface BxmlStreamWriter {
      * bound in the root scope.
      * </p>
      * 
-     * @pre {getLastEvent() IN (START_ELEMENT, NAMESPACE_DECL)}
+     * @pre {getLastEvent() IN (START_DOCUMENT, START_ELEMENT, NAMESPACE_DECL)}
      * @pre {prefix != null}
      * @pre {namespaceUri != null}
      * @post {if(prefix == "xmlns"){getPrefix(namespaceUri) == null}else{getPrefix(namespaceUri) ==
