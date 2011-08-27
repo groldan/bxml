@@ -14,10 +14,9 @@ import java.util.TreeMap;
 import org.geoserver.wfs.GMLInfo.SrsNameStyle;
 import org.geotools.feature.type.DateUtil;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.gvsig.bxml.stream.BxmlStreamWriter;
@@ -26,7 +25,9 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeographicCRS;
 
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
@@ -190,16 +191,24 @@ public final class Gml3Encoder {
         }
     }
 
-    private String getSrsUri(final CoordinateReferenceSystem crs) {
+    private String getSrsUri(final CoordinateReferenceSystem crs) throws IOException {
+        if (crs == null) {
+            return null;
+        }
         String srsUri = srsNameUris.get(crs);
         if (srsUri == null) {
-            String epsgCode;
-            if (CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs)) {
-                epsgCode = "4326";
-            } else {
-                epsgCode = GML2EncodingUtils.epsgCode(crs);
+            boolean simple = false;
+            if (crs instanceof GeographicCRS) {
+                final AxisOrder axisOrder = CRS.getAxisOrder(crs);
+                simple = AxisOrder.EAST_NORTH.equals(axisOrder);
             }
-            srsUri = this.srsNameStyle.getPrefix() + epsgCode;
+            final Integer epsgCode;
+            try {
+                epsgCode = CRS.lookupEpsgCode(crs, true);
+            } catch (FactoryException e) {
+                throw new IOException(e);
+            }
+            srsUri = (simple ? "EPSG:" : "urn:ogc:def:crs:EPSG::") + epsgCode;
             srsNameUris.put(crs, srsUri);
         }
         return srsUri;
@@ -482,8 +491,16 @@ public final class Gml3Encoder {
         public final void encode(final Gml3Encoder gmlEncoder, final Object value,
                 final AttributeDescriptor descriptor, final BxmlStreamWriter encoder)
                 throws IOException {
-            encode(gmlEncoder, value, encoder,
-                    ((GeometryDescriptor) descriptor).getCoordinateReferenceSystem());
+
+            CoordinateReferenceSystem crs;
+            if (value instanceof Geometry
+                    && ((Geometry) value).getUserData() instanceof CoordinateReferenceSystem) {
+                crs = (CoordinateReferenceSystem) ((Geometry) value).getUserData();
+            } else {
+                GeometryDescriptor geomDescriptor = (GeometryDescriptor) descriptor;
+                crs = geomDescriptor.getCoordinateReferenceSystem();
+            }
+            encode(gmlEncoder, value, encoder, crs);
         }
 
         public abstract void encode(final Gml3Encoder gmlEncoder, Object value,
