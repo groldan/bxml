@@ -528,7 +528,9 @@ public final class DefaultBxmlStreamWriter implements BxmlStreamWriter {
         writer.writeTokenType(EmptyElement);
         writer.writeCount(nameIndex);
 
-        if (!XMLConstants.NULL_NS_URI.equals(namespaceUri)) {
+        if (!XMLConstants.NULL_NS_URI.equals(namespaceUri)
+                && !namespaceUri.equals(namesResolver.getNamespace(XMLConstants.DEFAULT_NS_PREFIX))) {
+            
             final String prefix = namesResolver.getPrefix(namespaceUri);
             if (prefix == null) {
                 // we got a non prefix mapped namespace for this element
