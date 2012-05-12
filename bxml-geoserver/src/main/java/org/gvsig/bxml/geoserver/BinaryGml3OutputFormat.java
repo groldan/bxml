@@ -12,25 +12,23 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import net.opengis.wfs.BaseRequestType;
-import net.opengis.wfs.FeatureCollectionType;
-import net.opengis.wfs.GetFeatureType;
-import net.opengis.wfs.QueryType;
-
 import org.eclipse.xsd.XSDSchema;
 import org.geoserver.catalog.FeatureTypeInfo;
 import org.geoserver.config.GeoServer;
-import org.geoserver.ows.util.OwsUtils;
 import org.geoserver.ows.util.ResponseUtils;
 import org.geoserver.platform.Operation;
 import org.geoserver.platform.ServiceException;
 import org.geoserver.wfs.WFSException;
 import org.geoserver.wfs.WFSGetFeatureOutputFormat;
+import org.geoserver.wfs.request.FeatureCollectionResponse;
+import org.geoserver.wfs.request.GetFeatureRequest;
+import org.geoserver.wfs.request.Query;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.type.DateUtil;
@@ -114,29 +112,32 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
      * @param getFeature
      * @throws ServiceException
      * @throws IOException
-     * @see org.geoserver.wfs.WFSGetFeatureOutputFormat#write(net.opengis.wfs.FeatureCollectionType,
-     *      java.io.OutputStream, org.geoserver.platform.Operation)
      */
     @Override
-    @SuppressWarnings("unchecked")
-    protected void write(final FeatureCollectionType results, final OutputStream output,
+    public void write(final FeatureCollectionResponse results, final OutputStream output,
             final Operation getFeature) throws ServiceException, IOException {
 
-        final List featureCollections = results.getFeature();
+        @SuppressWarnings("rawtypes")
+        final List<FeatureCollection> featureCollections = results.getFeature();
         // round up the info objects for each feature collection
 
         final Map<String, Set<FeatureTypeInfo>> ns2metas = new HashMap<String, Set<FeatureTypeInfo>>();
 
+        final GetFeatureRequest request;
+        final String baseUrl;
+
+        {
+            Object[] parameters = getFeature.getParameters();
+            request = GetFeatureRequest.adapt(parameters[0]);
+            baseUrl = request.getBaseURL();
+        }
+
         for (int fcIndex = 0; fcIndex < featureCollections.size(); fcIndex++) {
             // get the query for this featureCollection
-            final GetFeatureType request;
-            request = (GetFeatureType) OwsUtils.parameter(getFeature.getParameters(),
-                    GetFeatureType.class);
-            final QueryType queryType;
-            queryType = (QueryType) request.getQuery().get(fcIndex);
+            final Query query = request.getQueries().get(fcIndex);
 
             // may have multiple type names in each query, so add them all
-            for (QName name : (List<QName>) queryType.getTypeName()) {
+            for (QName name : query.getTypeNames()) {
                 // get a feature type name from the query
                 final String namespaceURI = name.getNamespaceURI();
                 final String localPart = name.getLocalPart();
@@ -160,28 +161,22 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
 
         final BxmlStreamWriter encoder = createBxmlStreamWriter(output);
 
-        // declare wfs schema location
-        BaseRequestType gft = (BaseRequestType) getFeature.getParameters()[0];
-
-        final String baseUrl = gft.getBaseUrl();
-
         encoder.writeStartDocument();
 
         encoder.setSchemaLocation(org.geoserver.wfs.xml.v1_1_0.WFS.NAMESPACE,
                 ResponseUtils.buildSchemaURL(baseUrl, "schemas/wfs/1.1.0/wfs.xsd"));
 
         // declare application schema namespaces
-        for (Iterator i = ns2metas.entrySet().iterator(); i.hasNext();) {
-            Map.Entry entry = (Map.Entry) i.next();
+        for (Entry<String, Set<FeatureTypeInfo>> entry : ns2metas.entrySet()) {
 
             String namespaceURI = (String) entry.getKey();
-            Set metas = (Set) entry.getValue();
+            Set<FeatureTypeInfo> metas = entry.getValue();
 
             StringBuffer typeNames = new StringBuffer();
 
-            for (Iterator m = metas.iterator(); m.hasNext();) {
+            for (Iterator<FeatureTypeInfo> m = metas.iterator(); m.hasNext();) {
                 FeatureTypeInfo meta = (FeatureTypeInfo) m.next();
-                String prefixedName = meta.getPrefixedName();
+                String prefixedName = meta.prefixedName();
                 typeNames.append(prefixedName);
 
                 if (m.hasNext()) {
@@ -240,7 +235,7 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
     }
 
     @SuppressWarnings("unchecked")
-    private void encode(final FeatureCollectionType results, final BxmlStreamWriter encoder)
+    private void encode(final FeatureCollectionResponse results, final BxmlStreamWriter encoder)
             throws IOException {
 
         final QName wfsFc = org.geoserver.wfs.xml.v1_1_0.WFS.FEATURECOLLECTION;
@@ -268,9 +263,8 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
 
         encoder.writeStartElement(GML.featureMembers);
 
-        FeatureCollection fc;
-        for (Iterator it = results.getFeature().iterator(); it.hasNext();) {
-            fc = (FeatureCollection) it.next();
+        for (@SuppressWarnings("rawtypes")
+        FeatureCollection fc : results.getFeatures()) {
             encode(fc, encoder);
         }
 
@@ -279,21 +273,19 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
 
     }
 
-    @SuppressWarnings("unchecked")
     private void declareNamespaces(final BxmlStreamWriter encoder) throws IOException {
         final Configuration wfsConfiguration = config.getConfiguration();
         final XSD xsd = wfsConfiguration.getXSD();
         final XSDSchema schema = xsd.getSchema();
         // write out all the namespace prefix value mappings
-        final Map namePrefixToNamespaceMap = schema.getQNamePrefixToNamespaceMap();
+        final Map<String, String> namePrefixToNamespaceMap = schema.getQNamePrefixToNamespaceMap();
 
         final String defaultNamespaceUri = schema.getTargetNamespace();
         encoder.writeDefaultNamespace(defaultNamespaceUri);
 
-        for (Iterator itr = namePrefixToNamespaceMap.entrySet().iterator(); itr.hasNext();) {
-            final Map.Entry entry = (Map.Entry) itr.next();
-            final String pre = (String) entry.getKey();
-            final String ns = (String) entry.getValue();
+        for (Entry<String, String> entry : namePrefixToNamespaceMap.entrySet()) {
+            final String pre = entry.getKey();
+            final String ns = entry.getValue();
 
             if (XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI.equals(ns)) {
                 continue;
@@ -304,8 +296,8 @@ public final class BinaryGml3OutputFormat extends WFSGetFeatureOutputFormat {
     }
 
     /**
-     * Encodes a geotools FeatureCollection by first bulding a set of per attribute encoder
-     * executors (a sort of execution chain) and then applying the encoding chaing for the feature
+     * Encodes a GeoTools FeatureCollection by first building a set of per attribute encoder
+     * executors (a sort of execution chain) and then applying the encoding chain for the feature
      * attributes.
      * 
      * @param fc

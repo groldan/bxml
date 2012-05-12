@@ -9,6 +9,8 @@ import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
+import junit.framework.Test;
+
 import org.geoserver.wfs.WFSTestSupport;
 import org.geoserver.wfs.xml.v1_1_0.WFS;
 import org.gvsig.bxml.adapt.parsers.DocumentBuilderImpl;
@@ -20,19 +22,31 @@ import com.mockrunner.mock.web.MockHttpServletResponse;
 import com.mockrunner.util.StreamUtil;
 
 public class BinaryGml3OutputFormatTest extends WFSTestSupport {
+    /**
+     * This is a READ ONLY TEST so we can use one time setup
+     */
+    public static Test suite() {
+        return new OneTimeTestSetup(new BinaryGml3OutputFormatTest());
+    }
 
-    public void testFullRequest() throws Exception {
-        MockHttpServletResponse resp = getAsServletResponse("wfs?request=GetFeature&typeName=sf:PrimitiveGeoFeature&outputFormat=BinaryGML3&");
+    public void testFullRequest_WFS20_BGML31() throws Exception {
+        String request = "wfs?version=2.0.0&request=GetFeature&typeName=sf:PrimitiveGeoFeature&outputFormat=BinaryGML3&";
+        testFullRequest(request);
+    }
+
+    public void testFullRequest_WFS110_BGML31() throws Exception {
+        String request = "wfs?version=1.1.0&request=GetFeature&typeName=sf:PrimitiveGeoFeature&outputFormat=BinaryGML3&";
+        testFullRequest(request);
+    }
+
+    private void testFullRequest(String request) throws Exception, IOException,
+            ParserConfigurationException, SAXException {
+        MockHttpServletResponse resp = getAsServletResponse(request);
         ByteArrayInputStream binaryInputStream = super.getBinaryInputStream(resp);
         InputStream copyStream = StreamUtil.copyStream(binaryInputStream);
-        // FileOutputStream fileOutputStream = new FileOutputStream("testFullRequest.bxml");
-        // fileOutputStream.write(StreamUtil.getStreamAsByteArray(copyStream));
-        // fileOutputStream.flush();
-        // fileOutputStream.close();
-        // copyStream.reset();
 
         Document dom = parseBinaryXML(copyStream);
-        print(dom);
+        // print(dom);
 
         // check the mime type
         assertEquals("text/x-bxml; subtype=gml/3.1.1", resp.getContentType());
